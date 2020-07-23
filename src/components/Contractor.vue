@@ -13,7 +13,6 @@
         lazy-validation>
 
             <v-text-field
-            
             v-model="name"
             :rules="nameRules"
             label="Nazwa firmy"
@@ -29,6 +28,7 @@
 
              <v-text-field
             v-model="nip"
+            type= "number"
             :rules="nipRules"
             :counter="10"
             label="NIP firmy"
@@ -46,7 +46,7 @@
             :disabled="!valid"
             color="dark grey"
             class="mr-4"
-            @click="validate"
+            v-on:click="visibility = !visibility"
             dark
             >
             Sprawdź czy istnieje
@@ -68,6 +68,32 @@
             >
             Zapisz
             </v-btn>
+
+            <v-card-text v-if="visibility">
+                <v-text-field
+                    v-model="checkName"
+                    :rules="nameRules"
+                    label="Nazwa firmy"
+                    required
+                ></v-text-field>
+
+                <v-text-field
+                    v-model="checknip"
+                    type= "number"
+                    :rules="nipRules"
+                    :counter="10"
+                    label="NIP firmy"
+                    required
+                ></v-text-field>
+
+                <v-btn
+                    color="red lighten-3"
+                    class="mr-4"
+                    v-on:click="check"
+                    dark
+                    >Sprawdź w bazie
+                </v-btn>
+            </v-card-text>
   </v-form>
       </v-row>
 
@@ -79,6 +105,7 @@ export default {
   name: "Contractor",
 
   data: () => ({
+      visibility: false,
       valid: true,
       name: '',
       nameRules: [
@@ -98,7 +125,17 @@ export default {
         v => !!v || 'Proszę wprowadzić NIP firmy',
         v => (v && v.length == 10) || 'NIP musi zawierać 10 cyfr',
       ],
+      checkName: '',
+      checknip: '',
   }),
+
+  methods: {
+      reset () {
+        this.$refs.form.reset()
+      },
+
+     
+    },
 
 };
 </script>
