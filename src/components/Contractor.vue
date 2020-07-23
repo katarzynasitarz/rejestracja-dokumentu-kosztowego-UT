@@ -129,13 +129,34 @@ export default {
       checkName: '',
       checknip: '',
   }),
-
+    beforeMount() {
+    this.getContractor();
+    this.getAvailibilityDesk();
+  },
   methods: {
-      reset () {
+    reset () {
         this.$refs.form.reset()
       },
+    async getContractor() {
+      try {
+        let result = await this.sendAjaxWithParams(this.appUrls.getContractor, {});
+        this.contractor = result.result.items;
+      console.log(this.contractor);
+      } catch (e) {
+        console.log("error", e);
+      }
+    },
+    async getAvailibilityDesk() {
+      try {
+        console.log(this.appUrls.getAvailibilityDate);
+        let result = await this.sendAjaxWithParams(this.appUrls.getAvailibilityDesk, {});
+        this.result = result.dateResult;
+        console.log(result.result);
+      } catch (e) {
+        console.log("error", e);
+      }
+    },
 
-     
     },
 
 };

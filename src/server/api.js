@@ -67,7 +67,7 @@ router.post("/getContractor", (req, res) => {
                         city: 'Jankowo'
                         },
           }
-      ],
+          ],
         },
       },
     },
@@ -76,7 +76,39 @@ router.post("/getContractor", (req, res) => {
     res.status("200").json(response);
     res.end();
   }, 2000);
+});
 
+router.post("/getAvailibilityDesk", (req, res) => {
+  console.log("req.body.params", req.body);
+  let response = {
+    data: {
+      data: {
+        result: {
+          items: [
+            {
+                roomNumber: '123',
+                roomName: 'kefirowy',
+                deskQuantity: '7'
+            },
+            {
+                roomNumber: '321',
+                roomName: 'maślany',
+                deskQuantity: '6'
+            },
+            {
+                roomNumber: '54',
+                roomName: 'śmietanowy',
+                deskQuantity: '8'
+            }
+          ],
+        },
+      },
+    },
+  };
+  setTimeout(() => {
+    res.status("200").json(response);
+    res.end();
+  }, 2000);
 });
 
 module.exports = router;
