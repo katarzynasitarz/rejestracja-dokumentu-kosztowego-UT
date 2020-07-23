@@ -2,22 +2,23 @@
   <v-app>
     <v-app-bar app color="white" dark>
 
+
     </v-app-bar>
 
     <v-content>
-      <HelloWorld />
+      <Contractor />
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
+import Contractor from "./components/Contractor";
 
 export default {
   name: "App",
 
   components: {
-    HelloWorld,
+    Contractor
   },
 
   data: () => ({
