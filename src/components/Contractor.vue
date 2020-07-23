@@ -30,6 +30,7 @@
              <v-text-field
             v-model="nip"
             :rules="nipRules"
+            :counter="10"
             label="NIP firmy"
             required
             ></v-text-field>
@@ -43,9 +44,10 @@
 
             <v-btn
             :disabled="!valid"
-            color="pink"
+            color="dark grey"
             class="mr-4"
             @click="validate"
+            dark
             >
             Sprawdź czy istnieje
             </v-btn>
@@ -77,6 +79,25 @@ export default {
   name: "Contractor",
 
   data: () => ({
+      valid: true,
+      name: '',
+      nameRules: [
+        v => !!v || 'Należy wprowadzić nazwę firmy',
+      ],
+      email: '',
+      emailRules: [
+        v => !!v || 'Należy wprowadzić e-mail firmy',
+        v => /.+@.+\..+/.test(v) || 'Pamiętaj, e-mail ma swoją strukturę',
+      ],
+      adres: '',
+      adresRules: [
+      v => !!v || 'Adres firmy jest wymagany',
+      ],
+      nip: '',
+      nipRules: [
+        v => !!v || 'Proszę wprowadzić NIP firmy',
+        v => (v && v.length == 10) || 'NIP musi zawierać 10 cyfr',
+      ],
   }),
 
 };
