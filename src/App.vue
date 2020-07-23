@@ -1,7 +1,5 @@
 <template>
   <v-app>
-    <v-app-bar app color="white" dark> </v-app-bar>
-
     <v-content>
       <Document />
     </v-content>
