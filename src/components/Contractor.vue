@@ -44,7 +44,7 @@
 
             <v-btn
             :disabled="!valid"
-            color="dark grey"
+            color="teal"
             class="mr-4"
             v-on:click="visibility = !visibility"
             dark
@@ -53,7 +53,7 @@
             </v-btn>
 
             <v-btn
-            color="teal"
+            color="dark grey"
             class="mr-4"
             @click="reset"
             dark
@@ -71,6 +71,7 @@
 
             <v-card-text v-if="visibility">
                 <v-text-field
+                    padding-top="80"
                     v-model="checkName"
                     :rules="nameRules"
                     label="Nazwa firmy"
@@ -87,7 +88,7 @@
                 ></v-text-field>
 
                 <v-btn
-                    color="red lighten-3"
+                    color="teal lighten-2"
                     class="mr-4"
                     v-on:click="check"
                     dark
