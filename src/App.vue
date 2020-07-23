@@ -1,23 +1,21 @@
 <template>
   <v-app>
-    <v-app-bar app color="white" dark>
-
-    </v-app-bar>
+    <v-app-bar app color="white" dark> </v-app-bar>
 
     <v-content>
-      <HelloWorld />
+      <Document />
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
+import Document from "./components/Document";
 
 export default {
   name: "App",
 
   components: {
-    HelloWorld,
+    Document,
   },
 
   data: () => ({
