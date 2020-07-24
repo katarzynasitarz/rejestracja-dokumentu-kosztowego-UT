@@ -3,7 +3,6 @@
     :headers="headers"
     :items="documentPositions"
     hide-default-footer="true"
-    sort-by="calories"
     class="elevation-1 pa-4"
   >
     <template v-slot:top>

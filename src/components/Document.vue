@@ -1,5 +1,5 @@
 <template>
-  <v-form>
+  <v-form ref="form">
     <v-card-text class="grey lighten-4">
       <v-sheet width="1000" height="auto" class="mx-auto pa-8">
         <v-card-text align="center" class="py-10">
@@ -7,90 +7,120 @@
         </v-card-text>
 
         <v-card outlined class="mx-6 mb-6">
-          <v-toolbar>
-            <v-toolbar-title class="font-weight-bold">
-              Podstawowe dane dokumentu:
-            </v-toolbar-title>
-          </v-toolbar>
+          <v-card-title class="font-weight-bold">
+            Podstawowe dane dokumentu:
+          </v-card-title>
+
           <v-container>
             <v-row>
               <v-col cols="12" md="4">
                 <v-menu
-                  ref="menu"
-                  v-model="menu1"
-                  :close-on-content-click="false"
+                  ref="menu1"
+                  :close-on-content-click="true"
                   :nudge-right="40"
                   transition="scale-transition"
                   offset-y
-                  max-width="290px"
                   min-width="290px"
                 >
                   <template v-slot:activator="{ on }">
                     <v-text-field
-                      v-model="dateTime1"
-                      :rules="examDateRules"
-                      prepend-icon="mdi-calendar-clock"
+                      v-model="receiveDate"
                       label="Data wpłynięcia"
+                      prepend-icon="mdi-calendar-clock"
                       readonly
                       clearable
                       v-on="on"
-                    />
+                    ></v-text-field>
                   </template>
-
-                  <v-tabs fixed-tabs>
-                    <v-tab>
-                      <v-icon>mdi-calendar-clock</v-icon>
-                    </v-tab>
-                    <v-tab>
-                      <slot>
-                        <v-icon>mdi-clock-outline</v-icon>
-                      </slot>
-                    </v-tab>
-                    <v-tab-item>
-                      <v-date-picker
-                        v-if="menu1"
-                        v-model="date1"
-                        locale="pl"
-                        @click:change="$refs.menu.save(date1)"
-                      />
-                    </v-tab-item>
-                    <v-tab-item>
-                      <v-time-picker
-                        v-model="time1"
-                        format="24hr"
-                        @click:minute="$refs.menu.save(time1)"
-                      />
-                    </v-tab-item>
-                  </v-tabs>
+                  <v-date-picker
+                    v-model="receiveDate"
+                    locale="pl"
+                    @click="$refs.menu1.save(chosenReceiveDate)"
+                  >
+                  </v-date-picker>
                 </v-menu>
               </v-col>
               <v-col cols="12" md="4">
-                <v-text-field label="Data wystawienia"></v-text-field>
+                <v-menu
+                  ref="menu2"
+                  :close-on-content-click="true"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="issueDate"
+                      label="Data wystawienia"
+                      prepend-icon="mdi-calendar-clock"
+                      readonly
+                      clearable
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="issueDate"
+                    locale="pl"
+                    @click="$refs.menu2.save(chosenIssueDate)"
+                  >
+                  </v-date-picker>
+                </v-menu>
               </v-col>
               <v-col cols="12" md="4">
-                <v-text-field label="Termin płatności"></v-text-field>
+                <v-menu
+                  ref="menu3"
+                  :close-on-content-click="true"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="paymentDate"
+                      label="Termin płatności"
+                      prepend-icon="mdi-calendar-clock"
+                      readonly
+                      clearable
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="paymentDate"
+                    locale="pl"
+                    @click="$refs.menu3.save(chosenPaymentDate)"
+                  >
+                  </v-date-picker>
+                </v-menu>
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="12" md="4">
-                <v-text-field label="Nr faktury"></v-text-field>
+                <v-text-field label="Nr faktury" v-model="invoiceNumber">
+                </v-text-field>
               </v-col>
 
               <v-col cols="12" md="4">
-                <v-text-field label="Kategoria wydatku"></v-text-field>
+                <v-text-field
+                  label="Kategoria wydatku"
+                  v-model="expenseCategory"
+                ></v-text-field>
               </v-col>
               <v-col cols="12" md="4">
-                <v-textarea label="Uwagi do dokumentu" rows="2"></v-textarea>
+                <v-textarea
+                  label="Uwagi do dokumentu"
+                  rows="2"
+                  v-model="invoiceComments"
+                ></v-textarea>
               </v-col> </v-row
           ></v-container>
         </v-card>
 
         <v-card outlined class="mx-6 mb-6">
-          <v-toolbar>
-            <v-toolbar-title class="font-weight-bold">
-              Dane kontrahenta:
-            </v-toolbar-title>
-          </v-toolbar>
+          <v-card-title class="font-weight-bold">
+            Dane kontrahenta:
+          </v-card-title>
 
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus
           exercitationem laudantium laborum non saepe quidem ex doloribus, fugit
@@ -99,26 +129,25 @@
         >
 
         <v-card outlined class="mx-6 mb-6">
-          <v-toolbar>
-            <v-toolbar-title class="font-weight-bold">
-              Dane dotyczące dokumentu:
-            </v-toolbar-title>
-          </v-toolbar>
+          <v-card-title class="font-weight-bold">
+            Dane dotyczące dokumentu:
+          </v-card-title>
+
           <Table />
         </v-card>
 
         <v-card outlined class="mx-6 mb-6">
-          <v-toolbar>
-            <v-toolbar-title class="font-weight-bold">
-              Dodatkowe dokumenty:
-            </v-toolbar-title> </v-toolbar
-          >Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta saepe
+          <v-card-title class="font-weight-bold">
+            Dodatkowe dokumenty:
+          </v-card-title>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta saepe
           provident, ab accusantium sunt totam delectus molestiae illo modi
           quasi quis tempora suscipit fuga tenetur repellendus magnam quam
           excepturi optio?</v-card
         >
       </v-sheet>
     </v-card-text>
+    <v-btn color="success" @click="send()">Wyślij</v-btn>
   </v-form>
 </template>
 
@@ -131,33 +160,39 @@ export default {
   },
 
   data: () => ({
+    receiveDate: null,
+    issueDate: null,
+    paymentDate: null,
+    invoiceNumber: "",
+    expenseCategory: "",
+    invoiceComments: "",
     menu1: false,
-    date1: null,
-    time1: null,
-    dateTime1: null,
-    tmpDate: null,
-    examDateRules: [(v) => !!v || "To pole jest obowiązkowe."],
-    requiredRule: (v) => !!v || "To pole jest obowiązkowe",
+    menu2: false,
+    menu3: false,
+    modal: false,
   }),
   methods: {
-    buildDate() {
-      this.tmpDate = new Date(this.date1 + "T" + this.time1).toISOString();
-    },
     validate() {
       return this.$refs.form.validate();
     },
-  },
-  watch: {
-    date1: function(val) {
-      this.dateTime1 = val + " " + (this.time1 ? this.time1 : "00:00");
-      this.buildDate();
+    send() {
+      console.log(
+        this.receiveDate,
+        this.issueDate,
+        this.paymentDate,
+        this.inviceNumber
+      );
     },
-    time1: function(val) {
-      const todayDate = new Date().toISOString().slice(0, 10);
-      this.dateTime1 =
-        (this.date1 ? this.date1 : (this.date1 = todayDate)) + " " + val;
-      console.log("czas", val);
-      this.buildDate();
+  },
+  computed: {
+    chosenReceiveDate: function() {
+      return new Date().toISOString().substr(0, 10);
+    },
+    chosenIssueDate: function() {
+      return new Date().toISOString().substr(0, 10);
+    },
+    chosenPaymentDate: function() {
+      return new Date().toISOString().substr(0, 10);
     },
   },
 };
