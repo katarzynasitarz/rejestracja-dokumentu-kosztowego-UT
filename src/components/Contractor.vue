@@ -1,6 +1,9 @@
 <template>
 <v-container>
-     <v-card-text class="headline font-weight-bold" align="center">
+     <v-card-text 
+     class="headline 
+     font-weight-bold" align="center"
+     width="850">
          Dodaj kontrahenta
     </v-card-text>
 
@@ -48,8 +51,7 @@
             @click="reset"
             dark
             >
-            Wyczyść
-            </v-btn>
+            Wyczyść</v-btn>
 
             <v-btn
             color="cyan"
@@ -59,7 +61,10 @@
             Zapisz
             </v-btn>
 
+<<<<<<< HEAD
            
+=======
+>>>>>>> AS-115/122-AjaxContractor
         </v-form>
     </v-row>
 
@@ -91,12 +96,20 @@ export default {
         v => (v && v.length == 10) || 'NIP musi zawierać 10 cyfr',
       ],
   }),
-
+  
   methods: {
-      reset () {
+    reset () {
         this.$refs.form.reset()
       },
+    async getContractor() {
+      try {
+        let result = await this.sendAjaxWithParams(this.appUrls.getContractor, {});
+        this.contractor = result.result.items;
+      console.log(this.contractor);
+      } catch (e) {
+        console.log("error", e);
+      }
     },
-
+    },
 };
 </script>

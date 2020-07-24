@@ -67,7 +67,7 @@ router.post("/getContractor", (req, res) => {
                         city: 'Jankowo'
                         },
           }
-      ],
+          ],
         },
       },
     },
@@ -76,7 +76,6 @@ router.post("/getContractor", (req, res) => {
     res.status("200").json(response);
     res.end();
   }, 2000);
-
 });
 
 module.exports = router;
