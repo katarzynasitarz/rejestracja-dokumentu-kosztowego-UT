@@ -43,16 +43,6 @@
             ></v-text-field>
 
             <v-btn
-            :disabled="!valid"
-            color="teal"
-            class="mr-4"
-            v-on:click="visibility = !visibility"
-            dark
-            >
-            Sprawdź czy istnieje
-            </v-btn>
-
-            <v-btn
             color="dark grey"
             class="mr-4"
             @click="reset"
@@ -69,34 +59,9 @@
             Zapisz
             </v-btn>
 
-            <v-card-text v-if="visibility">
-                <v-text-field
-                    padding-top="80"
-                    v-model="checkName"
-                    :rules="nameRules"
-                    label="Nazwa firmy"
-                    required
-                ></v-text-field>
-
-                <v-text-field
-                    v-model="checknip"
-                    type= "number"
-                    :rules="nipRules"
-                    :counter="10"
-                    label="NIP firmy"
-                    required
-                ></v-text-field>
-
-                <v-btn
-                    color="teal lighten-2"
-                    class="mr-4"
-                    v-on:click="check"
-                    dark
-                    >Sprawdź w bazie
-                </v-btn>
-            </v-card-text>
-  </v-form>
-      </v-row>
+           
+        </v-form>
+    </v-row>
 
   </v-container>
 </template>
@@ -106,7 +71,6 @@ export default {
   name: "Contractor",
 
   data: () => ({
-      visibility: false,
       valid: true,
       name: '',
       nameRules: [
@@ -126,16 +90,12 @@ export default {
         v => !!v || 'Proszę wprowadzić NIP firmy',
         v => (v && v.length == 10) || 'NIP musi zawierać 10 cyfr',
       ],
-      checkName: '',
-      checknip: '',
   }),
 
   methods: {
       reset () {
         this.$refs.form.reset()
       },
-
-     
     },
 
 };
