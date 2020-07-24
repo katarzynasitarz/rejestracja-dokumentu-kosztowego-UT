@@ -7,6 +7,9 @@
     <p>suma vat: {{ totalVatValue }}</p>
     <p>suma brutto: {{ totalPriceBrutto }}</p>
     <v-row width="1200" justify="center">
+      <v-card-text class="headline font-weight-bold" align="center">
+        Prosta tabelka
+      </v-card-text>
       <v-simple-table>
         <template v-slot:top>
           <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on"
@@ -42,6 +45,18 @@
         </template>
       </v-simple-table>
     </v-row>
+    <v-row width="1200" justify="center">
+      <v-card-text class="headline font-weight-bold" align="center">
+        Skomplikowana tabelka
+      </v-card-text>
+      <v-data-table
+        :headers="headers"
+        :items="documents"
+        hide-default-footer="true"
+        class="elevation-1 pa-4"
+      >
+      </v-data-table>
+    </v-row>
   </v-container>
 </template>
 
@@ -55,6 +70,31 @@ export default {
     singlePrice: 1.81,
     amount: 4,
     vatValue: 23,
+
+    headers: [
+      { text: "numer", align: "start", value: "number" },
+      { text: "nazwa pozycji kosztowej", value: "name" },
+      { text: "cena jednostkowa netto", value: "price" },
+      { text: "ilość", value: "amount" },
+      { text: "VAT (%)", value: "vat" },
+      { text: "dział odpowiedzialny", value: "departament" },
+      { text: "cena netto", value: "totalPriceNetto" },
+      { text: "wartość VAT", value: "totalVatValue" },
+      { text: "cena brutto", value: "totalPriceBrutto" },
+    ],
+    documents: [
+      {
+        number: 1,
+        name: "ołówki",
+        price: 1.5,
+        amount: 3,
+        vat: 23,
+        departament: "kadry",
+        totalPriceNetto: "",
+        totalVatValue: "",
+        totalPriceBrutto: "",
+      },
+    ],
   }),
   computed: {
     totalPriceNetto: function() {
