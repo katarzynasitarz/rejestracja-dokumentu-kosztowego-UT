@@ -4,14 +4,14 @@
 
     <v-content>
       <HelloWorld />
-      <!-- <Table2 /> -->
+      <Table2 />
     </v-content>
   </v-app>
 </template>
 
 <script>
 // import Table from "./components/Table";
-// import Table2 from "./components/Table2";
+import Table2 from "./components/Table2";
 // import Contractor from "./components/Contractor";
 import HelloWorld from "./components/HelloWorld";
 
@@ -21,7 +21,7 @@ export default {
   components: {
     HelloWorld,
     // Table,
-    // Table2,
+    Table2,
     // Contractor,
   },
 
