@@ -1,81 +1,146 @@
 <template>
   <v-container>
-    <v-card-text class="headline font-weight-bold" align="center">
-      Przykładowa tabelka
-    </v-card-text>
+    <v-row>
+      <v-card outlined>
+        <v-card-title>
+          Pozycje kosztowe:
+        </v-card-title>
+        <div>
+          <v-row>
+            <v-col>
+              <v-text-field label="nazwa" v-model="position.name">{{
+                position.name
+              }}</v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                label="dział odpowiedzialny"
+                v-model="position.department"
+                >{{ position.department }}</v-text-field
+              >
+            </v-col>
+            <v-col>
+              <v-text-field
+                type="number"
+                label="cena jednostkowa netto"
+                v-model="position.price"
+                >{{ position.price }}</v-text-field
+              >
+            </v-col>
+            <v-col>
+              <v-text-field
+                type="number"
+                label="VAT %"
+                v-model="position.vat"
+                >{{ position.vat }}</v-text-field
+              >
+            </v-col>
+            <v-col>
+              <v-text-field
+                type="number"
+                label="ilość"
+                v-model="position.amount"
+                >{{ position.amount }}</v-text-field
+              >
+            </v-col>
+            <v-col>
+              <v-text-field
+                type="number"
+                label="wartość netto"
+                v-model="position.totalPriceNetto"
+                >{{ position.totalPriceNetto }}</v-text-field
+              >
+            </v-col>
+            <v-col>
+              <v-text-field
+                type="number"
+                label="wartość VAT"
+                v-model="position.totalVatValue"
+                >{{ position.totalVatValue }}</v-text-field
+              >
+            </v-col>
+            <v-col>
+              <v-text-field
+                type="number"
+                label="wartość brutto"
+                v-model="position.totalPriceBrutto"
+                >{{ position.totalPriceBrutto }}</v-text-field
+              >
+            </v-col>
+          </v-row>
 
-    <v-row width="1200" justify="center">
-      <v-data-table
-        :headers="headers"
-        :items="documents"
-        hide-default-footer="true"
-        class="elevation-1 pa-4"
-      >
-      </v-data-table>
-    </v-row>
-    <v-row width="1200" justify="center">
-      <p>{{ singlePrice }}</p>
-      <p>{{ vatValue }}</p>
-      <p>{{ amount }}</p>
-      <p>{{ totalPriceNetto }}</p>
-      <p>{{ totalPriceBrutto }}</p>
-      <p>{{ totalVatValue }}</p>
+          <v-btn rounded color="primary" dark @click="addPosition"
+            >Dodaj kolejną pozycję</v-btn
+          >
+          <div v-if="positionList.length">
+            <PositionItem
+              v-for="position in positionList"
+              :key="position.number"
+              :position="position"
+              @remove="removePosition"
+            />
+          </div>
+          <p v-else>Dodaj przynajmniej jedną pozycję.</p>
+        </div>
+      </v-card>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import PositionItem from "./PositionItem.vue";
+
+let nextPositionNumber = 1;
+
 export default {
-  data() {
-    return {
-      singlePrice: 1.99,
-      amount: 4,
-      vatValue: 23,
+  name: "Table",
+  components: {
+    PositionItem,
+  },
 
-      function() {
-        return {
-          totalPriceNetto: Math.evaluate(this.singlePrice * this.amount),
-        };
-      },
-
-      headers: [
-        {
-          text: "nazwa pozycji kosztowej",
-          align: "start",
-          sortable: false,
-          value: "name",
-        },
-        { text: "cena jednostkowa netto", value: "price" },
-        { text: "ilość", value: "amount" },
-        { text: "VAT (%)", value: "vat" },
-        { text: "dział odpowiedzialny", value: "departament" },
-        { text: "cena netto", value: "totalPriceNetto" },
-        { text: "wartość VAT", value: "totalVatValue" },
-        { text: "cena brutto", value: "totalPriceBrutto" },
-      ],
-      documents: [
-        {
-          name: "ołówki",
-          price: 1.5,
-          amount: 3,
-          vat: 23,
-          departament: "kadry",
-          totalPriceNetto: 3.69,
-          totalVatValue: 0.85,
-          totalPriceBrutto: 4.54,
-        },
-        {
-          name: "ołówki",
-          price: 1.29,
-          amount: 3,
-          vat: 23,
-          departament: "kadry",
-          totalPriceNetto: 3.69,
-          totalVatValue: 0.85,
-          totalPriceBrutto: 4.54,
-        },
-      ],
-    };
+  data: () => ({
+    position: {},
+    positionList: [],
+  }),
+  watch: {},
+  computed: {
+    TotalPriceNetto() {
+      const position = this.position;
+      position.totalPriceNetto = position.singlePrice * position.amount;
+      return position.totalPriceNetto;
+    },
+    totalVatValue: function() {
+      return (
+        Math.round(((this.totalPriceNetto * this.vatValue) / 100) * 100) / 100
+      );
+    },
+    totalPriceBrutto: function() {
+      return this.totalPriceNetto + this.totalVatValue;
+    },
+  },
+  methods: {
+    addPosition() {
+      const position = this.position;
+      this.positionList.push({
+        number: nextPositionNumber++,
+        name: position.name,
+        department: position.department,
+        price: position.price,
+        vat: position.vat,
+        amount: position.amount,
+        totalPriceNetto: position.totalPriceNetto,
+        totalVatValue: position.totalVatValue,
+        totalPriceBrutto: position.totalPriceBrutto,
+      });
+      console.log(position.totalPriceNetto);
+      this.position.name = "";
+      this.position.amount = "";
+    },
+    removePosition(numberToRemove) {
+      this.positionList = this.positionList.filter((position) => {
+        return position.number !== numberToRemove;
+      });
+    },
   },
 };
 </script>
