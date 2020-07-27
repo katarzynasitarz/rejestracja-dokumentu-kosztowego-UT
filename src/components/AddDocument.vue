@@ -46,7 +46,7 @@ n<template>
         <tr>
           <td class="text-left">{{ props.item.documentId }}</td>
           <td class="text-left">{{ props.item.documentName }}</td>
-          <td class="text-left">{{ props.item.createDate}}</td>
+          <td class="text-left">{{ props.item.issueDate}}</td>
           <td class="text-left">{{ props.item.author }}</td>
           <td class="justify-center">
 

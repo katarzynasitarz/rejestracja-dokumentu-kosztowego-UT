@@ -12,7 +12,7 @@ router.post('/getDocumentListService', (req, res) => {
     var document = {
       documentId: 35235235 + 1000 * docIndex,
       documentName: `Testowy dokument v.${(docIndex + 1).toString()}`,
-      createDate: '2019-01-29T18:32:03.268Z',
+      issueDate: '2019-01-29T18:32:03.268Z',
       author: 'Ja',
       version: docIndex + 1
     };
