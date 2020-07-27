@@ -20,6 +20,12 @@
               ></v-text-field>
             </v-col>
             <v-col>
+              <v-combobox
+                :items="teams"
+                label="dział odpowiedzialny"
+              ></v-combobox>
+            </v-col>
+            <v-col>
               <v-text-field
                 type="number"
                 label="cena jednostkowa netto"
@@ -93,9 +99,12 @@ export default {
 
   data: () => ({
     position: {},
-
+    teams: [],
     positionList: [],
   }),
+  beforeMount() {
+    this.getTeams();
+  },
   watch: {},
   computed: {
     totalPriceNetto: {
@@ -150,6 +159,16 @@ export default {
   },
 
   methods: {
+    async getTeams() {
+      try {
+        let result = await this.sendAjaxWithParams(this.appUrls.getTeams, {});
+        this.teams = result.result.items;
+        console.log(this.teams);
+      } catch (e) {
+        console.log("error", e);
+      }
+    },
+
     addPosition() {
       const position = this.position;
       this.positionList.push({
