@@ -17,62 +17,54 @@
               <v-text-field
                 label="dział odpowiedzialny"
                 v-model="position.department"
-                >{{ position.department }}</v-text-field
-              >
+              ></v-text-field>
             </v-col>
             <v-col>
               <v-text-field
                 type="number"
                 label="cena jednostkowa netto"
                 v-model="position.price"
-                >{{ position.price }}</v-text-field
-              >
-            </v-col>
-            <v-col>
-              <v-text-field
-                type="number"
-                label="VAT %"
-                v-model="position.vat"
-                >{{ position.vat }}</v-text-field
-              >
+              ></v-text-field>
             </v-col>
             <v-col>
               <v-text-field
                 type="number"
                 label="ilość"
                 v-model="position.amount"
-                >{{ position.amount }}</v-text-field
-              >
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                type="number"
+                label="VAT %"
+                v-model="position.vat"
+              ></v-text-field>
             </v-col>
             <v-col>
               <v-text-field
                 type="number"
                 label="wartość netto"
                 v-model="totalPriceNetto"
-                >{{ totalPriceNetto }}</v-text-field
-              >
+              ></v-text-field>
             </v-col>
             <v-col>
               <v-text-field
                 type="number"
                 label="wartość VAT"
                 v-model="totalVatValue"
-                >{{ totalVatValue }}</v-text-field
-              >
+              ></v-text-field>
             </v-col>
             <v-col>
               <v-text-field
                 type="number"
                 label="wartość brutto"
                 v-model="totalPriceBrutto"
-                >{{ totalPriceBrutto }}</v-text-field
-              >
+              ></v-text-field>
             </v-col>
           </v-row>
 
-          <v-btn rounded color="primary" dark @click="addPosition"
-            >Dodaj pozycję</v-btn
-          >
+          <v-btn color="cyan" dark @click="addPosition">Dodaj pozycję</v-btn>
+
           <div v-if="positionList.length">
             <PositionItem
               v-for="position in positionList"
@@ -101,29 +93,46 @@ export default {
 
   data: () => ({
     position: {},
+
     positionList: [],
   }),
   watch: {},
   computed: {
-    totalPriceNetto: function() {
-      const position = this.position;
-      position.totalPriceNetto =
-        Math.round(position.price * position.amount * 100) / 100;
-      return position.totalPriceNetto;
+    totalPriceNetto: {
+      get: function() {
+        const position = this.position;
+        position.totalPriceNetto =
+          Math.round(position.price * position.amount * 100) / 100;
+        if (position.totalPriceNetto === 0) {
+          position.totalPriceNetto = null;
+        }
+        return position.totalPriceNetto;
+      },
+      set: function() {},
     },
-    totalVatValue: function() {
-      const position = this.position;
-      if (position.vat < 10) {
-        position.totalVatValue =
-          Math.round(((position.totalPriceNetto * position.vat) / 1000) * 100) /
-          100;
-      } else {
-        position.totalVatValue =
-          Math.round(((position.totalPriceNetto * position.vat) / 100) * 100) /
-          100;
-      }
-      return position.totalVatValue;
+
+    totalVatValue: {
+      get: function() {
+        const position = this.position;
+        if (position.vat < 10) {
+          position.totalVatValue =
+            Math.round(
+              ((position.totalPriceNetto * position.vat) / 1000) * 100
+            ) / 100;
+        } else {
+          position.totalVatValue =
+            Math.round(
+              ((position.totalPriceNetto * position.vat) / 100) * 100
+            ) / 100;
+        }
+        if (position.totalVatValue === 0) {
+          position.totalVatValue = null;
+        }
+        return position.totalVatValue;
+      },
+      set: function() {},
     },
+
     totalPriceBrutto: {
       get: function() {
         const position = this.position;
@@ -131,10 +140,15 @@ export default {
           Math.round(
             (position.totalPriceNetto + position.totalVatValue) * 100
           ) / 100;
+        if (position.totalPriceBrutto === 0) {
+          position.totalPriceBrutto = null;
+        }
         return position.totalPriceBrutto;
       },
+      set: function() {},
     },
   },
+
   methods: {
     addPosition() {
       const position = this.position;
@@ -149,16 +163,20 @@ export default {
         totalVatValue: position.totalVatValue,
         totalPriceBrutto: position.totalPriceBrutto,
       });
-      console.log(position);
+
+      console.log(this.positionList);
+      console.log(JSON.parse(JSON.stringify(position)));
+
       this.position.name = "";
-      this.position.amount = "";
-      this.position.price = "";
-      this.position.vat = "";
+      this.position.amount = null;
+      this.position.price = null;
+      this.position.vat = null;
       this.position.department = "";
-      this.totalVatValue = "";
-      this.totalPriceBrutto = "";
-      this.totalPriceNetto = "";
+      this.totalPriceNetto = null;
+      this.totalVatValue = null;
+      this.totalPriceBrutto = null;
     },
+
     removePosition(numberToRemove) {
       this.positionList = this.positionList.filter((position) => {
         return position.number !== numberToRemove;
