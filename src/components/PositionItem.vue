@@ -25,6 +25,11 @@
           <td>{{ position.totalPriceNetto }}</td>
           <td>{{ position.totalVatValue }}</td>
           <td>{{ position.totalPriceBrutto }}</td>
+          <td>
+            <button @click="$emit('remove', position.number)">
+              X
+            </button>
+          </td>
         </tr>
       </tbody>
     </template>

@@ -8,9 +8,10 @@
         <div>
           <v-row>
             <v-col>
-              <v-text-field label="nazwa" v-model="position.name">{{
-                position.name
-              }}</v-text-field>
+              <v-text-field
+                label="nazwa"
+                v-model="position.name"
+              ></v-text-field>
             </v-col>
             <v-col>
               <v-text-field
@@ -47,30 +48,30 @@
               <v-text-field
                 type="number"
                 label="wartość netto"
-                v-model="position.totalPriceNetto"
-                >{{ position.totalPriceNetto }}</v-text-field
+                v-model="totalPriceNetto"
+                >{{ totalPriceNetto }}</v-text-field
               >
             </v-col>
             <v-col>
               <v-text-field
                 type="number"
                 label="wartość VAT"
-                v-model="position.totalVatValue"
-                >{{ position.totalVatValue }}</v-text-field
+                v-model="totalVatValue"
+                >{{ totalVatValue }}</v-text-field
               >
             </v-col>
             <v-col>
               <v-text-field
                 type="number"
                 label="wartość brutto"
-                v-model="position.totalPriceBrutto"
-                >{{ position.totalPriceBrutto }}</v-text-field
+                v-model="totalPriceBrutto"
+                >{{ totalPriceBrutto }}</v-text-field
               >
             </v-col>
           </v-row>
 
           <v-btn rounded color="primary" dark @click="addPosition"
-            >Dodaj kolejną pozycję</v-btn
+            >Dodaj pozycję</v-btn
           >
           <div v-if="positionList.length">
             <PositionItem
@@ -104,18 +105,34 @@ export default {
   }),
   watch: {},
   computed: {
-    TotalPriceNetto() {
+    totalPriceNetto: function() {
       const position = this.position;
-      position.totalPriceNetto = position.singlePrice * position.amount;
+      position.totalPriceNetto =
+        Math.round(position.price * position.amount * 100) / 100;
       return position.totalPriceNetto;
     },
     totalVatValue: function() {
-      return (
-        Math.round(((this.totalPriceNetto * this.vatValue) / 100) * 100) / 100
-      );
+      const position = this.position;
+      if (position.vat < 10) {
+        position.totalVatValue =
+          Math.round(((position.totalPriceNetto * position.vat) / 1000) * 100) /
+          100;
+      } else {
+        position.totalVatValue =
+          Math.round(((position.totalPriceNetto * position.vat) / 100) * 100) /
+          100;
+      }
+      return position.totalVatValue;
     },
-    totalPriceBrutto: function() {
-      return this.totalPriceNetto + this.totalVatValue;
+    totalPriceBrutto: {
+      get: function() {
+        const position = this.position;
+        position.totalPriceBrutto =
+          Math.round(
+            (position.totalPriceNetto + position.totalVatValue) * 100
+          ) / 100;
+        return position.totalPriceBrutto;
+      },
     },
   },
   methods: {
@@ -132,9 +149,15 @@ export default {
         totalVatValue: position.totalVatValue,
         totalPriceBrutto: position.totalPriceBrutto,
       });
-      console.log(position.totalPriceNetto);
+      console.log(position);
       this.position.name = "";
       this.position.amount = "";
+      this.position.price = "";
+      this.position.vat = "";
+      this.position.department = "";
+      this.totalVatValue = "";
+      this.totalPriceBrutto = "";
+      this.totalPriceNetto = "";
     },
     removePosition(numberToRemove) {
       this.positionList = this.positionList.filter((position) => {
