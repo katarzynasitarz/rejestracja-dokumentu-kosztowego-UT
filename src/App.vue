@@ -5,23 +5,30 @@
     </v-app-bar>
 
     <v-content>
-      <HelloWorld />
+      <AddDocuments
+      v-model="documents"
+      :path="path"
+      :objectTypeId="objectTypeId" />
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
+import AddDocuments from "./components/AddDocument";
 
 export default {
   name: "App",
 
   components: {
-    HelloWorld,
+    AddDocuments,
   },
 
   data: () => ({
-    //
+    path: '/Akademia 2020/Testowy/Folder',
+    documents: {
+    items:[]
+    },
+    objectTypeId: 'cmis:document'
   }),
 };
 </script>
