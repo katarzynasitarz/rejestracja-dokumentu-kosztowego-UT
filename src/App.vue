@@ -1,7 +1,8 @@
 <template>
   <v-app>
     <v-content>
-      <Document />
+      <Document :documentObject="document" />
+      <v-btn @click="showMe()">POKA</v-btn>
     </v-content>
   </v-app>
 </template>
@@ -16,8 +17,22 @@ export default {
     Document,
   },
 
-  data: () => ({
-    //
-  }),
+  data() {
+    return {
+      document: {
+        receiveDate: null,
+        issueDate: null,
+        paymentDate: null,
+        invoiceNumber: null,
+        expenseCategory: null,
+        invoiceComments: null,
+      },
+    };
+  },
+  methods: {
+    showMe() {
+      console.log(this.document);
+    },
+  },
 };
 </script>

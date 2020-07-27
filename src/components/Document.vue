@@ -24,8 +24,12 @@
                 >
                   <template v-slot:activator="{ on }">
                     <v-text-field
-                      v-model="receiveDate"
+                      v-model="documentObject.receiveDate"
                       label="Data wpłynięcia"
+                      :rules="[
+                        () =>
+                          !!documentObject.receiveDate || 'Pole jest wymagane.',
+                      ]"
                       prepend-icon="mdi-calendar-clock"
                       readonly
                       clearable
@@ -33,9 +37,8 @@
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="receiveDate"
+                    v-model="documentObject.receiveDate"
                     locale="pl"
-                    @click="$refs.menu1.save(chosenReceiveDate)"
                   >
                   </v-date-picker>
                 </v-menu>
@@ -51,7 +54,8 @@
                 >
                   <template v-slot:activator="{ on }">
                     <v-text-field
-                      v-model="issueDate"
+                      :rules="[rules.required]"
+                      v-model="documentObject.issueDate"
                       label="Data wystawienia"
                       prepend-icon="mdi-calendar-clock"
                       readonly
@@ -59,11 +63,7 @@
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker
-                    v-model="issueDate"
-                    locale="pl"
-                    @click="$refs.menu2.save(chosenIssueDate)"
-                  >
+                  <v-date-picker v-model="documentObject.issueDate" locale="pl">
                   </v-date-picker>
                 </v-menu>
               </v-col>
@@ -78,7 +78,8 @@
                 >
                   <template v-slot:activator="{ on }">
                     <v-text-field
-                      v-model="paymentDate"
+                      :rules="[rules.required]"
+                      v-model="documentObject.paymentDate"
                       label="Termin płatności"
                       prepend-icon="mdi-calendar-clock"
                       readonly
@@ -87,9 +88,8 @@
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="paymentDate"
+                    v-model="documentObject.paymentDate"
                     locale="pl"
-                    @click="$refs.menu3.save(chosenPaymentDate)"
                   >
                   </v-date-picker>
                 </v-menu>
@@ -97,21 +97,27 @@
             </v-row>
             <v-row>
               <v-col cols="12" md="4">
-                <v-text-field label="Nr faktury" v-model="invoiceNumber">
+                <v-text-field
+                  :rules="[rules.required]"
+                  label="Nr faktury"
+                  v-model="documentObject.invoiceNumber"
+                >
                 </v-text-field>
               </v-col>
 
               <v-col cols="12" md="4">
                 <v-text-field
+                  :rules="[rules.required]"
                   label="Kategoria wydatku"
-                  v-model="expenseCategory"
+                  v-model="documentObject.expenseCategory"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" md="4">
                 <v-textarea
+                  :rules="[rules.required]"
                   label="Uwagi do dokumentu"
                   rows="2"
-                  v-model="invoiceComments"
+                  v-model="documentObject.invoiceComments"
                 ></v-textarea>
               </v-col> </v-row
           ></v-container>
@@ -147,7 +153,7 @@
         >
       </v-sheet>
     </v-card-text>
-    <v-btn color="success" @click="send()">Wyślij</v-btn>
+    <v-btn color="success" @click="submit()">Wyślij</v-btn>
   </v-form>
 </template>
 
@@ -158,41 +164,41 @@ export default {
   components: {
     Table,
   },
+  props: { documentObject: Object },
 
   data: () => ({
-    receiveDate: null,
-    issueDate: null,
-    paymentDate: null,
-    invoiceNumber: "",
-    expenseCategory: "",
-    invoiceComments: "",
     menu1: false,
     menu2: false,
     menu3: false,
     modal: false,
+    formHasErrors: false,
+    rules: {
+      required: (val) => !!val || "Pole jest wymagane.",
+    },
   }),
   methods: {
-    validate() {
-      return this.$refs.form.validate();
-    },
-    send() {
-      console.log(
-        this.receiveDate,
-        this.issueDate,
-        this.paymentDate,
-        this.inviceNumber
-      );
+    submit() {
+      console.log(this.documentObject.invoiceNumber, this.invoiceComments);
+      console.log(typeof this.paymentDate);
+      this.formHasErrors = false;
+      Object.keys(this.form.documentObject).forEach((f) => {
+        if (!this.form.documentObject[f]) this.formHasErrors = true;
+        this.$refs.form.validate();
+      });
     },
   },
   computed: {
-    chosenReceiveDate: function() {
-      return new Date().toISOString().substr(0, 10);
-    },
-    chosenIssueDate: function() {
-      return new Date().toISOString().substr(0, 10);
-    },
-    chosenPaymentDate: function() {
-      return new Date().toISOString().substr(0, 10);
+    form() {
+      return {
+        documentObject: {
+          receiveDate: this.receiveDate,
+          issueDate: this.issueDate,
+          paymentDate: this.paymentDate,
+          invoiceNumber: this.invoiceNumber,
+          expenseCategory: this.expenseCategory,
+          invoiceComments: this.invoiceComments,
+        },
+      };
     },
   },
 };
