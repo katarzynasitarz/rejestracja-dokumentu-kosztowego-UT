@@ -55,16 +55,12 @@
 
             <v-btn
             color="cyan"
-            @click="resetValidation"
+            @click="getContractor"
             dark
             >
             Zapisz
             </v-btn>
 
-<<<<<<< HEAD
-           
-=======
->>>>>>> AS-115/122-AjaxContractor
         </v-form>
     </v-row>
 
