@@ -3,21 +3,26 @@
     <v-content>
       <Document :documentObject="document" />
       <v-btn @click="showMe()">POKA</v-btn>
+
     </v-content>
   </v-app>
 </template>
 
 <script>
+
 import Document from "./components/Document";
+
 
 export default {
   name: "App",
 
   components: {
+
     Document,
   },
 
   data() {
+
     return {
       document: {
         receiveDate: null,
@@ -27,6 +32,11 @@ export default {
         expenseCategory: null,
         invoiceComments: null,
       },
+        path: "/Akademia 2020/Testowy/Folder",
+    documents: {
+      items: [],
+    },
+    objectTypeId: "cmis:document",
     };
   },
   methods: {
@@ -34,5 +44,6 @@ export default {
       console.log(this.document);
     },
   },
+
 };
 </script>
