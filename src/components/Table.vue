@@ -6,21 +6,17 @@
           Pozycje kosztowe:
         </v-card-title>
         <div>
-          <v-row>
+          <v-row class="table">
             <v-col>
               <v-text-field
                 label="nazwa"
                 v-model="position.name"
               ></v-text-field>
             </v-col>
-            <v-col>
-              <v-text-field
-                label="dział odpowiedzialny"
-                v-model="position.department"
-              ></v-text-field>
-            </v-col>
+
             <v-col>
               <v-combobox
+                v-model="position.department"
                 :items="teams"
                 label="dział odpowiedzialny"
               ></v-combobox>
@@ -50,36 +46,74 @@
               <v-text-field
                 type="number"
                 label="wartość netto"
-                v-model="totalPriceNetto"
+                v-model="position.totalPriceNetto"
+                readonly
               ></v-text-field>
             </v-col>
             <v-col>
               <v-text-field
                 type="number"
                 label="wartość VAT"
-                v-model="totalVatValue"
+                v-model="position.totalVatValue"
+                readonly
               ></v-text-field>
             </v-col>
             <v-col>
               <v-text-field
                 type="number"
                 label="wartość brutto"
-                v-model="totalPriceBrutto"
+                v-model="position.totalPriceBrutto"
+                readonly
               ></v-text-field>
             </v-col>
           </v-row>
-
-          <v-btn color="cyan" dark @click="addPosition">Dodaj pozycję</v-btn>
-
-          <div v-if="positionList.length">
+          <v-row class="button">
+            <v-btn x-small tile depressed color="cyan" dark @click="addPosition"
+              >Dodaj pozycję</v-btn
+            >
+            <v-btn x-small tile depressed color="cyan" dark @click="getSum"
+              >DZIAŁAJ</v-btn
+            >
+          </v-row>
+          <div class="results" v-if="positionList.length">
             <PositionItem
               v-for="position in positionList"
               :key="position.number"
               :position="position"
               @remove="removePosition"
             />
+            <v-row>
+              <v-col>
+                <p>razem:</p>
+              </v-col>
+              <v-col>
+                <v-text-field
+                  label="suma netto"
+                  type="number"
+                  v-model="sum.sumNetto"
+                  readonly
+                ></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field
+                  type="number"
+                  v-model="sum.sumVat"
+                  readonly
+                ></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field
+                  label="suma brutto"
+                  type="number"
+                  v-model="sum.sumBrutto"
+                  readonly
+                ></v-text-field>
+              </v-col>
+            </v-row>
           </div>
-          <p v-else>Dodaj przynajmniej jedną pozycję.</p>
+          <v-row class="valid" v-else>
+            <p>Dodaj przynajmniej jedną pozycję.</p>
+          </v-row>
         </div>
       </v-card>
     </v-row>
@@ -101,28 +135,26 @@ export default {
     position: {},
     teams: [],
     positionList: [],
+    varia1: 0,
+    varia2: 0,
+    sum: {
+      sumNetto: null,
+      sumVat: null,
+      sumBrutto: null,
+    },
   }),
   beforeMount() {
     this.getTeams();
   },
-  watch: {},
-  computed: {
-    totalPriceNetto: {
-      get: function() {
+  watch: {
+    position: {
+      handler: function() {
         const position = this.position;
         position.totalPriceNetto =
           Math.round(position.price * position.amount * 100) / 100;
         if (position.totalPriceNetto === 0) {
           position.totalPriceNetto = null;
         }
-        return position.totalPriceNetto;
-      },
-      set: function() {},
-    },
-
-    totalVatValue: {
-      get: function() {
-        const position = this.position;
         if (position.vat < 10) {
           position.totalVatValue =
             Math.round(
@@ -137,26 +169,32 @@ export default {
         if (position.totalVatValue === 0) {
           position.totalVatValue = null;
         }
-        return position.totalVatValue;
-      },
-      set: function() {},
-    },
-
-    totalPriceBrutto: {
-      get: function() {
-        const position = this.position;
         position.totalPriceBrutto =
           Math.round(
-            (position.totalPriceNetto + position.totalVatValue) * 100
+            (this.position.totalPriceNetto + this.position.totalVatValue) * 100
           ) / 100;
         if (position.totalPriceBrutto === 0) {
           position.totalPriceBrutto = null;
         }
-        return position.totalPriceBrutto;
       },
-      set: function() {},
+
+      deep: true,
+    },
+    sum: {
+      handler: function() {
+        const positionList = this.positionList;
+        const sum = this.sum;
+        const position = this.position;
+        for (var i = 0; i < positionList.length; i++) {
+          sum.sumNetto += positionList[position.totalPriceNetto];
+        }
+        console.log(positionList);
+        console.log(this.sumNetto);
+      },
+      deep: true,
     },
   },
+  computed: {},
 
   methods: {
     async getTeams() {
@@ -185,6 +223,7 @@ export default {
 
       console.log(this.positionList);
       console.log(JSON.parse(JSON.stringify(position)));
+      console.log(JSON.parse(JSON.stringify(position.totalPriceNetto)));
 
       this.position.name = "";
       this.position.amount = null;
@@ -196,6 +235,16 @@ export default {
       this.totalPriceBrutto = null;
     },
 
+    getSum() {
+      const positionList = this.positionList;
+      const position = this.position;
+      for (var i = 0; i < positionList.length; i++) {
+        this.sumNetto += positionList[position.totalPriceNetto];
+      }
+      console.log(positionList);
+      console.log(this.sumNetto);
+    },
+
     removePosition(numberToRemove) {
       this.positionList = this.positionList.filter((position) => {
         return position.number !== numberToRemove;
@@ -204,3 +253,20 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.table {
+  padding: 0 15px;
+}
+.button {
+  padding: 0 30px 15px;
+  justify-content: end;
+}
+.results {
+  padding: 0 15px;
+}
+.valid {
+  color: red;
+  padding: 0 30px;
+}
+</style>

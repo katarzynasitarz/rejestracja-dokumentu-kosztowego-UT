@@ -12,6 +12,7 @@
           <th class="text-left">cena całkowita netto</th>
           <th class="text-left">wartość VAT</th>
           <th class="text-left">cena całkowita brutto</th>
+          <th class="text-left">usuń</th>
         </tr>
       </thead>
       <tbody>
@@ -26,28 +27,14 @@
           <td>{{ position.totalVatValue }}</td>
           <td>{{ position.totalPriceBrutto }}</td>
           <td>
-            <button @click="$emit('remove', position.number)">
-              X
-            </button>
+            <v-icon small @click="$emit('remove', position.number)">
+              mdi-delete
+            </v-icon>
           </td>
         </tr>
       </tbody>
     </template>
   </v-simple-table>
-
-  <!-- <li>
-    <v-row v-model="position">
-      <v-col>
-        {{ position.name }}
-      </v-col>
-      <v-col>
-        {{ position.amount }}
-      </v-col>
-    </v-row>
-    <button @click="$emit('remove', position.number)">
-      X
-    </button>
-  </li> -->
 </template>
 
 <script>
