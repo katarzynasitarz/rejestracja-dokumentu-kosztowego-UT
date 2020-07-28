@@ -25,6 +25,7 @@
                 type="number"
                 label="cena jednostkowa netto"
                 v-model="position.price"
+                suffix="zł"
               ></v-text-field>
             </v-col>
             <v-col>
@@ -46,6 +47,7 @@
                 type="number"
                 label="wartość netto"
                 v-model="position.totalPriceNetto"
+                suffix="zł"
                 readonly
               ></v-text-field>
             </v-col>
@@ -54,6 +56,7 @@
                 type="number"
                 label="wartość VAT"
                 v-model="position.totalVatValue"
+                suffix="zł"
                 readonly
               ></v-text-field>
             </v-col>
@@ -62,6 +65,7 @@
                 type="number"
                 label="wartość brutto"
                 v-model="position.totalPriceBrutto"
+                suffix="zł"
                 readonly
               ></v-text-field>
             </v-col>
