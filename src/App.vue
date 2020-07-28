@@ -1,29 +1,49 @@
 <template>
   <v-app>
-    <v-app-bar app color="white" dark> </v-app-bar>
-
     <v-content>
-      <Contractor />
+      <Document :documentObject="document" />
+      <v-btn @click="showMe()">POKA</v-btn>
+
     </v-content>
   </v-app>
 </template>
 
 <script>
-import Contractor from "./components/Contractor";
+
+import Document from "./components/Document";
+
 
 export default {
   name: "App",
 
   components: {
-    Contractor
+
+    Document,
   },
 
-  data: () => ({
-    path: "/Akademia 2020/Testowy/Folder",
+  data() {
+
+    return {
+      document: {
+        receiveDate: null,
+        issueDate: null,
+        paymentDate: null,
+        invoiceNumber: null,
+        expenseCategory: null,
+        invoiceComments: null,
+      },
+        path: "/Akademia 2020/Testowy/Folder",
     documents: {
       items: [],
     },
     objectTypeId: "cmis:document",
-  }),
+    };
+  },
+  methods: {
+    showMe() {
+      console.log(this.document);
+    },
+  },
+
 };
 </script>
