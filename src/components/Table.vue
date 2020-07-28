@@ -5,7 +5,7 @@
         <v-card-title>
           Pozycje kosztowe:
         </v-card-title>
-        <form ref="form" lazy-validation>
+        <form>
           <v-row class="table">
             <v-col>
               <v-text-field
