@@ -155,7 +155,7 @@
           <v-card-title class="font-weight-bold">
             Komentarze:
           </v-card-title>
-          <CommentsSection :commentsList="comment" />
+          <CommentsSection :commentsList="documentObject.comment" />
         </v-card>
       </v-sheet>
     </v-card-text>
@@ -184,8 +184,10 @@ export default {
   }),
   methods: {
     submit() {
-      console.log(this.documentObject.invoiceNumber, this.invoiceComments);
-      console.log(typeof this.paymentDate);
+      // console.log(
+      //   this.documentObject.invoiceNumber,
+      //   this.documentObject.invoiceComments
+      // );
       this.formHasErrors = false;
       Object.keys(this.form.documentObject).forEach((f) => {
         if (!this.form.documentObject[f]) this.formHasErrors = true;

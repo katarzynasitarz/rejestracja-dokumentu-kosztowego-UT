@@ -16,8 +16,37 @@
 export default {
   name: "CommentsSection",
   props: {
-    commentList: Array,
+    commentsList: Array,
   },
   data: () => ({}),
+
+  beforeMount() {
+    this.getComments();
+    console.log(this.commentsList);
+  },
+
+  methods: {
+    async getComments() {
+      try {
+        let result = await this.sendAjaxWithParams(
+          this.appUrls.getComments,
+          {}
+        );
+        this.comments = result.result.items;
+        // console.log(this.comments);
+        this.mapAjaxDataToList(this.comments);
+      } catch (e) {
+        console.log("error", e);
+      }
+    },
+    mapAjaxDataToList(list) {
+      // lista komentarzy z ajaxa
+      // console.log(list);
+      list.forEach((el) => {
+        this.commentsList.push(el);
+      });
+      console.log(this.commentsList, "LISTA");
+    },
+  },
 };
 </script>
