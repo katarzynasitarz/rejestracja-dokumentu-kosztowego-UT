@@ -26,6 +26,14 @@ export default {
         invoiceNumber: null,
         expenseCategory: null,
         invoiceComments: null,
+        comment: [
+          {
+            dateAdded: "",
+            text: "",
+            processStep: "",
+            author: "",
+          },
+        ],
       },
     };
   },

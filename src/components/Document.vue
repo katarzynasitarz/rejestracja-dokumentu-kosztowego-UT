@@ -151,6 +151,12 @@
           quasi quis tempora suscipit fuga tenetur repellendus magnam quam
           excepturi optio?</v-card
         >
+        <v-card outlined class="mx-6 mb-6">
+          <v-card-title class="font-weight-bold">
+            Komentarze:
+          </v-card-title>
+          <CommentsSection :commentsList="comment" />
+        </v-card>
       </v-sheet>
     </v-card-text>
     <v-btn color="success" @click="submit()">Wyślij</v-btn>
@@ -158,11 +164,11 @@
 </template>
 
 <script>
-import Table from "./Table";
+import CommentsSection from "./CommentsSection";
 export default {
   name: "Document",
   components: {
-    Table,
+    CommentsSection,
   },
   props: { documentObject: Object },
 
