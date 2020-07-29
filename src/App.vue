@@ -5,10 +5,7 @@
     </v-app-bar>
 
     <v-content>
-      <AddDocuments
-      v-model="documents"
-      :path="document.path"
-      :objectTypeId="objectTypeId" />
+      <AddDocuments v-model="documents" :path="path" :objectTypeId="objectTypeId"  />
     </v-content>
   </v-app>
 </template>
@@ -24,11 +21,7 @@ export default {
   },
 
   data: () => ({
-    
-    documents: {
-    items:[]
-    },
-    objectTypeId: 'cmis:document'
+  //
   }),
 };
 </script>
