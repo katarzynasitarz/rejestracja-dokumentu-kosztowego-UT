@@ -7,7 +7,7 @@
     <v-content>
       <AddDocuments
       v-model="documents"
-      :path="path"
+      :path="document.path"
       :objectTypeId="objectTypeId" />
     </v-content>
   </v-app>
@@ -24,7 +24,7 @@ export default {
   },
 
   data: () => ({
-    path: '/Akademia 2020/Testowy/Folder',
+    
     documents: {
     items:[]
     },
