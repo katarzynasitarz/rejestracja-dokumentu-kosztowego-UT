@@ -5,7 +5,7 @@
         <v-card-title>
           Pozycje kosztowe:
         </v-card-title>
-        <form ref="form">
+        <v-form ref="form">
           <v-row class="table">
             <v-col>
               <v-text-field
@@ -100,7 +100,6 @@
               <PositionItem
                 v-for="documentContent in positionList"
                 :key="documentContent.number"
-                :positionList="PositionList"
                 :documentContent="documentContent"
                 @remove="removePosition"
               />
@@ -141,7 +140,7 @@
           <v-row class="valid" v-else>
             <p>Dodaj przynajmniej jedną pozycję.</p>
           </v-row>
-        </form>
+        </v-form>
       </v-card>
     </v-row>
   </v-container>
@@ -235,30 +234,35 @@ export default {
       }
     },
 
+    validate() {
+      return this.$refs.form.validate();
+    },
     addPosition() {
-      const documentContent = this.documentContent;
-      this.positionList.push({
-        number: nextPositionNumber++,
-        itemName: documentContent.itemName,
-        department: documentContent.department,
-        unitPrice: documentContent.unitPrice,
-        vat: documentContent.vat,
-        itemQuantity: documentContent.itemQuantity,
-        netto: documentContent.netto,
-        vatValue: documentContent.vatValue,
-        brutto: documentContent.brutto,
-      });
-      // console.log(this.positionList);
-      // console.log(JSON.parse(JSON.stringify(position)));
-      // console.log(JSON.parse(JSON.stringify(position.totalPriceNetto)));
-      this.documentContent.itemName = "";
-      this.documentContent.itemQuantity = null;
-      this.documentContent.unitPrice = null;
-      this.documentContent.vat = null;
-      this.documentContent.department = "";
-      this.netto = null;
-      this.vatValue = null;
-      this.brutto = null;
+      if (this.validate()) {
+        const documentContent = this.documentContent;
+        this.positionList.push({
+          number: nextPositionNumber++,
+          itemName: documentContent.itemName,
+          department: documentContent.department,
+          unitPrice: documentContent.unitPrice,
+          vat: documentContent.vat,
+          itemQuantity: documentContent.itemQuantity,
+          netto: documentContent.netto,
+          vatValue: documentContent.vatValue,
+          brutto: documentContent.brutto,
+        });
+        // console.log(this.positionList);
+        // console.log(JSON.parse(JSON.stringify(position)));
+        // console.log(JSON.parse(JSON.stringify(position.totalPriceNetto)));
+        this.documentContent.itemName = "";
+        this.documentContent.itemQuantity = null;
+        this.documentContent.unitPrice = null;
+        this.documentContent.vat = null;
+        this.documentContent.department = "";
+        this.netto = null;
+        this.vatValue = null;
+        this.brutto = null;
+      }
     },
 
     removePosition(numberToRemove) {
