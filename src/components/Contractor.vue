@@ -23,7 +23,7 @@
             ></v-text-field>
 
             <v-text-field
-            v-model="adres"
+            v-model="address"
             :rules="adresRules"
             label="Adres firmy"
             required
@@ -73,20 +73,21 @@ export default {
 
   data: () => ({
       valid: true,
+      
       name: '',
+      nip: '',
+      address: '',
+      email: '',
       nameRules: [
         v => !!v || 'Należy wprowadzić nazwę firmy',
       ],
-      email: '',
       emailRules: [
         v => !!v || 'Należy wprowadzić e-mail firmy',
         v => /.+@.+\..+/.test(v) || 'Pamiętaj, e-mail ma swoją strukturę',
       ],
-      adres: '',
       adresRules: [
       v => !!v || 'Adres firmy jest wymagany',
       ],
-      nip: '',
       nipRules: [
         v => !!v || 'Proszę wprowadzić NIP firmy',
         v => (v && v.length == 10) || 'NIP musi zawierać 10 cyfr',
