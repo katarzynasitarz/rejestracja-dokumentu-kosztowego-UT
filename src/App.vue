@@ -2,7 +2,7 @@
   <v-app>
     <v-content>
       <Document :documentObject="document" />
-      <v-btn @click="closeForm(document)">POKA</v-btn>
+      <v-btn @click="showMe()">POKA</v-btn>
     </v-content>
   </v-app>
 </template>
@@ -19,8 +19,17 @@ export default {
 
   data() {
     return {
+      document: {
+        receiveDate: null,
+        issueDate: null,
+        paymentDate: null,
+        invoiceNumber: null,
+        expenseCategory: null,
+        invoiceComments: null,
+        comment: [],
+      },
       context: window.context,
-      document: window.context ? window.context.binding.get("value") : {},
+      // document: window.context ? window.context.binding.get("value") : {},
     };
   },
   methods: {

@@ -89,32 +89,56 @@ router.post("/getComments", (req, res) => {
             {
               dateAdded: "12-03-2020",
               text: "lorem ipsum dolor sit amet.",
-              procesStep: "Konsultacja",
+              processStep: "Konsultacja",
               author: "ksitarz",
             },
             {
               dateAdded: "06-04-2020",
               text: "lorem ipsum dolor sit amet.",
-              procesStep: "Akceptaja",
+              processStep: "Akceptaja",
               author: "atyburska",
             },
             {
               dateAdded: "30-05-2020",
               text: "lorem ipsum dolor sit amet.",
-              procesStep: "Rejestracja",
+              processStep: "Rejestracja",
               author: "atyburska",
             },
             {
               dateAdded: "09-05-2020",
               text: "lorem ipsum dolor sit amet.",
-              procesStep: "Anulowanie",
+              processStep: "Anulowanie",
               author: "jszpadkiweicz",
             },
             {
               dateAdded: "19-01-2020",
               text: "lorem ipsum dolor sit amet.",
-              procesStep: "Akceptacja",
+              processStep: "Akceptacja",
               author: "ksitarz",
+            },
+          ],
+        },
+      },
+    },
+  };
+  setTimeout(() => {
+    res.status("200").json(response);
+    res.end();
+  }, 2000);
+});
+
+router.post("/saveComments", (req, res) => {
+  console.log("req.body.params", req.body);
+  let response = {
+    data: {
+      data: {
+        result: {
+          items: [
+            {
+              dateAdded: "12-04-2020",
+              text: "WIEILKI TEST.",
+              processStep: "Testowanie",
+              author: "atyburska",
             },
           ],
         },
