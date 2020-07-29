@@ -5,12 +5,13 @@
         <v-card-title>
           Pozycje kosztowe:
         </v-card-title>
-        <form>
+        <form ref="form">
           <v-row class="table">
             <v-col>
               <v-text-field
                 label="nazwa"
                 v-model="position.name"
+                :rules="nameRules"
               ></v-text-field>
             </v-col>
             <v-col>
@@ -18,6 +19,7 @@
                 v-model="position.department"
                 :items="teams"
                 label="dział odpowiedzialny"
+                :rules="teamsRules"
               ></v-combobox>
             </v-col>
             <v-col>
@@ -26,6 +28,7 @@
                 label="cena jednostkowa netto"
                 v-model="position.price"
                 suffix="zł"
+                :rules="priceRules"
               ></v-text-field>
             </v-col>
             <v-col>
@@ -33,6 +36,7 @@
                 type="number"
                 label="ilość"
                 v-model="position.amount"
+                :rules="amountRules"
               ></v-text-field>
             </v-col>
             <v-col>
@@ -40,6 +44,7 @@
                 type="number"
                 label="VAT %"
                 v-model="position.vat"
+                :rules="vatRules"
               ></v-text-field>
             </v-col>
             <v-col>
@@ -76,6 +81,21 @@
             >
           </v-row>
           <div class="results" v-if="positionList.length">
+            <v-row class="header" justify="center" cols="9">
+              <v-col>nazwa</v-col>
+              <v-col>dział odpowiedzialny</v-col>
+              <v-col>cena</v-col>
+              <v-col>wysokość VAT</v-col>
+              <v-col>ilość</v-col>
+              <v-col>wartość netto</v-col>
+              <v-col>wartość VAT</v-col>
+              <v-col>wartość brutto</v-col>
+              <v-col>
+                <v-icon small>
+                  mdi-delete
+                </v-icon>
+              </v-col>
+            </v-row>
             <ol>
               <PositionItem
                 v-for="position in positionList"
@@ -146,6 +166,11 @@ export default {
     sumNetto: null,
     sumVat: null,
     sumBrutto: null,
+    nameRules: [(v) => !!v || "To pole jest obowiązkowe"],
+    teamsRules: [(v) => !!v || "To pole jest obowiązkowe"],
+    priceRules: [(v) => !!v || "To pole jest obowiązkowe"],
+    amountRules: [(v) => !!v || "To pole jest obowiązkowe"],
+    vatRules: [(v) => !!v || "To pole jest obowiązkowe"],
   }),
   beforeMount() {
     this.getTeams();
@@ -265,5 +290,10 @@ export default {
 }
 .total p {
   text-align: right;
+}
+.header {
+  // text-align: center;
+  font-size: smaller;
+  border-bottom: 1px solid #000;
 }
 </style>
