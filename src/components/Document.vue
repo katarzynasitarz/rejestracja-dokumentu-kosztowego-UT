@@ -138,7 +138,6 @@
           <v-card-title class="font-weight-bold">
             Pozycje Kosztowe::
           </v-card-title>
-
           <Table />
         </v-card>
 
