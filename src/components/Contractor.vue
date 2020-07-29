@@ -16,21 +16,21 @@
         lazy-validation>
 
             <v-text-field
-            v-model="name"
+            v-model="contractorObject.name"
             :rules="nameRules"
             label="Nazwa firmy"
             required
             ></v-text-field>
 
             <v-text-field
-            v-model="address"
+            v-model="contractorObject.address"
             :rules="adresRules"
             label="Adres firmy"
             required
             ></v-text-field>
 
              <v-text-field
-            v-model="nip"
+            v-model="contractorObject.nip"
             type= "number"
             :rules="nipRules"
             :counter="10"
@@ -39,11 +39,12 @@
             ></v-text-field>
 
             <v-text-field
-            v-model="email"
+            v-model="contractorObject.email"
             :rules="emailRules"
             label="E-mail firmy"
             required
             ></v-text-field>
+
 
             <v-btn
             color="dark grey"
@@ -58,8 +59,10 @@
             @click="getContractor"
             dark
             >
-            Zapisz
+            Dodaj
             </v-btn>
+
+            <span> {{this.name}} </span>
 
         </v-form>
     </v-row>
@@ -70,14 +73,10 @@
 <script>
 export default {
   name: "Contractor",
-
+  props: {contractorObject: Object},
+  
   data: () => ({
       valid: true,
-      
-      name: '',
-      nip: '',
-      address: '',
-      email: '',
       nameRules: [
         v => !!v || 'Należy wprowadzić nazwę firmy',
       ],

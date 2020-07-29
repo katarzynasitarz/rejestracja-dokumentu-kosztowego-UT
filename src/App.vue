@@ -6,7 +6,7 @@
     </v-app-bar>
 
     <v-content>
-      <Contractor />
+      <Contractor :contractorObject="document.contractor"/>
     </v-content>
   </v-app>
 </template>
@@ -21,8 +21,19 @@ export default {
     Contractor
   },
 
-  data: () => ({
-    //
-  }),
+  data() {
+    return {
+      document: {
+        contractor: {
+                email: '',
+                name: '',
+                nip: '',
+                address: '',
+        }
+      }
+    }
+
+
+  },
 };
 </script>
