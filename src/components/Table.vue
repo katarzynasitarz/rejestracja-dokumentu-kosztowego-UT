@@ -10,13 +10,13 @@
             <v-col>
               <v-text-field
                 label="nazwa"
-                v-model="position.name"
+                v-model="documentContent.itemName"
                 :rules="nameRules"
               ></v-text-field>
             </v-col>
             <v-col>
               <v-combobox
-                v-model="position.department"
+                v-model="documentContent.department"
                 :items="teams"
                 label="dział odpowiedzialny"
                 :rules="teamsRules"
@@ -26,7 +26,7 @@
               <v-text-field
                 type="number"
                 label="cena jednostkowa netto"
-                v-model="position.price"
+                v-model="documentContent.unitPrice"
                 suffix="zł"
                 :rules="priceRules"
               ></v-text-field>
@@ -35,7 +35,7 @@
               <v-text-field
                 type="number"
                 label="ilość"
-                v-model="position.amount"
+                v-model="documentContent.itemQuantity"
                 :rules="amountRules"
               ></v-text-field>
             </v-col>
@@ -43,7 +43,7 @@
               <v-text-field
                 type="number"
                 label="VAT %"
-                v-model="position.vat"
+                v-model="documentContent.vat"
                 :rules="vatRules"
               ></v-text-field>
             </v-col>
@@ -51,7 +51,7 @@
               <v-text-field
                 type="number"
                 label="wartość netto"
-                v-model="position.totalPriceNetto"
+                v-model="documentContent.netto"
                 suffix="zł"
                 readonly
               ></v-text-field>
@@ -60,7 +60,7 @@
               <v-text-field
                 type="number"
                 label="wartość VAT"
-                v-model="position.totalVatValue"
+                v-model="documentContent.vatValue"
                 suffix="zł"
                 readonly
               ></v-text-field>
@@ -69,7 +69,7 @@
               <v-text-field
                 type="number"
                 label="wartość brutto"
-                v-model="position.totalPriceBrutto"
+                v-model="documentContent.brutto"
                 suffix="zł"
                 readonly
               ></v-text-field>
@@ -98,10 +98,10 @@
             </v-row>
             <ol>
               <PositionItem
-                v-for="position in positionList"
-                :key="position.number"
+                v-for="documentContent in positionList"
+                :key="documentContent.number"
                 :positionList="PositionList"
-                :position="position"
+                :documentContent="documentContent"
                 @remove="removePosition"
               />
             </ol>
@@ -160,7 +160,7 @@ export default {
   },
 
   data: () => ({
-    position: {},
+    documentContent: {},
     teams: [],
     positionList: [],
     sumNetto: null,
@@ -176,34 +176,36 @@ export default {
     this.getTeams();
   },
   watch: {
-    position: {
+    documentContent: {
       handler: function() {
-        const position = this.position;
-        position.totalPriceNetto =
-          Math.round(position.price * position.amount * 100) / 100;
-        if (position.totalPriceNetto === 0) {
-          position.totalPriceNetto = null;
+        const documentContent = this.documentContent;
+        documentContent.netto =
+          Math.round(
+            documentContent.unitPrice * documentContent.itemQuantity * 100
+          ) / 100;
+        if (documentContent.netto === 0) {
+          documentContent.netto = null;
         }
-        if (position.vat < 10) {
-          position.totalVatValue =
+        if (documentContent.vat < 10) {
+          documentContent.vatValue =
             Math.round(
-              ((position.totalPriceNetto * position.vat) / 1000) * 100
+              ((documentContent.netto * documentContent.vat) / 1000) * 100
             ) / 100;
         } else {
-          position.totalVatValue =
+          documentContent.vatValue =
             Math.round(
-              ((position.totalPriceNetto * position.vat) / 100) * 100
+              ((documentContent.netto * documentContent.vat) / 100) * 100
             ) / 100;
         }
-        if (position.totalVatValue === 0) {
-          position.totalVatValue = null;
+        if (documentContent.vatValue === 0) {
+          documentContent.vatValue = null;
         }
-        position.totalPriceBrutto =
+        documentContent.brutto =
           Math.round(
-            (this.position.totalPriceNetto + this.position.totalVatValue) * 100
+            (this.documentContent.netto + this.documentContent.vatValue) * 100
           ) / 100;
-        if (position.totalPriceBrutto === 0) {
-          position.totalPriceBrutto = null;
+        if (documentContent.brutto === 0) {
+          documentContent.brutto = null;
         }
       },
 
@@ -212,17 +214,12 @@ export default {
     positionList: function() {
       const positionList = this.positionList;
       this.sumNetto =
-        Math.round(
-          positionList.reduce((a, b) => a + b.totalPriceNetto, 0) * 100
-        ) / 100;
+        Math.round(positionList.reduce((a, b) => a + b.netto, 0) * 100) / 100;
       this.sumVat =
-        Math.round(
-          positionList.reduce((a, b) => a + b.totalVatValue, 0) * 100
-        ) / 100;
+        Math.round(positionList.reduce((a, b) => a + b.vatValue, 0) * 100) /
+        100;
       this.sumBrutto =
-        Math.round(
-          positionList.reduce((a, b) => a + b.totalPriceBrutto, 0) * 100
-        ) / 100;
+        Math.round(positionList.reduce((a, b) => a + b.brutto, 0) * 100) / 100;
     },
   },
   computed: {},
@@ -239,34 +236,34 @@ export default {
     },
 
     addPosition() {
-      const position = this.position;
+      const documentContent = this.documentContent;
       this.positionList.push({
         number: nextPositionNumber++,
-        name: position.name,
-        department: position.department,
-        price: position.price,
-        vat: position.vat,
-        amount: position.amount,
-        totalPriceNetto: position.totalPriceNetto,
-        totalVatValue: position.totalVatValue,
-        totalPriceBrutto: position.totalPriceBrutto,
+        itemName: documentContent.itemName,
+        department: documentContent.department,
+        unitPrice: documentContent.unitPrice,
+        vat: documentContent.vat,
+        itemQuantity: documentContent.itemQuantity,
+        netto: documentContent.netto,
+        vatValue: documentContent.vatValue,
+        brutto: documentContent.brutto,
       });
-      console.log(this.positionList);
-      console.log(JSON.parse(JSON.stringify(position)));
-      console.log(JSON.parse(JSON.stringify(position.totalPriceNetto)));
-      this.position.name = "";
-      this.position.amount = null;
-      this.position.price = null;
-      this.position.vat = null;
-      this.position.department = "";
-      this.totalPriceNetto = null;
-      this.totalVatValue = null;
-      this.totalPriceBrutto = null;
+      // console.log(this.positionList);
+      // console.log(JSON.parse(JSON.stringify(position)));
+      // console.log(JSON.parse(JSON.stringify(position.totalPriceNetto)));
+      this.documentContent.itemName = "";
+      this.documentContent.itemQuantity = null;
+      this.documentContent.unitPrice = null;
+      this.documentContent.vat = null;
+      this.documentContent.department = "";
+      this.netto = null;
+      this.vatValue = null;
+      this.brutto = null;
     },
 
     removePosition(numberToRemove) {
-      this.positionList = this.positionList.filter((position) => {
-        return position.number !== numberToRemove;
+      this.positionList = this.positionList.filter((documentContent) => {
+        return documentContent.number !== numberToRemove;
       });
     },
   },
