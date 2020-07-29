@@ -24,11 +24,12 @@
                 >
                   <template v-slot:activator="{ on }">
                     <v-text-field
-                      v-model="documentObject.receiveDate"
+                      v-model="documentObject.receivedDate"
                       label="Data wpłynięcia"
                       :rules="[
                         () =>
-                          !!documentObject.receiveDate || 'Pole jest wymagane.',
+                          !!documentObject.receivedDate ||
+                          'Pole jest wymagane.',
                       ]"
                       prepend-icon="mdi-calendar-clock"
                       readonly
@@ -37,7 +38,7 @@
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="documentObject.receiveDate"
+                    v-model="documentObject.receivedDate"
                     locale="pl"
                   >
                   </v-date-picker>
@@ -184,10 +185,6 @@ export default {
   }),
   methods: {
     submit() {
-      // console.log(
-      //   this.documentObject.invoiceNumber,
-      //   this.documentObject.invoiceComments
-      // );
       this.formHasErrors = false;
       Object.keys(this.form.documentObject).forEach((f) => {
         if (!this.form.documentObject[f]) this.formHasErrors = true;
@@ -199,7 +196,7 @@ export default {
     form() {
       return {
         documentObject: {
-          receiveDate: this.receiveDate,
+          receivedDate: this.receivedDate,
           issueDate: this.issueDate,
           paymentDate: this.paymentDate,
           invoiceNumber: this.invoiceNumber,
