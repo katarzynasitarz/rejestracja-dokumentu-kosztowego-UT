@@ -70,7 +70,6 @@
 <script>
 export default {
   name: "Contractor",
-
   data: () => ({
       valid: true,
       name: '',
