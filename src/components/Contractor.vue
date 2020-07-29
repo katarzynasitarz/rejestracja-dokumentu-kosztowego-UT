@@ -62,7 +62,7 @@
             Dodaj
             </v-btn>
 
-            <span> {{this.name}} </span>
+           <v-alert type="success" v-if="visibility"> Taki kontrahent istnieje w bazie </v-alert>
 
         </v-form>
     </v-row>
@@ -76,6 +76,7 @@ export default {
   props: {contractorObject: Object},
   
   data: () => ({
+      visibility: true,
       valid: true,
       nameRules: [
         v => !!v || 'Należy wprowadzić nazwę firmy',
@@ -92,7 +93,12 @@ export default {
         v => (v && v.length == 10) || 'NIP musi zawierać 10 cyfr',
       ],
   }),
-  
+  // save() {
+  //   if (this.contractorObject.exists) {
+  //     this.visibility = !this.visibility;
+  //     this.getContractor();
+  //   }
+  // },
   methods: {
     reset () {
         this.$refs.form.reset()
