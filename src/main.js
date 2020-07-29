@@ -4,6 +4,7 @@ __webpack_public_path__ = window.appZipUrl || "";
 import Vue from "vue";
 import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
+// import { evaluate } from "mathjs";
 
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
