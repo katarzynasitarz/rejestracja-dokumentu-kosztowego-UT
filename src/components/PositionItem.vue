@@ -1,6 +1,6 @@
 <template>
   <li>
-    <v-row justify="center" cols="9">
+    <v-row :justify="justify" cols="9">
       <v-col>{{ documentContent.itemName }}</v-col>
       <v-col>{{ documentContent.department }}</v-col>
       <v-col>{{ documentContent.unitPrice }} zł</v-col>
@@ -26,5 +26,8 @@ export default {
       required: true,
     },
   },
+  data: () => ({
+    justify: "center",
+  }),
 };
 </script>

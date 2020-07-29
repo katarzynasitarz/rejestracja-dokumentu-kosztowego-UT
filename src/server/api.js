@@ -75,7 +75,7 @@ router.post("/getContractor", (req, res) => {
   setTimeout(() => {
     res.status("200").json(response);
     res.end();
-  }, 2000);
+  }, 1000);
 });
 
 router.post("/getTeams", (req, res) => {
@@ -92,12 +92,13 @@ router.post("/getTeams", (req, res) => {
           ],
         },
       },
+      actions: null,
     },
   };
   setTimeout(() => {
     res.status("200").json(response);
     res.end();
-  }, 2000);
+  }, 1000);
 });
 
 module.exports = router;
