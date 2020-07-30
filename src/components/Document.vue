@@ -139,14 +139,14 @@
 
         <v-card outlined class="mx-6 mb-6">
           <AddDocument
-            v-model="currentDocument"
+            v-model="currentDocument.items"
             :path="currentDocument.path"
             :objectTypeId="objectTypeId"
             :disabled="true"
             title="Faktura"
           />
           <AddDocument
-            v-model="currentDocument"
+            v-model="currentDocument.items"
             :path="currentDocument.path"
             :objectTypeId="objectTypeId"
             title="Załączniki"
@@ -216,6 +216,7 @@ export default {
         items: [],
       },
       mrcCaseHeader: {},
+      items: [],
     },
     menu1: false,
     menu2: false,
