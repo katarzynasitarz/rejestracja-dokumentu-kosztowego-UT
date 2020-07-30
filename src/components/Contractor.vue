@@ -112,6 +112,24 @@ export default {
         console.log("error", e);
       }
     },
+     async save() {
+         let params = {
+            name: this.contractorObject.name,
+            nip: this.contractorObject.nip,
+            email: this.contractorObject.email,
+            address: this.contractorObject.address
+          };
+
+          try {
+            let result = await this.sendAjaxWithParams(this.appUrls.createDocumentService, params);
+
+            console.log(result.messageInfo);      
+            this.close();
+            this.getDocumentList();
+          } catch (e) {
+           console.error( e);
+          }
+    },
     },
 };
 </script>
