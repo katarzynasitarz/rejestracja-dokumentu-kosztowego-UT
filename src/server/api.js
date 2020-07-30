@@ -5,6 +5,24 @@ router.get("/", (req, res) => {
   res.send("Tu niech powstanie dokumentacja usług restowych");
 });
 
+
+router.post("/saveContractor", (req, res) => {
+  console.log("req.body.params", req.body);
+  let response = {
+    data: {
+      data: {
+        result: {
+          items: [{ message: "zapisany!" }],
+        },
+      },
+    },
+  };
+  setTimeout(() => {
+    res.status("200").json(response);
+    res.end();
+  }, 2000);
+});
+
 router.post("/getContractor", (req, res) => {
   console.log("req.body.params", req.body);
   let response = {

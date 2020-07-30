@@ -1,5 +1,33 @@
 <template>
 <v-container>
+
+      <v-row>       
+        <v-col cols="12">
+          <v-combobox
+            v-model="select"
+            :items="items"
+            label="Wyszukaj Kontrahenta"
+            @change="get"
+            multiple
+            chips
+            item-text="name"
+          >
+            <template v-slot:selection="data">
+              <v-chip
+                :key="JSON.stringify(data.item)"
+                v-bind="data.attrs"
+                :input-value="data.selected"
+                :disabled="data.disabled"
+                @click:close="data.parent.selectItem(data.item)"
+              >
+                 {{ data.item.name + ' ' + data.item.value }}
+              </v-chip>
+            </template>
+          </v-combobox>
+        </v-col>
+       
+      </v-row>
+     
      <v-card-text 
      class="headline 
      font-weight-bold" align="center"
@@ -56,7 +84,7 @@
 
             <v-btn
             color="cyan"
-            @click="save"
+            @click="get"
             dark
             >
             Dodaj
@@ -92,6 +120,12 @@ export default {
         v => !!v || 'Proszę wprowadzić NIP firmy',
         v => (v && v.length == 10) || 'NIP musi zawierać 10 cyfr',
       ],
+      select: [],
+      items: [
+        {name:'Drogi, Pamiętniku', value:'NIP:106-34-00-062'},
+        {name:'Pamiątki z podróży', value:'NIP:356-00-10-056'},
+        {name:'Dexynfex', value:'NIP:123-08-70-567'},
+      ],
   }),
  
   methods: {
@@ -107,7 +141,7 @@ export default {
         console.log("error", e);
         }
       },
-      async save() {
+      async get() {
          let params = {
            contractor: this.contractorObject
           };
