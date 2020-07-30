@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-content>
-      <Document :documentObject="document" />
+      <Document v-model="document" />
     </v-content>
   </v-app>
 </template>

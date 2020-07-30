@@ -44,21 +44,21 @@
         lazy-validation>
 
             <v-text-field
-            v-model="contractorObject.name"
+            v-model="newContractor.name"
             :rules="nameRules"
             label="Nazwa firmy"
             required
             ></v-text-field>
 
             <v-text-field
-            v-model="contractorObject.address"
+            v-model="newContractor.address"
             :rules="adresRules"
             label="Adres firmy"
             required
             ></v-text-field>
 
              <v-text-field
-            v-model="contractorObject.nip"
+            v-model="newContractor.nip"
             type= "number"
             :rules="nipRules"
             :counter="10"
@@ -67,7 +67,7 @@
             ></v-text-field>
 
             <v-text-field
-            v-model="contractorObject.email"
+            v-model="newContractor.email"
             :rules="emailRules"
             label="E-mail firmy"
             required
@@ -101,9 +101,11 @@
 <script>
 export default {
   name: "Contractor",
-  props: {contractorObject: Object},
+  props: ["value"],
   
   data: () => ({
+      contractorObject: {},
+      newContractor: {},
       visibility: true,
       valid: true,
       nameRules: [
@@ -131,7 +133,13 @@ export default {
   beforeMount() {
     this.get();
   },
- 
+  watch: {
+    value: {
+      handler(val) {
+        this.contractorObject = val;
+      },
+    },
+  },
   methods: {
       reset () {
         this.$refs.form.reset()
@@ -140,8 +148,7 @@ export default {
       async getContractor() {
       try {
         let result = await this.sendAjaxWithParams(this.appUrls.getContractor, {});
-        this.contractor = result.contractor;
-      console.log(this.contractor);
+        this.visibility = result.exists;
         } catch (e) {
         console.log("error", e);
         }
@@ -161,7 +168,7 @@ export default {
 
         async save() {
           let params = {
-          contractor: this.contractorObject
+          contractor: this.newContractor
           };
           try {
             let result = await this.sendAjaxWithParams(this.appUrls.saveContractor, params);
@@ -172,6 +179,6 @@ export default {
         }
         
     },
-     
+    
 };
 </script>

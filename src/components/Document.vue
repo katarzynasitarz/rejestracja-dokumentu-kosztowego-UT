@@ -24,11 +24,11 @@
                 >
                   <template v-slot:activator="{ on }">
                     <v-text-field
-                      v-model="documentObject.receivedDate"
+                      v-model="currentDocument.receivedDate"
                       label="Data wpłynięcia"
                       :rules="[
-                        () =>
-                          !!documentObject.receivedDate ||
+                        v =>
+                          !!v ||
                           'Pole jest wymagane.',
                       ]"
                       prepend-icon="mdi-calendar-clock"
@@ -38,7 +38,7 @@
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="documentObject.receivedDate"
+                    v-model="currentDocument.receivedDate"
                     locale="pl"
                   >
                   </v-date-picker>
@@ -56,7 +56,7 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       :rules="[rules.required]"
-                      v-model="documentObject.issueDate"
+                      v-model="currentDocument.issueDate"
                       label="Data wystawienia"
                       prepend-icon="mdi-calendar-clock"
                       readonly
@@ -64,7 +64,7 @@
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker v-model="documentObject.issueDate" locale="pl">
+                  <v-date-picker v-model="currentDocument.issueDate" locale="pl">
                   </v-date-picker>
                 </v-menu>
               </v-col>
@@ -80,7 +80,7 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       :rules="[rules.required]"
-                      v-model="documentObject.paymentDate"
+                      v-model="currentDocument.paymentDate"
                       label="Termin płatności"
                       prepend-icon="mdi-calendar-clock"
                       readonly
@@ -89,7 +89,7 @@
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="documentObject.paymentDate"
+                    v-model="currentDocument.paymentDate"
                     locale="pl"
                   >
                   </v-date-picker>
@@ -101,7 +101,7 @@
                 <v-text-field
                   :rules="[rules.required]"
                   label="Nr faktury"
-                  v-model="documentObject.invoiceNumber"
+                  v-model="currentDocument.invoiceNumber"
                 >
                 </v-text-field>
               </v-col>
@@ -110,7 +110,7 @@
                 <v-text-field
                   :rules="[rules.required]"
                   label="Kategoria wydatku"
-                  v-model="documentObject.expenseCategory"
+                  v-model="currentDocument.expenseCategory"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" md="4">
@@ -118,7 +118,7 @@
                   :rules="[rules.required]"
                   label="Uwagi do dokumentu"
                   rows="2"
-                  v-model="documentObject.invoiceComments"
+                  v-model="currentDocument.invoiceComments"
                 ></v-textarea>
               </v-col> </v-row
           ></v-container>
@@ -128,21 +128,20 @@
           <v-card-title class="font-weight-bold">
             Dane kontrahenta:
           </v-card-title>
-          <Contractor :contractorObject="documentObject.contractor" />
+          <Contractor v-model="currentDocument.contractor" />
         </v-card>
 
         <v-card outlined class="mx-6 mb-6">
           <v-card-title class="font-weight-bold">
             Pozycje Kosztowe::
           </v-card-title>
-          <Table v-model="currentObject" />
+          <Table v-model="currentDocument" />
         </v-card>
 
         <v-card outlined class="mx-6 mb-6">
-          <v-card-title class="font-weight-bold">
-            Dodatkowe dokumenty:
-          </v-card-title>
-          <!-- <AddDocument v-model="documents" :path="documentObject.path" :objectTypeId="objectTypeId"  /> -->
+      
+          <AddDocument v-model="currentDocument" :path="currentDocument.path" :objectTypeId="objectTypeId" :disabled='true' title="Faktura"/>
+          <AddDocument v-model="currentDocument" :path="currentDocument.path" :objectTypeId="objectTypeId" title="Załączniki" />
         </v-card>
 
         <v-card outlined class="mx-6 mb-6">
@@ -172,8 +171,8 @@
             Komentarze:
           </v-card-title>
           <CommentsSection
-            :commentsList="documentObject.comment.items"
-            :caseId="documentObject.mrcCaseHeader.caseId"
+            :commentsList="currentDocument.comment.items"
+            :caseId="currentDocument.mrcCaseHeader.caseId"
           />
         </v-card>
       </v-sheet>
@@ -184,25 +183,30 @@
 
 <script>
 import Table from "./Table";
-// import AddDocument from "./AddDocument";
+import AddDocument from "./AddDocument";
 import Contractor from "./Contractor";
 import CommentsSection from "./CommentsSection";
 
 export default {
   name: "Document",
+  
   components: {
     CommentsSection,
     Table,
     Contractor,
-    // AddDocument
+    AddDocument
   },
-  props: { documentObject: Object },
+  props: { value: Object },
 
   data: () => ({
     currentDocument: {
       documentContent: {
         items: [],
       },
+      comment: {
+        items: [],
+      },
+      mrcCaseHeader: {},
     },
     menu1: false,
     menu2: false,
@@ -214,21 +218,21 @@ export default {
     },
     status: "Koniec procesowania",
     cons: [],
-    documentObject: {
-      contractor: [],
-    },
-    //   objectTypeId: 'cmis:document',
-    //   documents: {
-    //   items:[]
-    // },
+    objectTypeId: 'cmis:document',
   }),
   beforeMount() {
     this.getCons();
   },
   watch: {
-    documentObject(val) {
+    value(val) {
       this.currentDocument = val;
     },
+    currentDocument: {
+      handler() {
+            this.$emit('input', this.currentDocument)
+      },
+      deep: true
+   },
   },
   methods: {
     async getCons() {
@@ -241,27 +245,27 @@ export default {
       }
     },
 
-    submit() {
-      this.formHasErrors = false;
-      Object.keys(this.form.documentObject).forEach((f) => {
-        if (!this.form.documentObject[f]) this.formHasErrors = true;
-        this.$refs.form.validate();
-      });
-    },
-  },
-  computed: {
-    form() {
-      return {
-        documentObject: {
-          receivedDate: this.receivedDate,
-          issueDate: this.issueDate,
-          paymentDate: this.paymentDate,
-          invoiceNumber: this.invoiceNumber,
-          expenseCategory: this.expenseCategory,
-          invoiceComments: this.invoiceComments,
-        },
-      };
-    },
+  //   submit() {
+  //     this.formHasErrors = false;
+  //     Object.keys(this.form.documentObject).forEach((f) => {
+  //       if (!this.form.documentObject[f]) this.formHasErrors = true;
+  //       this.$refs.form.validate();
+  //     });
+  //   },
+  // },
+  // computed: {
+  //   form() {
+  //     return {
+  //       documentObject: {
+  //         receivedDate: this.receivedDate,
+  //         issueDate: this.issueDate,
+  //         paymentDate: this.paymentDate,
+  //         invoiceNumber: this.invoiceNumber,
+  //         expenseCategory: this.expenseCategory,
+  //         invoiceComments: this.invoiceComments,
+  //       },
+  //     };
+  //   },
   },
 };
 </script>

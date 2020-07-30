@@ -1,6 +1,6 @@
 <template>
   <v-expansion-panels>
-    <v-expansion-panel v-for="(item, i) in commentsList" :key="i">
+    <v-expansion-panel v-for="(item, i) in commentList" :key="i">
       <v-expansion-panel-header>Komentarz</v-expansion-panel-header>
       <v-expansion-panel-content>
         <p>{{ item.text }}</p>
@@ -31,7 +31,7 @@
                   ref="menu"
                   v-model="menu"
                   :close-on-content-click="false"
-                  :return-value.sync="date"
+                  :return-value.sync="comment.commentDateAdded"
                   transition="scale-transition"
                   offset-y
                   min-width="290px"
@@ -80,10 +80,11 @@
 export default {
   name: "CommentsSection",
   props: {
-    commentsList: Array,
+    value: Array,
     caseId: String,
   },
   data: () => ({
+    commentList: [],
     menu: false,
     dialog: false,
     modal: false,
@@ -99,6 +100,13 @@ export default {
     this.getComments();
   },
 
+  watch: {
+    value: {
+      handler(val) {
+        this.commentList = val;
+      },
+    },
+  },
   methods: {
     close() {
       this.dialog = false;
@@ -116,12 +124,12 @@ export default {
           this.appUrls.getComments,
           params
         );
-        this.comments = result.comments.items;
-        this.commentsList = this.comments;
+        this.commentList = result.comments.items;
+        this.$emit('input', this.commentList);
         // this.comments.forEach((comment) => {
         //   this.commentsList.push(comment);
         // });
-        console.log(this.commentsList);
+        console.log(this.commentList);
       } catch (e) {
         console.log("error", e);
       }

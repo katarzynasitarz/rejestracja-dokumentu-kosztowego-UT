@@ -130,6 +130,54 @@ router.post("/getTeams", (req, res) => {
   }, 1000);
 });
 
+router.post("/getComments", (req, res) => {
+  console.log("req.body.params", req.body);
+  let response = {
+    data: {
+      data: {
+        comments: {
+          items: [
+            {
+              dateAdded: "12-03-2020",
+              text: "lorem ipsum dolor sit amet.",
+              procesStep: "Konsultacja",
+              author: "ksitarz",
+            },
+            {
+              dateAdded: "06-04-2020",
+              text: "lorem ipsum dolor sit amet.",
+              procesStep: "Akceptaja",
+              author: "atyburska",
+            },
+            {
+              dateAdded: "30-05-2020",
+              text: "lorem ipsum dolor sit amet.",
+              procesStep: "Rejestracja",
+              author: "atyburska",
+            },
+            {
+              dateAdded: "09-05-2020",
+              text: "lorem ipsum dolor sit amet.",
+              procesStep: "Anulowanie",
+              author: "jszpadkiweicz",
+            },
+            {
+              dateAdded: "19-01-2020",
+              text: "lorem ipsum dolor sit amet.",
+              procesStep: "Akceptacja",
+              author: "ksitarz",
+            },
+          ],
+        },
+      },
+    },
+  };
+  setTimeout(() => {
+    res.status("200").json(response);
+    res.end();
+  }, 2000);
+});
+
 router.post("/getCons", (req, res) => {
   console.log("req.body.params", req.body);
   let response = {
