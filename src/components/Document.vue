@@ -26,11 +26,7 @@
                     <v-text-field
                       v-model="currentDocument.receivedDate"
                       label="Data wpłynięcia"
-                      :rules="[
-                        v =>
-                          !!v ||
-                          'Pole jest wymagane.',
-                      ]"
+                      :rules="[(v) => !!v || 'Pole jest wymagane.']"
                       prepend-icon="mdi-calendar-clock"
                       readonly
                       clearable
@@ -64,7 +60,10 @@
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker v-model="currentDocument.issueDate" locale="pl">
+                  <v-date-picker
+                    v-model="currentDocument.issueDate"
+                    locale="pl"
+                  >
                   </v-date-picker>
                 </v-menu>
               </v-col>
@@ -139,9 +138,19 @@
         </v-card>
 
         <v-card outlined class="mx-6 mb-6">
-      
-          <AddDocument v-model="currentDocument" :path="currentDocument.path" :objectTypeId="objectTypeId" :disabled='true' title="Faktura"/>
-          <AddDocument v-model="currentDocument" :path="currentDocument.path" :objectTypeId="objectTypeId" title="Załączniki" />
+          <AddDocument
+            v-model="currentDocument"
+            :path="currentDocument.path"
+            :objectTypeId="objectTypeId"
+            :disabled="true"
+            title="Faktura"
+          />
+          <AddDocument
+            v-model="currentDocument"
+            :path="currentDocument.path"
+            :objectTypeId="objectTypeId"
+            title="Załączniki"
+          />
         </v-card>
 
         <v-card outlined class="mx-6 mb-6">
@@ -189,12 +198,12 @@ import CommentsSection from "./CommentsSection";
 
 export default {
   name: "Document",
-  
+
   components: {
     CommentsSection,
     Table,
     Contractor,
-    AddDocument
+    AddDocument,
   },
   props: { value: Object },
 
@@ -218,7 +227,7 @@ export default {
     },
     status: "Koniec procesowania",
     cons: [],
-    objectTypeId: 'cmis:document',
+    objectTypeId: "cmis:document",
   }),
   beforeMount() {
     this.getCons();
@@ -229,10 +238,10 @@ export default {
     },
     currentDocument: {
       handler() {
-            this.$emit('input', this.currentDocument)
+        this.$emit("input", this.currentDocument);
       },
-      deep: true
-   },
+      deep: true,
+    },
   },
   methods: {
     async getCons() {
@@ -245,27 +254,11 @@ export default {
       }
     },
 
-  //   submit() {
-  //     this.formHasErrors = false;
-  //     Object.keys(this.form.documentObject).forEach((f) => {
-  //       if (!this.form.documentObject[f]) this.formHasErrors = true;
-  //       this.$refs.form.validate();
-  //     });
-  //   },
-  // },
-  // computed: {
-  //   form() {
-  //     return {
-  //       documentObject: {
-  //         receivedDate: this.receivedDate,
-  //         issueDate: this.issueDate,
-  //         paymentDate: this.paymentDate,
-  //         invoiceNumber: this.invoiceNumber,
-  //         expenseCategory: this.expenseCategory,
-  //         invoiceComments: this.invoiceComments,
-  //       },
-  //     };
-  //   },
+    submit() {
+      if (this.$refs.form.validate()) {
+        console.log("NO ELO");
+      }
+    },
   },
 };
 </script>
