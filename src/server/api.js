@@ -33,52 +33,6 @@ router.post("/getMentors", (req, res) => {
   }, 2000);
 });
 
-router.post("/getImportantLinks", (req, res) => {
-  console.log("req.body.params", req.body);
-  let response = {
-    data: {
-      data: {
-        result: {
-          items: [
-            {
-              text: "Dokumentacja IBM BPM",
-              href:
-                "https://www.ibm.com/support/knowledgecenter/en/SSFPJS_8.5.5/com.ibm.wbpm.main.doc/kc-homepage-bpm.html",
-            },
-            {
-              text: "NodeJS",
-              href: "https://nodejs.org/en/",
-            },
-            {
-              text: "Vue.js",
-              href: "https://vuejs.org/",
-            },
-            {
-              text: "Vue CLI",
-              href: "https://cli.vuejs.org/",
-            },
-            {
-              text: "Vuetify",
-              href: "https://vuetifyjs.com/en/",
-            },
-            {
-              text: "Github IBPM",
-              href: "https://github.com/IBPM-S-A",
-            },
-            {
-              text: "Wiki IBPM",
-              href: "https://wiki.ibpm.pro/",
-            },
-          ],
-        },
-      },
-    },
-  };
-  setTimeout(() => {
-    res.status("200").json(response);
-    res.end();
-  }, 2000);
-});
 router.post("/getComments", (req, res) => {
   console.log("req.body.params", req.body);
   let response = {
@@ -127,20 +81,13 @@ router.post("/getComments", (req, res) => {
   }, 2000);
 });
 
-router.post("/saveComments", (req, res) => {
+router.post("/saveComment", (req, res) => {
   console.log("req.body.params", req.body);
   let response = {
     data: {
       data: {
         result: {
-          items: [
-            {
-              dateAdded: "12-04-2020",
-              text: "WIEILKI TEST.",
-              processStep: "Testowanie",
-              author: "atyburska",
-            },
-          ],
+          items: [{ message: "wysłano!" }],
         },
       },
     },

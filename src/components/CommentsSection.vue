@@ -9,7 +9,6 @@
         <p>{{ item.processStep }}</p>
       </v-expansion-panel-content>
     </v-expansion-panel>
-    <!-- <v-btn @click="saveComment()">Dodaj komentarz</v-btn> -->
 
     <v-dialog v-model="dialog" max-width="500px">
       <template v-slot:activator="{ on }">
@@ -23,25 +22,25 @@
             <v-row>
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
-                  v-model="commentAuthor"
+                  v-model="comment.commentAuthor"
                   label="Autor"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
-                  v-model="commentDateAdded"
+                  v-model="comment.commentDateAdded"
                   label="Data dodania"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
-                  v-model="commentprocessStep"
+                  v-model="comment.commentprocessStep"
                   label="Etap procesu"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
-                  v-model="commentText"
+                  v-model="comment.commentText"
                   label="Komentarz"
                 ></v-text-field>
               </v-col>
@@ -67,10 +66,12 @@ export default {
   },
   data: () => ({
     dialog: false,
-    commentText: "",
-    commentAuthor: "",
-    commentDateAdded: "",
-    commentprocessStep: "",
+    comment: {
+      commentText: "",
+      commentAuthor: "",
+      commentDateAdded: "",
+      commentprocessStep: "",
+    },
   }),
 
   beforeMount() {
@@ -80,22 +81,11 @@ export default {
   methods: {
     close() {
       this.dialog = false;
-      // this.commentText = "";
-      // this.commentAuthor = "";
-      // this.commentDateAdded = "";
-      // this.commentprocessStep = "";
     },
 
     save() {
-      this.commentsList.push({
-        text: this.commentText,
-        author: this.commentAuthor,
-        dateAdded: this.commentDateAdded,
-        processStep: this.commentprocessStep,
-      });
+      this.saveComment(this.comment);
       this.close();
-      console.log(this.commentsList);
-      this.saveComment(this.commentsList);
     },
 
     async getComments() {
@@ -113,17 +103,21 @@ export default {
       }
     },
 
-    async saveComment(list) {
-      console.log(list[list.length - 1]);
-      let params = list[list.length - 1];
-
+    async saveComment(element) {
+      console.log(element);
+      let params = {
+        text: element.commentText,
+        author: element.commentAuthor,
+        dateAdded: element.commentDateAdded,
+        processStep: element.commentprocessStep,
+      };
+      console.log(params);
       try {
         let result = await this.sendAjaxWithParams(
-          this.appUrls.saveComments,
+          this.appUrls.saveComment,
           params
         );
-        console.log(result);
-        this.clearData();
+        console.log(result.result.items);
         this.getComments();
       } catch (e) {
         console.log(e, "error");

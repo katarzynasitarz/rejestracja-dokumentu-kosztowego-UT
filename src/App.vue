@@ -19,17 +19,17 @@ export default {
 
   data() {
     return {
-      document: {
-        receiveDate: null,
-        issueDate: null,
-        paymentDate: null,
-        invoiceNumber: null,
-        expenseCategory: null,
-        invoiceComments: null,
-        comment: [],
-      },
+      // document: {
+      //   receiveDate: null,
+      //   issueDate: null,
+      //   paymentDate: null,
+      //   invoiceNumber: null,
+      //   expenseCategory: null,
+      //   invoiceComments: null,
+      //   comment: [],
+      // },
       context: window.context,
-      // document: window.context ? window.context.binding.get("value") : {},
+      document: window.context ? window.context.binding.get("value") : {},
     };
   },
   methods: {
