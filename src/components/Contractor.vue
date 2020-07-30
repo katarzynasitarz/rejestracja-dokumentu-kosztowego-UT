@@ -9,7 +9,7 @@
 
     <v-row width="850" 
             justify="center">
-          
+
         <v-form
         ref="form"
         v-model="valid"
@@ -101,7 +101,7 @@ export default {
       async getContractor() {
       try {
         let result = await this.sendAjaxWithParams(this.appUrls.getContractor, {});
-        this.contractor = result.result.items;
+        this.contractor = result.contractor;
       console.log(this.contractor);
         } catch (e) {
         console.log("error", e);
@@ -109,10 +109,7 @@ export default {
       },
       async save() {
          let params = {
-            name: this.contractorObject.name,
-            nip: this.contractorObject.nip,
-            email: this.contractorObject.email,
-            address: this.contractorObject.address
+           contractor: this.contractorObject
           };
 
           try {
