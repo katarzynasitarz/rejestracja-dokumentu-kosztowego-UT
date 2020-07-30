@@ -127,12 +127,8 @@
           <v-card-title class="font-weight-bold">
             Dane kontrahenta:
           </v-card-title>
-
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus
-          exercitationem laudantium laborum non saepe quidem ex doloribus, fugit
-          placeat natus dolorum! Cumque ab voluptates quasi pariatur
-          perspiciatis labore voluptatem iste.</v-card
-        >
+                      <Contractor :contractorObject="documentObject.contractor"/>
+          </v-card>
 
         <v-card outlined class="mx-6 mb-6">
           <v-card-title class="font-weight-bold">
@@ -145,10 +141,8 @@
           <v-card-title class="font-weight-bold">
             Dodatkowe dokumenty:
           </v-card-title>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta saepe
-          provident, ab accusantium sunt totam delectus molestiae illo modi
-          quasi quis tempora suscipit fuga tenetur repellendus magnam quam
-          excepturi optio?</v-card
+                    <!-- <AddDocument v-model="documents" :path="documentObject.path" :objectTypeId="objectTypeId"  /> -->
+          </v-card
         >
       </v-sheet>
     </v-card-text>
@@ -158,10 +152,15 @@
 
 <script>
 import Table from "./Table";
+// import AddDocument from "./AddDocument";
+import Contractor from "./Contractor";
+
 export default {
   name: "Document",
   components: {
     Table,
+    Contractor,
+    // AddDocument
   },
   props: { documentObject: Object },
 
@@ -174,6 +173,13 @@ export default {
     rules: {
       required: (val) => !!val || "Pole jest wymagane.",
     },
+    documentObject: {
+        contractor: []
+      },
+    //   objectTypeId: 'cmis:document',
+    //   documents: {
+    //   items:[]
+    // },
   }),
   methods: {
     submit() {
