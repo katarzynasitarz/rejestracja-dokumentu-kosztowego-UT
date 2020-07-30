@@ -15,20 +15,20 @@ export default {
 
   data() {
     return {
-      document: {
-        receiveDate: null,
-        issueDate: null,
-        paymentDate: null,
-        invoiceNumber: null,
-        expenseCategory: null,
-        invoiceComments: null,
-        // sumNetto: null,
-        // sumVat: null,
-        // sumBrutto: null,
-        documentContent: {
-          items: [],
-        },
-      },
+      // document: {
+      //   receiveDate: null,
+      //   issueDate: null,
+      //   paymentDate: null,
+      //   invoiceNumber: null,
+      //   expenseCategory: null,
+      //   invoiceComments: null,
+      //   // sumNetto: null,
+      //   // sumVat: null,
+      //   // sumBrutto: null,
+      //   documentContent: {
+      //     items: [],
+      //   },
+      // },
       path: "/Akademia 2020/Testowy/Folder",
       documents: {
         items: [],
