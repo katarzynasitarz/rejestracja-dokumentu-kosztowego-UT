@@ -1,14 +1,6 @@
 <template>
   <v-app>
-    <v-content>
-
-      <Contractor :contractorObject="document.contractorObject"/>
-
-      <Document :documentObject="document" />
-      <v-btn @click="showMe()">POKA</v-btn>
-
-      <AddDocuments v-model="documents" :path="path" :objectTypeId="objectTypeId"  />
-
+    <Document :documentObject="document" />
   </v-app>
 </template>
 
@@ -16,6 +8,7 @@
 import Document from "./components/Document";
 export default {
   name: "App",
+
   components: {
     Document,
   },
@@ -41,12 +34,15 @@ export default {
         items: [],
       },
       objectTypeId: "cmis:document",
+      context: window.context,
+      document: window.context ? window.context.binding.get("value") : {},
     };
   },
-  methods: {
-    showMe() {
-      console.log(this.document);
-    },
+  closeForm(document) {
+    if (this.context) {
+      this.context.binding.set("value", document);
+      this.context.trigger();
+    }
   },
 };
 </script>
