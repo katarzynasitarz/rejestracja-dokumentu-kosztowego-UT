@@ -5,6 +5,21 @@ router.get("/", (req, res) => {
   res.send("Tu niech powstanie dokumentacja usług restowych");
 });
 
+router.post('/saveContractor', (req, res) => {
+  var data = {
+    status: '200',
+    data: {
+      data: {
+        messageInfo: 'Dokument został dodany',
+        serviceStatus: 'end',
+        key: '@6296',
+        step: 'End',
+        data: { documentId: 'workspace://SpacesStore/893b061c-642a-4bec-befa-ba2c5056ff06;1.0' },
+        actions: null
+      }
+    }
+  };
+
 router.post("/getContractor", (req, res) => {
   console.log("req.body.params", req.body);
   let response = {

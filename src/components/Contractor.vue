@@ -56,7 +56,7 @@
 
             <v-btn
             color="cyan"
-            @click="getContractor"
+            @click="save"
             dark
             >
             Dodaj
@@ -99,6 +99,8 @@ export default {
   //     this.getContractor();
   //   }
   // },
+
+
   methods: {
     reset () {
         this.$refs.form.reset()
@@ -121,11 +123,9 @@ export default {
           };
 
           try {
-            let result = await this.sendAjaxWithParams(this.appUrls.createDocumentService, params);
+            let result = await this.sendAjaxWithParams(this.appUrls.saveContractor, params);
 
-            console.log(result.messageInfo);      
-            this.close();
-            this.getDocumentList();
+            console.log(result.messageInfo);    
           } catch (e) {
            console.error( e);
           }
