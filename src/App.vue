@@ -1,18 +1,21 @@
 <template>
   <v-app>
     <v-content>
+
+      <Contractor :contractorObject="document.contractorObject"/>
+
       <Document :documentObject="document" />
       <v-btn @click="showMe()">POKA</v-btn>
-    </v-content>
+
+      <AddDocuments v-model="documents" :path="path" :objectTypeId="objectTypeId"  />
+
   </v-app>
 </template>
 
 <script>
 import Document from "./components/Document";
-
 export default {
   name: "App",
-
   components: {
     Document,
   },
