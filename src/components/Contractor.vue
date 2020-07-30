@@ -35,14 +35,12 @@
          Dodaj kontrahenta
     </v-card-text>
 
-    <v-row width="850" 
-            justify="center">
-
-        <v-form
+    
+    <v-form
         ref="form"
         v-model="valid"
         lazy-validation>
-
+        <v-row>
             <v-text-field
             v-model="newContractor.name"
             :rules="nameRules"
@@ -91,9 +89,9 @@
             </v-btn>
 
            <!-- <v-alert type="success" v-if="visibility"> Taki kontrahent istnieje w bazie </v-alert> -->
-
-        </v-form>
-    </v-row>
+        </v-row>
+    </v-form>
+    
 
   </v-container>
 </template>
