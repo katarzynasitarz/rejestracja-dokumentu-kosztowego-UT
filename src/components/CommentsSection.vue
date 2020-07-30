@@ -105,9 +105,6 @@ export default {
     },
   }),
 
-  beforeMount() {
-    this.getComments();
-  },
 
   watch: {
     value: {
@@ -115,6 +112,11 @@ export default {
         this.commentList = val;
       },
     },
+    caseId(val) {
+    if (val) {
+      this.getComments() 
+    }
+    }
   },
   methods: {
     close() {
@@ -133,6 +135,7 @@ export default {
     },
 
     async getComments() {
+      if (!this.caseId) {
       let params = { caseId: this.caseId };
       try {
         let result = await this.sendAjaxWithParams(
@@ -148,6 +151,7 @@ export default {
       } catch (e) {
         console.log("error", e);
       }
+      }
     },
 
     async saveComment(element) {
@@ -162,6 +166,7 @@ export default {
       };
       try {
         await this.sendAjaxWithParams(this.appUrls.saveComment, params);
+        
         this.getComments();
       } catch (e) {
         console.log(e, "error");

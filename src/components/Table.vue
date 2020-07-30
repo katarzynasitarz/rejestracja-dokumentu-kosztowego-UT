@@ -163,7 +163,9 @@ export default {
       documentContent: {
         items: [],
       },
+      mrcCaseHeader: {},
     },
+    
     sumNetto: null,
     sumVat: null,
     sumBrutto: null,
@@ -241,7 +243,9 @@ export default {
             0
           ) * 100
         ) / 100;
-      this.$emit("input", this.currentDocument);
+        if (this.currentDocument.mrcCaseHeader.caseId) {
+          // this.$emit("input", this.currentDocument);
+        }
     },
   },
   computed: {},
@@ -275,7 +279,7 @@ export default {
           brutto: documentContent.brutto,
         });
 
-        this.$emit("input", this.currentDocument);
+        // this.$emit("input", this.currentDocument);
         console.log(this.currentDocument);
         // console.log(this.sumNetto);
         // console.log(JSON.parse(JSON.stringify(position)));
