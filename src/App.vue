@@ -26,6 +26,12 @@ export default {
         invoiceNumber: null,
         expenseCategory: null,
         invoiceComments: null,
+        // sumNetto: null,
+        // sumVat: null,
+        // sumBrutto: null,
+        documentContent: {
+          items: [],
+        },
       },
       path: "/Akademia 2020/Testowy/Folder",
       documents: {

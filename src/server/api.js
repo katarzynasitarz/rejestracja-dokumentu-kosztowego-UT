@@ -101,4 +101,26 @@ router.post("/getTeams", (req, res) => {
   }, 1000);
 });
 
+router.post("/getCons", (req, res) => {
+  console.log("req.body.params", req.body);
+  let response = {
+    data: {
+      data: {
+        result: {
+          items: [
+            { fullName: "Angelika Tyburska" },
+            { fullName: "Joanna Szpadkiewicz" },
+            { fullName: "Katarzyna Sitarz" },
+          ],
+        },
+      },
+      actions: null,
+    },
+  };
+  setTimeout(() => {
+    res.status("200").json(response);
+    res.end();
+  }, 1000);
+});
+
 module.exports = router;

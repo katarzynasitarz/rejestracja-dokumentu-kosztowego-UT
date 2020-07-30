@@ -76,7 +76,10 @@
             >Dodaj pozycję</v-btn
           >
         </v-row>
-        <div class="results" v-if="positionList.length">
+        <div
+          class="results"
+          v-if="currentDocument.documentContent.items.length"
+        >
           <v-row class="header" :justify="justify" cols="9">
             <v-col>nazwa</v-col>
             <v-col>dział odpowiedzialny</v-col>
@@ -94,7 +97,7 @@
           </v-row>
           <ol>
             <PositionItem
-              v-for="documentContent in positionList"
+              v-for="documentContent in currentDocument.documentContent.items"
               :key="documentContent.number"
               :documentContent="documentContent"
               @remove="removePosition"
@@ -108,7 +111,7 @@
               <v-text-field
                 type="number"
                 label="suma netto"
-                v-model="sumNetto"
+                v-model="currentDocument.sumNetto"
                 suffix="zł"
                 readonly
               ></v-text-field>
@@ -116,7 +119,7 @@
             <v-col cols="4" md="2">
               <v-text-field
                 label="suma VAT"
-                v-model="sumVat"
+                v-model="currentDocument.sumVat"
                 suffix="zł"
                 readonly
               ></v-text-field>
@@ -124,7 +127,7 @@
             <v-col cols="4" md="2">
               <v-text-field
                 label="suma brutto"
-                v-model="sumBrutto"
+                v-model="currentDocument.sumBrutto"
                 suffix="zł"
                 readonly
               ></v-text-field>
@@ -147,7 +150,7 @@ let nextPositionNumber = 1;
 export default {
   name: "Table",
 
-  prop: ["value"],
+  props: ["value"],
 
   components: {
     PositionItem,
@@ -155,9 +158,12 @@ export default {
 
   data: () => ({
     teams: [],
-    positionList: [],
-
     documentContent: {},
+    currentDocument: {
+      documentContent: {
+        items: [],
+      },
+    },
     sumNetto: null,
     sumVat: null,
     sumBrutto: null,
@@ -173,6 +179,11 @@ export default {
     this.getTeams();
   },
   watch: {
+    value: {
+      handler(val) {
+        this.currentDocument = val;
+      },
+    },
     documentContent: {
       handler: function() {
         const documentContent = this.documentContent;
@@ -208,15 +219,29 @@ export default {
 
       deep: true,
     },
-    positionList: function() {
-      const positionList = this.positionList;
-      this.sumNetto =
-        Math.round(positionList.reduce((a, b) => a + b.netto, 0) * 100) / 100;
-      this.sumVat =
-        Math.round(positionList.reduce((a, b) => a + b.vatValue, 0) * 100) /
-        100;
-      this.sumBrutto =
-        Math.round(positionList.reduce((a, b) => a + b.brutto, 0) * 100) / 100;
+    "currentDocument.documentContent.items": function() {
+      this.currentDocument.sumNetto =
+        Math.round(
+          this.currentDocument.documentContent.items.reduce(
+            (a, b) => a + b.netto,
+            0
+          ) * 100
+        ) / 100;
+      this.currentDocument.sumVat =
+        Math.round(
+          this.currentDocument.documentContent.items.reduce(
+            (a, b) => a + b.vatValue,
+            0
+          ) * 100
+        ) / 100;
+      this.currentDocument.sumBrutto =
+        Math.round(
+          this.currentDocument.documentContent.items.reduce(
+            (a, b) => a + b.brutto,
+            0
+          ) * 100
+        ) / 100;
+      this.$emit("input", this.currentDocument);
     },
   },
   computed: {},
@@ -238,7 +263,7 @@ export default {
     addPosition() {
       if (this.validate()) {
         const documentContent = this.documentContent;
-        this.positionList.push({
+        this.currentDocument.documentContent.items.push({
           number: nextPositionNumber++,
           itemName: documentContent.itemName,
           department: documentContent.department,
@@ -250,14 +275,8 @@ export default {
           brutto: documentContent.brutto,
         });
 
-        this.$emit(
-          "input",
-          this.sumNetto,
-          this.sumBrutto,
-          this.sumVat,
-          this.positionList
-        );
-        console.log(this.positionList);
+        this.$emit("input", this.currentDocument);
+        console.log(this.currentDocument);
         // console.log(this.sumNetto);
         // console.log(JSON.parse(JSON.stringify(position)));
         // console.log(JSON.parse(JSON.stringify(position.totalPriceNetto)));
@@ -273,14 +292,12 @@ export default {
     },
 
     removePosition(numberToRemove) {
-      this.positionList = this.positionList.filter((documentContent) => {
-        return documentContent.number !== numberToRemove;
-      });
+      this.currentDocument.documentContent.items = this.currentDocument.documentContent.items.filter(
+        (documentContent) => {
+          return documentContent.number !== numberToRemove;
+        }
+      );
     },
-  },
-
-  mounted() {
-    console.log(this.sumNetto);
   },
 };
 </script>

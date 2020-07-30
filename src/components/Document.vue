@@ -138,7 +138,7 @@
           <v-card-title class="font-weight-bold">
             Pozycje Kosztowe::
           </v-card-title>
-          <Table @input="updateObject" />
+          <Table v-model="currentObject" />
         </v-card>
 
         <v-card outlined class="mx-6 mb-6">
@@ -150,6 +150,25 @@
           quasi quis tempora suscipit fuga tenetur repellendus magnam quam
           excepturi optio?</v-card
         >
+
+        <v-card outlined class="mx-6 mb-6">
+          <v-card-title class="font-weight-bold">
+            Dalsze działanie:
+          </v-card-title>
+          <v-row justify="space-around">
+            <v-radio-group v-model="status" :mandatory="true" row>
+              <v-radio label="Koniec procesowania"></v-radio>
+              <v-radio label="Wysyłam do akceptacji"></v-radio>
+              <v-radio label="Wysyłam do konsultacji"></v-radio>
+            </v-radio-group>
+
+            <v-combobox
+              :items="cons"
+              item-text="fullName"
+              label="dział odpowiedzialny"
+            ></v-combobox>
+          </v-row>
+        </v-card>
       </v-sheet>
     </v-card-text>
     <v-btn color="success" @click="submit()">Wyślij</v-btn>
@@ -166,6 +185,11 @@ export default {
   props: { documentObject: Object },
 
   data: () => ({
+    currentDocument: {
+      documentContent: {
+        items: [],
+      },
+    },
     menu1: false,
     menu2: false,
     menu3: false,
@@ -174,24 +198,28 @@ export default {
     rules: {
       required: (val) => !!val || "Pole jest wymagane.",
     },
-    documentObject: {
-      documentContent: {
-        items: {
-          positionList: [],
-        },
-      },
-    },
+    status: "Koniec procesowania",
+    cons: [],
   }),
-  methods: {
-    updateObject(sumNetto, sumVat, sumBrutto, positionList) {
-      this.documentObject.sumNetto = sumNetto;
-      this.documentObject.sumVat = sumVat;
-      this.documentObject.sumBrutto = sumBrutto;
-      this.documentObject.document.items.positionList = positionList;
-
-      console.log(this.documentObject.sumNetto);
-      console.log(this.documentObject.document.items.positionList);
+  beforeMount() {
+    this.getCons();
+  },
+  watch: {
+    documentObject(val) {
+      this.currentDocument = val;
     },
+  },
+  methods: {
+    async getCons() {
+      try {
+        let result = await this.sendAjaxWithParams(this.appUrls.getCons, {});
+        this.cons = result.result.items;
+        console.log(this.cons);
+      } catch (e) {
+        console.log("error", e);
+      }
+    },
+
     submit() {
       console.log(this.documentObject.invoiceNumber, this.invoiceComments);
       console.log(typeof this.paymentDate);
