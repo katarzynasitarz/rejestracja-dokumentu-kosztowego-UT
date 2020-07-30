@@ -152,4 +152,21 @@ router.post("/getCons", (req, res) => {
   }, 1000);
 });
 
+router.post("/saveComment", (req, res) => {
+  console.log("req.body.params", req.body);
+  let response = {
+    data: {
+      data: {
+        result: {
+          items: [{ message: "wysłano!" }],
+        },
+      },
+    },
+  };
+  setTimeout(() => {
+    res.status("200").json(response);
+    res.end();
+  }, 2000);
+});
+
 module.exports = router;

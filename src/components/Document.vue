@@ -24,11 +24,12 @@
                 >
                   <template v-slot:activator="{ on }">
                     <v-text-field
-                      v-model="documentObject.receiveDate"
+                      v-model="documentObject.receivedDate"
                       label="Data wpłynięcia"
                       :rules="[
                         () =>
-                          !!documentObject.receiveDate || 'Pole jest wymagane.',
+                          !!documentObject.receivedDate ||
+                          'Pole jest wymagane.',
                       ]"
                       prepend-icon="mdi-calendar-clock"
                       readonly
@@ -37,7 +38,7 @@
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="documentObject.receiveDate"
+                    v-model="documentObject.receivedDate"
                     locale="pl"
                   >
                   </v-date-picker>
@@ -161,6 +162,19 @@
               label="dział odpowiedzialny"
             ></v-combobox>
           </v-row>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta saepe
+          provident, ab accusantium sunt totam delectus molestiae illo modi
+          quasi quis tempora suscipit fuga tenetur repellendus magnam quam
+          excepturi optio?</v-card
+        >
+        <v-card outlined class="mx-6 mb-6">
+          <v-card-title class="font-weight-bold">
+            Komentarze:
+          </v-card-title>
+          <CommentsSection
+            :commentsList="documentObject.comment.items"
+            :caseId="documentObject.mrcCaseHeader.caseId"
+          />
         </v-card>
       </v-sheet>
     </v-card-text>
@@ -172,10 +186,12 @@
 import Table from "./Table";
 // import AddDocument from "./AddDocument";
 import Contractor from "./Contractor";
+import CommentsSection from "./CommentsSection";
 
 export default {
   name: "Document",
   components: {
+    CommentsSection,
     Table,
     Contractor,
     // AddDocument
@@ -226,8 +242,6 @@ export default {
     },
 
     submit() {
-      console.log(this.documentObject.invoiceNumber, this.invoiceComments);
-      console.log(typeof this.paymentDate);
       this.formHasErrors = false;
       Object.keys(this.form.documentObject).forEach((f) => {
         if (!this.form.documentObject[f]) this.formHasErrors = true;
@@ -239,7 +253,7 @@ export default {
     form() {
       return {
         documentObject: {
-          receiveDate: this.receiveDate,
+          receivedDate: this.receivedDate,
           issueDate: this.issueDate,
           paymentDate: this.paymentDate,
           invoiceNumber: this.invoiceNumber,
