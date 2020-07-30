@@ -5,6 +5,36 @@ router.get("/", (req, res) => {
   res.send("Tu niech powstanie dokumentacja usług restowych");
 });
 
+
+router.post("/saveContractor", (req, res) => {
+  console.log("req.body.params", req.body);
+  let response = {
+    data: {
+      data: {
+        result: {
+          items: [
+            { 
+              name: "zapisany!",
+              nip: "zapisany",
+              email: "zapisany",
+              address: {
+                street: 'Bądkowskiego',
+                houseNumber:  '31',
+                postalCode: '97-451',
+                city: 'Kowale'
+                },
+            }
+          ],
+        },
+      },
+    },
+  };
+  setTimeout(() => {
+    res.status("200").json(response);
+    res.end();
+  }, 2000);
+});
+
 router.post("/getContractor", (req, res) => {
   console.log("req.body.params", req.body);
   let response = {

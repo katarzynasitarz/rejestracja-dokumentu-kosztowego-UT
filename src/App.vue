@@ -1,8 +1,12 @@
 <template>
   <v-app>
     <v-content>
+
+      <Contractor :contractorObject="document.contractorObject"/>
+
       <Document :documentObject="document" />
       <v-btn @click="showMe()">POKA</v-btn>
+
     </v-content>
   </v-app>
 </template>
@@ -35,6 +39,11 @@ export default {
     showMe() {
       console.log(this.document);
     },
+  },
+
+  data() {
+    return {
+    }
   },
 };
 </script>
