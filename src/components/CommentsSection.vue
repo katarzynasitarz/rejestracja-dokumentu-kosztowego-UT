@@ -88,10 +88,10 @@ export default {
     dialog: false,
     modal: false,
     comment: {
-      text: "",
-      author: "",
-      dateAdded: new Date().toISOString().substr(0, 10),
-      processStep: "",
+      commentText: "",
+      commentAuthor: "",
+      commentDateAdded: new Date().toISOString().substr(0, 10),
+      commentprocessStep: "",
     },
   }),
 
@@ -117,9 +117,11 @@ export default {
           params
         );
         this.comments = result.comments.items;
-        this.comments.forEach((comment) => {
-          this.commentsList.push(comment);
-        });
+        this.commentsList = this.comments;
+        // this.comments.forEach((comment) => {
+        //   this.commentsList.push(comment);
+        // });
+        console.log(this.commentsList);
       } catch (e) {
         console.log("error", e);
       }
@@ -128,10 +130,10 @@ export default {
     async saveComment(element) {
       let params = {
         comment: {
-          text: element.text,
-          author: element.author,
-          dateAdded: element.dateAdded,
-          processStep: element.processStep,
+          text: element.commentText,
+          author: element.commentAuthor,
+          dateAdded: element.commentDateAdded,
+          processStep: element.commentprocessStep,
         },
         caseId: this.caseId,
       };
