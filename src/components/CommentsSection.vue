@@ -27,10 +27,28 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  v-model="comment.commentDateAdded"
-                  label="Data dodania"
-                ></v-text-field>
+                <v-menu
+                  ref="menu"
+                  v-model="menu"
+                  :close-on-content-click="false"
+                  :return-value.sync="date"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="comment.commentDateAdded"
+                      label="Data dodania"
+                      prepend-icon="mdi-calendar-clock"
+                      readonly
+                      clearable
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="comment.commentDateAdded" locale="pl">
+                  </v-date-picker>
+                </v-menu>
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
@@ -63,14 +81,17 @@ export default {
   name: "CommentsSection",
   props: {
     commentsList: Array,
+    caseId: String,
   },
   data: () => ({
+    menu: false,
     dialog: false,
+    modal: false,
     comment: {
-      commentText: "",
-      commentAuthor: "",
-      commentDateAdded: "",
-      commentprocessStep: "",
+      text: "",
+      author: "",
+      dateAdded: new Date().toISOString().substr(0, 10),
+      processStep: "",
     },
   }),
 
@@ -89,12 +110,13 @@ export default {
     },
 
     async getComments() {
+      let params = { caseId: this.caseId };
       try {
         let result = await this.sendAjaxWithParams(
           this.appUrls.getComments,
-          {}
+          params
         );
-        this.comments = result.result.items;
+        this.comments = result.comments.items;
         this.comments.forEach((comment) => {
           this.commentsList.push(comment);
         });
@@ -104,20 +126,17 @@ export default {
     },
 
     async saveComment(element) {
-      console.log(element);
       let params = {
-        text: element.commentText,
-        author: element.commentAuthor,
-        dateAdded: element.commentDateAdded,
-        processStep: element.commentprocessStep,
+        comment: {
+          text: element.text,
+          author: element.author,
+          dateAdded: element.dateAdded,
+          processStep: element.processStep,
+        },
+        caseId: this.caseId,
       };
-      console.log(params);
       try {
-        let result = await this.sendAjaxWithParams(
-          this.appUrls.saveComment,
-          params
-        );
-        console.log(result.result.items);
+        await this.sendAjaxWithParams(this.appUrls.saveComment, params);
         this.getComments();
       } catch (e) {
         console.log(e, "error");

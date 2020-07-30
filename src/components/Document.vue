@@ -156,7 +156,10 @@
           <v-card-title class="font-weight-bold">
             Komentarze:
           </v-card-title>
-          <CommentsSection :commentsList="documentObject.comment.items" />
+          <CommentsSection
+            :commentsList="documentObject.comment.items"
+            :caseId="documentObject.mrcCaseHeader.caseId"
+          />
         </v-card>
       </v-sheet>
     </v-card-text>
