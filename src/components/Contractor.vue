@@ -62,7 +62,7 @@
             Dodaj
             </v-btn>
 
-           <v-alert type="success" v-if="visibility"> Taki kontrahent istnieje w bazie </v-alert>
+           <!-- <v-alert type="success" v-if="visibility"> Taki kontrahent istnieje w bazie </v-alert> -->
 
         </v-form>
     </v-row>
@@ -93,28 +93,21 @@ export default {
         v => (v && v.length == 10) || 'NIP musi zawierać 10 cyfr',
       ],
   }),
-  // save() {
-  //   if (this.contractorObject.exists) {
-  //     this.visibility = !this.visibility;
-  //     this.getContractor();
-  //   }
-  // },
-
-
+ 
   methods: {
-    reset () {
+      reset () {
         this.$refs.form.reset()
       },
-    async getContractor() {
+      async getContractor() {
       try {
         let result = await this.sendAjaxWithParams(this.appUrls.getContractor, {});
         this.contractor = result.result.items;
       console.log(this.contractor);
-      } catch (e) {
+        } catch (e) {
         console.log("error", e);
-      }
-    },
-     async save() {
+        }
+      },
+      async save() {
          let params = {
             name: this.contractorObject.name,
             nip: this.contractorObject.nip,
@@ -123,13 +116,13 @@ export default {
           };
 
           try {
-            let result = await this.sendAjaxWithParams(this.appUrls.saveContractor, params);
-
-            console.log(result.messageInfo);    
+            let result = await this.sendAjaxWithParams(this.appUrls.getContractor, params);
+            console.log(result);
           } catch (e) {
            console.error( e);
           }
+        },
     },
-    },
+     
 };
 </script>
