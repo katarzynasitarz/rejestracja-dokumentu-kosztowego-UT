@@ -1,27 +1,46 @@
 <template>
   <v-app>
-    <v-app-bar app color="white" dark>
-
-    </v-app-bar>
-
     <v-content>
+
+      <Contractor :contractorObject="document.contractorObject"/>
+
+      <Document :documentObject="document" />
+      <v-btn @click="showMe()">POKA</v-btn>
+
       <AddDocuments v-model="documents" :path="path" :objectTypeId="objectTypeId"  />
-    </v-content>
+
   </v-app>
 </template>
 
 <script>
-import AddDocuments from "./components/AddDocument";
-
+import Document from "./components/Document";
 export default {
   name: "App",
-
   components: {
-    AddDocuments,
+    Document,
   },
 
-  data: () => ({
-  //
-  }),
+  data() {
+    return {
+      document: {
+        receiveDate: null,
+        issueDate: null,
+        paymentDate: null,
+        invoiceNumber: null,
+        expenseCategory: null,
+        invoiceComments: null,
+      },
+      path: "/Akademia 2020/Testowy/Folder",
+      documents: {
+        items: [],
+      },
+      objectTypeId: "cmis:document",
+    };
+  },
+  methods: {
+    showMe() {
+      console.log(this.document);
+    },
+  },
 };
 </script>

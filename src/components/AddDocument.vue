@@ -89,11 +89,8 @@ n<template>
  *     :documentTypes="documentTypes"
  *   />
  */
-
 import { readUploadedFile } from '@/utils/readUploadedFile.js';
-
 import createBlobFromBase64 from '@/utils/createBlobFromBase64';
-
 export default {
   name: 'DocumentControl',
   props: { 
@@ -150,7 +147,6 @@ export default {
     fileRules: [v => (v && v.length > 0) || 'Załącz dokument'],
     files: null    
   }),
-
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? 'Nowy dokument' : 'Edycja dokumentu';
@@ -163,7 +159,6 @@ export default {
       return result;
     }
   },
-
   watch: {
     dialog(val) {
       val || this.close();
@@ -180,7 +175,6 @@ export default {
   created() {
     this.getDocumentList();
   },
-
   methods: {
     openDeleteDialog(item) {
       this.currentDocument = item;
@@ -198,10 +192,8 @@ export default {
     refresh() {
       this.getDocumentList();
     },
-
     close() {
       this.dialog = false;
-
       /* timeout jest ok, ponieważ aktualizujemy dane dopiero jak zamknie się modal */
       setTimeout(() => {
         this.editedItem = JSON.parse(JSON.stringify(this.defaultItem));
@@ -231,10 +223,8 @@ export default {
             documentName: this.editedItem.contentStream.fileName,
             path: this.path
           };
-
           try {
             let result = await this.sendAjaxWithParams(this.appUrls.createDocumentService, params);
-
             console.log(result.messageInfo);      
             this.close();
             this.getDocumentList();
@@ -243,7 +233,6 @@ export default {
           }
       }
     },
-
     async deleteItem() {
       this.deleteDialog = false;
       var params = {
@@ -252,7 +241,6 @@ export default {
       try {
         let result = await this.sendAjaxWithParams(this.appUrls.deleteDocumentService, params);
        console.log( result.messageInfo);
-
         this.close();
         this.getDocumentList();
       } catch (e) {
@@ -276,13 +264,11 @@ export default {
         var { mimeType } = contentStream;
         var base64 = contentStream.content;
         var blobURL = createBlobFromBase64(base64, mimeType);
-
         var { fileName } = contentStream;
         var downloadLink = document.createElement('a');
         downloadLink.href = blobURL;
         downloadLink.download = fileName;
         downloadLink.setAttribute('target', '_blank');
-
         document.body.appendChild(downloadLink);
         setTimeout(() => {
           downloadLink.click();
