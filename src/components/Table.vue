@@ -106,8 +106,8 @@
             </v-col>
             <v-col cols="4" md="2">
               <v-text-field
-                label="suma netto"
                 type="number"
+                label="suma netto"
                 v-model="sumNetto"
                 suffix="zł"
                 readonly
@@ -116,7 +116,6 @@
             <v-col cols="4" md="2">
               <v-text-field
                 label="suma VAT"
-                type="number"
                 v-model="sumVat"
                 suffix="zł"
                 readonly
@@ -125,7 +124,6 @@
             <v-col cols="4" md="2">
               <v-text-field
                 label="suma brutto"
-                type="number"
                 v-model="sumBrutto"
                 suffix="zł"
                 readonly
@@ -149,17 +147,21 @@ let nextPositionNumber = 1;
 export default {
   name: "Table",
 
+  prop: ["value"],
+
   components: {
     PositionItem,
   },
 
   data: () => ({
-    documentContent: {},
     teams: [],
     positionList: [],
+
+    documentContent: {},
     sumNetto: null,
     sumVat: null,
     sumBrutto: null,
+
     nameRules: [(v) => !!v || "To pole jest obowiązkowe"],
     teamsRules: [(v) => !!v || "To pole jest obowiązkowe"],
     priceRules: [(v) => !!v || "To pole jest obowiązkowe"],
@@ -247,7 +249,16 @@ export default {
           vatValue: documentContent.vatValue,
           brutto: documentContent.brutto,
         });
-        // console.log(this.positionList);
+
+        this.$emit(
+          "input",
+          this.sumNetto,
+          this.sumBrutto,
+          this.sumVat,
+          this.positionList
+        );
+        console.log(this.positionList);
+        // console.log(this.sumNetto);
         // console.log(JSON.parse(JSON.stringify(position)));
         // console.log(JSON.parse(JSON.stringify(position.totalPriceNetto)));
         this.documentContent.itemName = "";
@@ -266,6 +277,10 @@ export default {
         return documentContent.number !== numberToRemove;
       });
     },
+  },
+
+  mounted() {
+    console.log(this.sumNetto);
   },
 };
 </script>

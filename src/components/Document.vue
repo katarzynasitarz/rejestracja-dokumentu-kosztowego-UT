@@ -138,7 +138,7 @@
           <v-card-title class="font-weight-bold">
             Pozycje Kosztowe::
           </v-card-title>
-          <Table />
+          <Table @input="updateObject" />
         </v-card>
 
         <v-card outlined class="mx-6 mb-6">
@@ -174,8 +174,24 @@ export default {
     rules: {
       required: (val) => !!val || "Pole jest wymagane.",
     },
+    documentObject: {
+      documentContent: {
+        items: {
+          positionList: [],
+        },
+      },
+    },
   }),
   methods: {
+    updateObject(sumNetto, sumVat, sumBrutto, positionList) {
+      this.documentObject.sumNetto = sumNetto;
+      this.documentObject.sumVat = sumVat;
+      this.documentObject.sumBrutto = sumBrutto;
+      this.documentObject.document.items.positionList = positionList;
+
+      console.log(this.documentObject.sumNetto);
+      console.log(this.documentObject.document.items.positionList);
+    },
     submit() {
       console.log(this.documentObject.invoiceNumber, this.invoiceComments);
       console.log(typeof this.paymentDate);
