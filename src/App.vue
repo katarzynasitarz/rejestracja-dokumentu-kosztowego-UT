@@ -7,7 +7,8 @@
       <Document :documentObject="document" />
       <v-btn @click="showMe()">POKA</v-btn>
 
-    </v-content>
+      <AddDocuments v-model="documents" :path="path" :objectTypeId="objectTypeId"  />
+
   </v-app>
 </template>
 
@@ -18,6 +19,7 @@ export default {
   components: {
     Document,
   },
+
   data() {
     return {
       document: {
@@ -39,11 +41,6 @@ export default {
     showMe() {
       console.log(this.document);
     },
-  },
-
-  data() {
-    return {
-    }
   },
 };
 </script>
