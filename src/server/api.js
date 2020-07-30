@@ -12,7 +12,19 @@ router.post("/saveContractor", (req, res) => {
     data: {
       data: {
         result: {
-          items: [{ message: "zapisany!" }],
+          items: [
+            { 
+              name: "zapisany!",
+              nip: "zapisany",
+              email: "zapisany",
+              address: {
+                street: 'Bądkowskiego',
+                houseNumber:  '31',
+                postalCode: '97-451',
+                city: 'Kowale'
+                },
+            }
+          ],
         },
       },
     },

@@ -84,7 +84,7 @@
 
             <v-btn
             color="cyan"
-            @click="get"
+            @click="save()"
             dark
             >
             Dodaj
@@ -127,11 +127,16 @@ export default {
         {name:'Dexynfex', value:'NIP:123-08-70-567'},
       ],
   }),
+
+  beforeMount() {
+    this.get();
+  },
  
   methods: {
       reset () {
         this.$refs.form.reset()
       },
+
       async getContractor() {
       try {
         let result = await this.sendAjaxWithParams(this.appUrls.getContractor, {});
@@ -141,11 +146,11 @@ export default {
         console.log("error", e);
         }
       },
+
       async get() {
          let params = {
            contractor: this.contractorObject
           };
-
           try {
             let result = await this.sendAjaxWithParams(this.appUrls.getContractor, params);
             console.log(result);
@@ -153,6 +158,19 @@ export default {
            console.error( e);
           }
         },
+
+        async save() {
+          let params = {
+          contractor: this.contractorObject
+          };
+          try {
+            let result = await this.sendAjaxWithParams(this.appUrls.saveContractor, params);
+            console.log(result);
+          } catch (e) {
+           console.error( e);
+          }
+        }
+        
     },
      
 };
