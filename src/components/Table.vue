@@ -2,6 +2,11 @@
   <v-container>
     <v-row>
       <v-form ref="form">
+        <v-row class="button">
+          <v-btn x-small tile depressed color="cyan" dark @click="addPosition"
+            >Dodaj pozycję</v-btn
+          >
+        </v-row>
         <v-row class="table">
           <v-col>
             <v-text-field
@@ -75,13 +80,9 @@
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-row class="button">
-          <v-btn x-small tile depressed color="cyan" dark @click="addPosition"
-            >Dodaj pozycję</v-btn
-          >
-        </v-row>
+
         <div
-          class="results"
+          class="results ma-6 "
           v-if="currentDocument.documentContent.items.length"
         >
           <v-row class="header" :justify="justify" cols="9">
@@ -282,6 +283,7 @@ export default {
           vatValue: documentContent.vatValue,
           brutto: documentContent.brutto,
         });
+        this.$refs.form.reset();
 
         // this.$emit("input", this.currentDocument);
         console.log(this.currentDocument);

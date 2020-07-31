@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form">
+  <v-form ref="form" v-model="valid">
     <v-expansion-panels>
       <v-expansion-panel v-for="(item, i) in commentList" :key="i">
         <v-expansion-panel-header>Komentarz</v-expansion-panel-header>
@@ -26,6 +26,7 @@
                     v-model="comment.commentAuthor"
                     label="Autor"
                     :rules="[(v) => !!v || 'Pole jest wymagane.']"
+                    required
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
@@ -47,6 +48,7 @@
                         readonly
                         clearable
                         v-on="on"
+                        required
                       ></v-text-field>
                     </template>
                     <v-date-picker
@@ -61,6 +63,7 @@
                     v-model="comment.commentprocessStep"
                     label="Etap procesu"
                     :rules="[(v) => !!v || 'Pole jest wymagane.']"
+                    required
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
@@ -68,6 +71,7 @@
                     v-model="comment.commentText"
                     label="Komentarz"
                     :rules="[(v) => !!v || 'Pole jest wymagane.']"
+                    required
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -97,6 +101,7 @@ export default {
     menu: false,
     dialog: false,
     modal: false,
+    valid: true,
     comment: {
       commentText: "",
       commentAuthor: "",
@@ -104,7 +109,6 @@ export default {
       commentprocessStep: "",
     },
   }),
-
 
   watch: {
     value: {
@@ -116,10 +120,10 @@ export default {
       if (this.caseId) {
         this.getComments();
       }
-    }
+    },
   },
-  mounted(){
-    this.getComments() 
+  mounted() {
+    this.getComments();
   },
   methods: {
     close() {
@@ -139,21 +143,17 @@ export default {
 
     async getComments() {
       if (this.caseId) {
-      let params = { caseId: this.caseId };
-      try {
-        let result = await this.sendAjaxWithParams(
-          this.appUrls.getComments,
-          params
-        );
-        this.commentList = result.comments.items;
-        this.$emit("input", this.commentList);
-        // this.comments.forEach((comment) => {
-        //   this.commentsList.push(comment);
-        // });
-        console.log(this.commentList);
-      } catch (e) {
-        console.log("error", e);
-      }
+        let params = { caseId: this.caseId };
+        try {
+          let result = await this.sendAjaxWithParams(
+            this.appUrls.getComments,
+            params
+          );
+          this.commentList = result.comments.items;
+          this.$emit("input", this.commentList);
+        } catch (e) {
+          console.log("error", e);
+        }
       }
     },
 
@@ -169,7 +169,6 @@ export default {
       };
       try {
         await this.sendAjaxWithParams(this.appUrls.saveComment, params);
-        
         this.getComments();
       } catch (e) {
         console.log(e, "error");
