@@ -180,7 +180,7 @@
             Komentarze:
           </v-card-title>
           <CommentsSection
-            :commentsList="currentDocument.comment.items"
+            v-model="currentDocument.comment.items"
             :caseId="currentDocument.mrcCaseHeader.caseId"
           />
         </v-card>
@@ -243,6 +243,9 @@ export default {
       },
       deep: true,
     },
+  },
+  mounted(){
+    this.currentDocument = this.value;
   },
   methods: {
     async getCons() {

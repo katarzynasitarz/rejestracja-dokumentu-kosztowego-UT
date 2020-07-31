@@ -111,12 +111,10 @@ export default {
       handler(val) {
         this.commentList = val;
       },
-    },
-    caseId(val) {
-    if (val) {
-      this.getComments() 
     }
-    }
+  },
+  mounted(){
+    this.getComments() 
   },
   methods: {
     close() {

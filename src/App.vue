@@ -18,7 +18,16 @@ export default {
   data() {
     return {
       context: window.context,
-      document: window.context ? window.context.binding.get("value") : {mrcCaseHeader: {caseId: 1223}},
+      document: window.context ? window.context.binding.get("value") :   {
+      documentContent: {
+        items: [],
+      },
+      comment: {
+        items: [],
+      },
+      mrcCaseHeader: {caseId: '123'},
+      items: [],
+    },
     };
   },
   closeForm(document) {
