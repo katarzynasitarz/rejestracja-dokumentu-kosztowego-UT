@@ -7,7 +7,6 @@
             v-model="select"
             :items="items"
             label="Wyszukaj Kontrahenta"
-            @change="get"
             multiple
             chips
             item-text="name"
@@ -103,7 +102,7 @@
 
             <v-btn
             color="cyan"
-            @click="save()"
+            @click="saveContractor"
             dark
             >
             Dodaj
@@ -151,9 +150,6 @@ export default {
       ],
   }),
 
-  beforeMount() {
-    this.get();
-  },
   watch: {
     value: {
       handler(val) {
@@ -166,28 +162,28 @@ export default {
         this.$refs.form.reset()
       },
 
-      async getContractor() {
-      try {
-        let result = await this.sendAjaxWithParams(this.appUrls.getContractor, {});
-        this.visibility = result.exists;
-        } catch (e) {
-        console.log("error", e);
-        }
-      },
+      // async getContractor() {
+      // try {
+      //   let result = await this.sendAjaxWithParams(this.appUrls.getContractor, {});
+      //   this.visibility = result.exists;
+      //   } catch (e) {
+      //   console.log("error", e);
+      //   }
+      // },
 
-      async get() {
-         let params = {
-           contractor: this.contractorObject
-          };
-          try {
-            let result = await this.sendAjaxWithParams(this.appUrls.getContractor, params);
-            console.log(result);
-          } catch (e) {
-           console.error( e);
-          }
-        },
+      // async get() {
+      //    let params = {
+      //      contractor: this.contractorObject
+      //     };
+      //     try {
+      //       let result = await this.sendAjaxWithParams(this.appUrls.getContractor, params);
+      //       console.log(result);
+      //     } catch (e) {
+      //      console.error( e);
+      //     }
+      //   },
 
-        async save() {
+        async saveContractor() {
           let params = {
           contractor: this.newContractor
           
