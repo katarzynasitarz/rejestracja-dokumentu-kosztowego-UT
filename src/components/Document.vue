@@ -139,14 +139,14 @@
 
         <v-card outlined class="mx-6 mb-6">
           <AddDocument
-            v-model="currentDocument"
+            v-model="currentDocument.items"
             :path="currentDocument.path"
             :objectTypeId="objectTypeId"
             :disabled="true"
             title="Faktura"
           />
           <AddDocument
-            v-model="currentDocument"
+            v-model="currentDocument.items"
             :path="currentDocument.path"
             :objectTypeId="objectTypeId"
             title="Załączniki"
@@ -171,7 +171,7 @@
             Komentarze:
           </v-card-title>
           <CommentsSection
-            :commentsList="currentDocument.comment.items"
+            v-model="currentDocument.comment.items"
             :caseId="currentDocument.mrcCaseHeader.caseId"
           />
         </v-card>
@@ -207,6 +207,7 @@ export default {
         items: [],
       },
       mrcCaseHeader: {},
+      items: [],
     },
     menu1: false,
     menu2: false,
@@ -231,10 +232,13 @@ export default {
     },
     currentDocument: {
       handler() {
-        this.$emit("input", this.currentDocument);
+        // this.$emit("input", this.currentDocument);
       },
       deep: true,
     },
+  },
+  mounted() {
+    this.currentDocument = this.value;
   },
   methods: {
     async getCons() {
@@ -247,27 +251,11 @@ export default {
       }
     },
 
-    //   submit() {
-    //     this.formHasErrors = false;
-    //     Object.keys(this.form.documentObject).forEach((f) => {
-    //       if (!this.form.documentObject[f]) this.formHasErrors = true;
-    //       this.$refs.form.validate();
-    //     });
-    //   },
-    // },
-    // computed: {
-    //   form() {
-    //     return {
-    //       documentObject: {
-    //         receivedDate: this.receivedDate,
-    //         issueDate: this.issueDate,
-    //         paymentDate: this.paymentDate,
-    //         invoiceNumber: this.invoiceNumber,
-    //         expenseCategory: this.expenseCategory,
-    //         invoiceComments: this.invoiceComments,
-    //       },
-    //     };
-    //   },
+    submit() {
+      if (this.$refs.form.validate()) {
+        console.log("NO ELO");
+      }
+    },
   },
 };
 </script>
