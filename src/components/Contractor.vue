@@ -49,7 +49,28 @@
             ></v-text-field>
 
             <v-text-field
-            v-model="newContractor.address"
+            v-model="newContractor.address.street"
+            :rules="adresRules"
+            label="Adres firmy"
+            required
+            ></v-text-field>
+
+            <v-text-field
+            v-model="newContractor.address.houseNumber"
+            :rules="adresRules"
+            label="Adres firmy"
+            required
+            ></v-text-field>
+
+            <v-text-field
+            v-model="newContractor.address.postalCode"
+            :rules="adresRules"
+            label="Adres firmy"
+            required
+            ></v-text-field>
+
+            <v-text-field
+            v-model="newContractor.address.city"
             :rules="adresRules"
             label="Adres firmy"
             required
@@ -103,7 +124,9 @@ export default {
   
   data: () => ({
       contractorObject: {},
-      newContractor: {},
+      newContractor: {
+        address: {}
+      },
       visibility: true,
       valid: true,
       nameRules: [
@@ -167,6 +190,7 @@ export default {
         async save() {
           let params = {
           contractor: this.newContractor
+          
           };
           try {
             let result = await this.sendAjaxWithParams(this.appUrls.saveContractor, params);

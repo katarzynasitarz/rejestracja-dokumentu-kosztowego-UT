@@ -111,6 +111,11 @@ export default {
       handler(val) {
         this.commentList = val;
       },
+    },
+    caseId() {
+      if (this.caseId) {
+        this.getComments();
+      }
     }
   },
   mounted(){
@@ -133,7 +138,7 @@ export default {
     },
 
     async getComments() {
-      if (!this.caseId) {
+      if (this.caseId) {
       let params = { caseId: this.caseId };
       try {
         let result = await this.sendAjaxWithParams(
