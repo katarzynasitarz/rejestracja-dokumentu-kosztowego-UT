@@ -169,7 +169,7 @@ export default {
       },
       mrcCaseHeader: {},
     },
-    
+
     sumNetto: null,
     sumVat: null,
     sumBrutto: null,
@@ -247,9 +247,9 @@ export default {
             0
           ) * 100
         ) / 100;
-        if (this.currentDocument.mrcCaseHeader.caseId) {
-          // this.$emit("input", this.currentDocument);
-        }
+      if (this.currentDocument.mrcCaseHeader.caseId) {
+        // this.$emit("input", this.currentDocument);
+      }
     },
   },
   computed: {},
@@ -312,10 +312,10 @@ export default {
 
 <style lang="scss">
 .table {
-  padding: 0 15px;
+  // padding: 0 15px;
 }
 .button {
-  padding: 0 30px 15px;
+  // padding: 0 30px 15px;
   justify-content: end;
 }
 .results {
@@ -323,7 +323,7 @@ export default {
 }
 .valid {
   color: red;
-  padding: 0 30px;
+  // padding: 0 30px;
 }
 .total p {
   text-align: right;
