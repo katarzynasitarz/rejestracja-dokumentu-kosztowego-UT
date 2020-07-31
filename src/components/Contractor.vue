@@ -45,14 +45,14 @@
           <v-text-field
             v-model="newContractor.address.street"
             :rules="adresRules"
-            label="Adres firmy"
+            label="Ulica"
             required
           ></v-text-field> </v-col
         ><v-col cols="12" md="4">
           <v-text-field
             v-model="newContractor.address.houseNumber"
             :rules="adresRules"
-            label="Adres firmy"
+            label="numer domu"
             required
           ></v-text-field>
         </v-col> </v-row
@@ -61,14 +61,14 @@
           <v-text-field
             v-model="newContractor.address.postalCode"
             :rules="adresRules"
-            label="Adres firmy"
+            label="kod pocztowy"
             required
           ></v-text-field> </v-col
         ><v-col cols="12" md="4">
           <v-text-field
             v-model="newContractor.address.city"
             :rules="adresRules"
-            label="Adres firmy"
+            label="miasto"
             required
           ></v-text-field> </v-col
         ><v-col cols="12" md="4">
@@ -93,9 +93,14 @@
       </v-row>
       <v-btn color="dark grey" class="mr-4" @click="reset" dark> Wyczyść</v-btn>
 
+<<<<<<< HEAD
       <v-btn color="cyan" @click="saveContractor" dark>
         Dodaj
       </v-btn>
+=======
+           <v-alert type="success" v-if="visibility"> Taki kontrahent istnieje w bazie </v-alert>
+        </v-row>
+>>>>>>> e727dea4003e9060021069c547f1a950ca36b637
     </v-form>
   </v-container>
 </template>
@@ -106,6 +111,7 @@ export default {
   props: ["value"],
 
   data: () => ({
+<<<<<<< HEAD
     contractorObject: {},
     newContractor: {
       address: {},
@@ -128,6 +134,35 @@ export default {
       { name: "Pamiątki z podróży", value: "NIP:356-00-10-056" },
       { name: "Dexynfex", value: "NIP:123-08-70-567" },
     ],
+=======
+      contractorObject: {},
+      newContractor: {
+        address: {}
+      },
+      visibility: false,
+      valid: true,
+      nameRules: [
+        v => !!v || 'Należy wprowadzić nazwę firmy',
+      ],
+      emailRules: [
+        v => !!v || 'Należy wprowadzić e-mail firmy',
+        v => /.+@.+\..+/.test(v) || 'Pamiętaj, e-mail ma swoją strukturę',
+      ],
+      adresRules: [
+      v => !!v || 'Adres firmy jest wymagany',
+      ],
+      nipRules: [
+        v => !!v || 'Proszę wprowadzić NIP firmy',
+        v => (v && v.length == 10) || 'NIP musi zawierać 10 cyfr',
+      ],
+      select: [],
+      items: [
+        {name:'Drogi, Pamiętniku', value:'NIP:106-34-00-062'},
+        {name:'Pamiątki z podróży', value:'NIP:356-00-10-056'},
+        {name:'Dexynfex', value:'NIP:123-08-70-567'},
+        {name:'Kuchnia Węgierska', value:'NIP:134-12-10-042'},
+      ],
+>>>>>>> e727dea4003e9060021069c547f1a950ca36b637
   }),
 
   watch: {
@@ -142,6 +177,7 @@ export default {
       this.$refs.form.reset();
     },
 
+<<<<<<< HEAD
     // async getContractor() {
     // try {
     //   let result = await this.sendAjaxWithParams(this.appUrls.getContractor, {});
@@ -176,6 +212,19 @@ export default {
           console.log(result);
         } catch (e) {
           console.error(e);
+=======
+        async saveContractor() {
+          let params = {
+          contractor: this.newContractor
+          };
+          try {
+            let result = await this.sendAjaxWithParams(this.appUrls.saveContractor, params);      
+           this.visibility = result.exists;
+            console.log(result);
+          } catch (e) {
+           console.error( e);
+          }
+>>>>>>> e727dea4003e9060021069c547f1a950ca36b637
         }
       }
     },
