@@ -2,7 +2,7 @@
   <li>
     <v-row :justify="justify" cols="9">
       <v-col>{{ documentContent.itemName }}</v-col>
-      <v-col>{{ documentContent.department }}</v-col>
+      <v-col>{{ documentContent.department.name }}</v-col>
       <v-col>{{ documentContent.unitPrice }} zł</v-col>
       <v-col>{{ documentContent.vat }} %</v-col>
       <v-col>{{ documentContent.itemQuantity }}</v-col>

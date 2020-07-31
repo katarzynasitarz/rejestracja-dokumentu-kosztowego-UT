@@ -132,7 +132,7 @@
 
         <v-card outlined class="mx-6 mb-6">
           <v-card-title class="font-weight-bold">
-            Pozycje Kosztowe::
+            Pozycje Kosztowe:
           </v-card-title>
           <Table v-model="currentDocument" />
         </v-card>
@@ -153,28 +153,19 @@
           />
         </v-card>
 
-        <v-card outlined class="mx-6 mb-6">
-          <v-card-title class="font-weight-bold">
-            Dalsze działanie:
-          </v-card-title>
-          <v-row justify="space-around">
-            <v-radio-group v-model="status" :mandatory="true" row>
-              <v-radio label="Koniec procesowania"></v-radio>
-              <v-radio label="Wysyłam do akceptacji"></v-radio>
-              <v-radio label="Wysyłam do konsultacji"></v-radio>
-            </v-radio-group>
+        <v-card outlined class="mx-6 mb-6" style="padding: 10px 20px">
+          <h3>Czy wysłać do konsultacji?</h3>
+          <v-checkbox
+            v-model="isConsulted"
+            label="Wyślij do konsultacji."
+          ></v-checkbox>
 
-            <v-combobox
-              :items="cons"
-              item-text="fullName"
-              label="dział odpowiedzialny"
-            ></v-combobox>
-          </v-row>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta saepe
-          provident, ab accusantium sunt totam delectus molestiae illo modi
-          quasi quis tempora suscipit fuga tenetur repellendus magnam quam
-          excepturi optio?</v-card
-        >
+          <v-combobox
+            :items="cons"
+            item-text="name"
+            label="Konsultant"
+          ></v-combobox>
+        </v-card>
         <v-card outlined class="mx-6 mb-6">
           <v-card-title class="font-weight-bold">
             Komentarze:
@@ -226,7 +217,9 @@ export default {
     rules: {
       required: (val) => !!val || "Pole jest wymagane.",
     },
-    status: "Koniec procesowania",
+
+    isConsulted: true,
+
     cons: [],
     objectTypeId: "cmis:document",
   }),
@@ -244,7 +237,7 @@ export default {
       deep: true,
     },
   },
-  mounted(){
+  mounted() {
     this.currentDocument = this.value;
   },
   methods: {

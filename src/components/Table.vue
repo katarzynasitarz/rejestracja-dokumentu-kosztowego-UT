@@ -14,6 +14,7 @@
             <v-combobox
               v-model="documentContent.department"
               :items="teams"
+              item-text="name"
               label="dział odpowiedzialny"
               :rules="teamsRules"
               item-text="name"
@@ -24,6 +25,7 @@
               type="number"
               label="cena jednostkowa netto"
               v-model="documentContent.unitPrice"
+              min="0,01"
               suffix="zł"
               :rules="priceRules"
             ></v-text-field>
@@ -32,6 +34,7 @@
             <v-text-field
               type="number"
               label="ilość"
+              min="1"
               v-model="documentContent.itemQuantity"
               :rules="amountRules"
             ></v-text-field>
@@ -40,6 +43,7 @@
             <v-text-field
               type="number"
               label="VAT %"
+              min="0,01"
               v-model="documentContent.vat"
               :rules="vatRules"
             ></v-text-field>
