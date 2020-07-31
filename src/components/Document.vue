@@ -26,11 +26,7 @@
                     <v-text-field
                       v-model="currentDocument.receivedDate"
                       label="Data wpłynięcia"
-                      :rules="[
-                        v =>
-                          !!v ||
-                          'Pole jest wymagane.',
-                      ]"
+                      :rules="[(v) => !!v || 'Pole jest wymagane.']"
                       prepend-icon="mdi-calendar-clock"
                       readonly
                       clearable
@@ -64,7 +60,10 @@
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker v-model="currentDocument.issueDate" locale="pl">
+                  <v-date-picker
+                    v-model="currentDocument.issueDate"
+                    locale="pl"
+                  >
                   </v-date-picker>
                 </v-menu>
               </v-col>
@@ -133,39 +132,40 @@
 
         <v-card outlined class="mx-6 mb-6">
           <v-card-title class="font-weight-bold">
-            Pozycje Kosztowe::
+            Pozycje Kosztowe:
           </v-card-title>
           <Table v-model="currentDocument" />
         </v-card>
 
         <v-card outlined class="mx-6 mb-6">
-      
-          <AddDocument v-model="currentDocument" :path="currentDocument.path" :objectTypeId="objectTypeId" :disabled='true' title="Faktura"/>
-          <AddDocument v-model="currentDocument" :path="currentDocument.path" :objectTypeId="objectTypeId" title="Załączniki" />
+          <AddDocument
+            v-model="currentDocument"
+            :path="currentDocument.path"
+            :objectTypeId="objectTypeId"
+            :disabled="true"
+            title="Faktura"
+          />
+          <AddDocument
+            v-model="currentDocument"
+            :path="currentDocument.path"
+            :objectTypeId="objectTypeId"
+            title="Załączniki"
+          />
         </v-card>
 
-        <v-card outlined class="mx-6 mb-6">
-          <v-card-title class="font-weight-bold">
-            Dalsze działanie:
-          </v-card-title>
-          <v-row justify="space-around">
-            <v-radio-group v-model="status" :mandatory="true" row>
-              <v-radio label="Koniec procesowania"></v-radio>
-              <v-radio label="Wysyłam do akceptacji"></v-radio>
-              <v-radio label="Wysyłam do konsultacji"></v-radio>
-            </v-radio-group>
+        <v-card outlined class="mx-6 mb-6" style="padding: 10px 20px">
+          <h3>Czy wysłać do konsultacji?</h3>
+          <v-checkbox
+            v-model="isConsulted"
+            label="Wyślij do konsultacji."
+          ></v-checkbox>
 
-            <v-combobox
-              :items="cons"
-              item-text="fullName"
-              label="dział odpowiedzialny"
-            ></v-combobox>
-          </v-row>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta saepe
-          provident, ab accusantium sunt totam delectus molestiae illo modi
-          quasi quis tempora suscipit fuga tenetur repellendus magnam quam
-          excepturi optio?</v-card
-        >
+          <v-combobox
+            :items="cons"
+            item-text="name"
+            label="Konsultant"
+          ></v-combobox>
+        </v-card>
         <v-card outlined class="mx-6 mb-6">
           <v-card-title class="font-weight-bold">
             Komentarze:
@@ -189,12 +189,12 @@ import CommentsSection from "./CommentsSection";
 
 export default {
   name: "Document",
-  
+
   components: {
     CommentsSection,
     Table,
     Contractor,
-    AddDocument
+    AddDocument,
   },
   props: { value: Object },
 
@@ -216,9 +216,11 @@ export default {
     rules: {
       required: (val) => !!val || "Pole jest wymagane.",
     },
-    status: "Koniec procesowania",
+
+    isConsulted: true,
+
     cons: [],
-    objectTypeId: 'cmis:document',
+    objectTypeId: "cmis:document",
   }),
   beforeMount() {
     this.getCons();
@@ -229,10 +231,10 @@ export default {
     },
     currentDocument: {
       handler() {
-            this.$emit('input', this.currentDocument)
+        this.$emit("input", this.currentDocument);
       },
-      deep: true
-   },
+      deep: true,
+    },
   },
   methods: {
     async getCons() {
@@ -245,27 +247,27 @@ export default {
       }
     },
 
-  //   submit() {
-  //     this.formHasErrors = false;
-  //     Object.keys(this.form.documentObject).forEach((f) => {
-  //       if (!this.form.documentObject[f]) this.formHasErrors = true;
-  //       this.$refs.form.validate();
-  //     });
-  //   },
-  // },
-  // computed: {
-  //   form() {
-  //     return {
-  //       documentObject: {
-  //         receivedDate: this.receivedDate,
-  //         issueDate: this.issueDate,
-  //         paymentDate: this.paymentDate,
-  //         invoiceNumber: this.invoiceNumber,
-  //         expenseCategory: this.expenseCategory,
-  //         invoiceComments: this.invoiceComments,
-  //       },
-  //     };
-  //   },
+    //   submit() {
+    //     this.formHasErrors = false;
+    //     Object.keys(this.form.documentObject).forEach((f) => {
+    //       if (!this.form.documentObject[f]) this.formHasErrors = true;
+    //       this.$refs.form.validate();
+    //     });
+    //   },
+    // },
+    // computed: {
+    //   form() {
+    //     return {
+    //       documentObject: {
+    //         receivedDate: this.receivedDate,
+    //         issueDate: this.issueDate,
+    //         paymentDate: this.paymentDate,
+    //         invoiceNumber: this.invoiceNumber,
+    //         expenseCategory: this.expenseCategory,
+    //         invoiceComments: this.invoiceComments,
+    //       },
+    //     };
+    //   },
   },
 };
 </script>
