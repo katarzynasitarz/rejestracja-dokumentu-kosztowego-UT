@@ -17,7 +17,6 @@
               item-text="name"
               label="dział odpowiedzialny"
               :rules="teamsRules"
-              item-text="name"
             ></v-combobox>
           </v-col>
           <v-col>
