@@ -50,28 +50,28 @@
             <v-text-field
             v-model="newContractor.address.street"
             :rules="adresRules"
-            label="Adres firmy"
+            label="Ulica"
             required
             ></v-text-field>
 
             <v-text-field
             v-model="newContractor.address.houseNumber"
             :rules="adresRules"
-            label="Adres firmy"
+            label="numer domu"
             required
             ></v-text-field>
 
             <v-text-field
             v-model="newContractor.address.postalCode"
             :rules="adresRules"
-            label="Adres firmy"
+            label="kod pocztowy"
             required
             ></v-text-field>
 
             <v-text-field
             v-model="newContractor.address.city"
             :rules="adresRules"
-            label="Adres firmy"
+            label="miasto"
             required
             ></v-text-field>
 
@@ -108,7 +108,7 @@
             Dodaj
             </v-btn>
 
-           <!-- <v-alert type="success" v-if="visibility"> Taki kontrahent istnieje w bazie </v-alert> -->
+           <v-alert type="success" v-if="visibility"> Taki kontrahent istnieje w bazie </v-alert>
         </v-row>
     </v-form>
     
@@ -126,7 +126,7 @@ export default {
       newContractor: {
         address: {}
       },
-      visibility: true,
+      visibility: false,
       valid: true,
       nameRules: [
         v => !!v || 'Należy wprowadzić nazwę firmy',
@@ -147,6 +147,7 @@ export default {
         {name:'Drogi, Pamiętniku', value:'NIP:106-34-00-062'},
         {name:'Pamiątki z podróży', value:'NIP:356-00-10-056'},
         {name:'Dexynfex', value:'NIP:123-08-70-567'},
+        {name:'Kuchnia Węgierska', value:'NIP:134-12-10-042'},
       ],
   }),
 
@@ -186,10 +187,10 @@ export default {
         async saveContractor() {
           let params = {
           contractor: this.newContractor
-          
           };
           try {
-            let result = await this.sendAjaxWithParams(this.appUrls.saveContractor, params);
+            let result = await this.sendAjaxWithParams(this.appUrls.saveContractor, params);      
+           this.visibility = result.exists;
             console.log(result);
           } catch (e) {
            console.error( e);
