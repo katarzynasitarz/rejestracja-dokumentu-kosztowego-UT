@@ -2,17 +2,18 @@
   <v-container>
     <v-row>
       <v-form ref="form">
-        <v-row class="button">
+        <v-row class="justify-end pr-6">
           <v-btn x-small tile depressed color="cyan" dark @click="addPosition"
             >Dodaj pozycję</v-btn
           >
         </v-row>
-        <v-row class="table">
+        <v-row class="px-3">
           <v-col>
             <v-text-field
-              label="nazwa"
               v-model="documentContent.itemName"
               :rules="nameRules"
+              hint="nazwa"
+              persistent-hint
             ></v-text-field>
           </v-col>
           <v-col>
@@ -20,14 +21,16 @@
               v-model="documentContent.department"
               :items="teams"
               item-text="name"
-              label="dział odpowiedzialny"
+              hint="dział odpowiedzialny"
+              persistent-hint
               :rules="teamsRules"
             ></v-combobox>
           </v-col>
           <v-col>
             <v-text-field
               type="number"
-              label="cena jednostkowa netto"
+              hint="cena jednostkowa netto"
+              persistent-hint
               v-model="documentContent.unitPrice"
               min="0,01"
               suffix="zł"
@@ -37,16 +40,20 @@
           <v-col>
             <v-text-field
               type="number"
-              label="ilość"
+              hint="ilość"
+              persistent-hint
               min="1"
               v-model="documentContent.itemQuantity"
               :rules="amountRules"
             ></v-text-field>
           </v-col>
+        </v-row>
+        <v-row class="px-3">
           <v-col>
             <v-text-field
               type="number"
-              label="VAT %"
+              hint="VAT %"
+              persistent-hint
               min="0,01"
               v-model="documentContent.vat"
               :rules="vatRules"
@@ -55,7 +62,8 @@
           <v-col>
             <v-text-field
               type="number"
-              label="wartość netto"
+              hint="wartość netto"
+              persistent-hint
               v-model="documentContent.netto"
               suffix="zł"
               readonly
@@ -64,7 +72,8 @@
           <v-col>
             <v-text-field
               type="number"
-              label="wartość VAT"
+              hint="wartość VAT"
+              persistent-hint
               v-model="documentContent.vatValue"
               suffix="zł"
               readonly
@@ -73,7 +82,8 @@
           <v-col>
             <v-text-field
               type="number"
-              label="wartość brutto"
+              hint="wartość brutto"
+              persistent-hint
               v-model="documentContent.brutto"
               suffix="zł"
               readonly
@@ -82,10 +92,13 @@
         </v-row>
 
         <div
-          class="results ma-6 "
+          class="results ma-2 "
           v-if="currentDocument.documentContent.items.length"
         >
-          <v-row class="header" :justify="justify" cols="9">
+          <v-row
+            class="justify-center text-center text-uppercase grey--text caption"
+            cols="9"
+          >
             <v-col>nazwa</v-col>
             <v-col>dział odpowiedzialny</v-col>
             <v-col>cena</v-col>
@@ -108,9 +121,10 @@
               @remove="removePosition"
             />
           </ol>
-          <v-row class="total">
+          <v-spacer></v-spacer>
+          <v-row class="total teal lighten-5">
             <v-col>
-              <p>razem:</p>
+              <p class="text-uppercase">razem:</p>
             </v-col>
             <v-col cols="4" md="2">
               <v-text-field
@@ -139,7 +153,7 @@
             </v-col>
           </v-row>
         </div>
-        <v-row class="valid" v-else>
+        <v-row class="pl-6 red--text" v-else>
           <p>Dodaj przynajmniej jedną pozycję.</p>
         </v-row>
       </v-form>
@@ -180,7 +194,6 @@ export default {
     priceRules: [(v) => !!v || "To pole jest obowiązkowe"],
     amountRules: [(v) => !!v || "To pole jest obowiązkowe"],
     vatRules: [(v) => !!v || "To pole jest obowiązkowe"],
-    justify: "center",
   }),
   beforeMount() {
     this.getTeams();
@@ -311,28 +324,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.table {
-  // padding: 0 15px;
-}
-.button {
-  // padding: 0 30px 15px;
-  justify-content: end;
-}
-.results {
-  padding: 0 15px;
-}
-.valid {
-  color: red;
-  // padding: 0 30px;
-}
-.total p {
-  text-align: right;
-}
-.header {
-  // text-align: center;
-  font-size: smaller;
-  border-bottom: 1px solid #000;
-}
-</style>

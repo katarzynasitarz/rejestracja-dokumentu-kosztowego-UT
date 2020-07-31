@@ -90,17 +90,17 @@
         ></v-col>
 
         <!-- <v-alert type="success" v-if="visibility"> Taki kontrahent istnieje w bazie </v-alert> -->
-      </v-row>
-      <v-btn color="dark grey" class="mr-4" @click="reset" dark> Wyczyść</v-btn>
 
-<<<<<<< HEAD
-      <v-btn color="cyan" @click="saveContractor" dark>
-        Dodaj
-      </v-btn>
-=======
-           <v-alert type="success" v-if="visibility"> Taki kontrahent istnieje w bazie </v-alert>
-        </v-row>
->>>>>>> e727dea4003e9060021069c547f1a950ca36b637
+        <v-btn color="dark grey" class="mr-4" @click="reset" dark>
+          Wyczyść</v-btn
+        >
+        <v-btn color="cyan" @click="saveContractor" dark>
+          Dodaj
+        </v-btn>
+        <v-alert type="success" v-if="visibility">
+          Taki kontrahent istnieje w bazie
+        </v-alert>
+      </v-row>
     </v-form>
   </v-container>
 </template>
@@ -111,12 +111,12 @@ export default {
   props: ["value"],
 
   data: () => ({
-<<<<<<< HEAD
     contractorObject: {},
     newContractor: {
       address: {},
     },
-    visibility: true,
+
+    visibility: false,
     valid: true,
     nameRules: [(v) => !!v || "Należy wprowadzić nazwę firmy"],
     emailRules: [
@@ -133,36 +133,8 @@ export default {
       { name: "Drogi, Pamiętniku", value: "NIP:106-34-00-062" },
       { name: "Pamiątki z podróży", value: "NIP:356-00-10-056" },
       { name: "Dexynfex", value: "NIP:123-08-70-567" },
+      { name: "Kuchnia Węgierska", value: "NIP:134-12-10-042" },
     ],
-=======
-      contractorObject: {},
-      newContractor: {
-        address: {}
-      },
-      visibility: false,
-      valid: true,
-      nameRules: [
-        v => !!v || 'Należy wprowadzić nazwę firmy',
-      ],
-      emailRules: [
-        v => !!v || 'Należy wprowadzić e-mail firmy',
-        v => /.+@.+\..+/.test(v) || 'Pamiętaj, e-mail ma swoją strukturę',
-      ],
-      adresRules: [
-      v => !!v || 'Adres firmy jest wymagany',
-      ],
-      nipRules: [
-        v => !!v || 'Proszę wprowadzić NIP firmy',
-        v => (v && v.length == 10) || 'NIP musi zawierać 10 cyfr',
-      ],
-      select: [],
-      items: [
-        {name:'Drogi, Pamiętniku', value:'NIP:106-34-00-062'},
-        {name:'Pamiątki z podróży', value:'NIP:356-00-10-056'},
-        {name:'Dexynfex', value:'NIP:123-08-70-567'},
-        {name:'Kuchnia Węgierska', value:'NIP:134-12-10-042'},
-      ],
->>>>>>> e727dea4003e9060021069c547f1a950ca36b637
   }),
 
   watch: {
@@ -176,56 +148,19 @@ export default {
     reset() {
       this.$refs.form.reset();
     },
-
-<<<<<<< HEAD
-    // async getContractor() {
-    // try {
-    //   let result = await this.sendAjaxWithParams(this.appUrls.getContractor, {});
-    //   this.visibility = result.exists;
-    //   } catch (e) {
-    //   console.log("error", e);
-    //   }
-    // },
-
-    // async get() {
-    //    let params = {
-    //      contractor: this.contractorObject
-    //     };
-    //     try {
-    //       let result = await this.sendAjaxWithParams(this.appUrls.getContractor, params);
-    //       console.log(result);
-    //     } catch (e) {
-    //      console.error( e);
-    //     }
-    //   },
-
     async saveContractor() {
-      if (this.$refs.form.validate()) {
-        let params = {
-          contractor: this.newContractor,
-        };
-        try {
-          let result = await this.sendAjaxWithParams(
-            this.appUrls.saveContractor,
-            params
-          );
-          console.log(result);
-        } catch (e) {
-          console.error(e);
-=======
-        async saveContractor() {
-          let params = {
-          contractor: this.newContractor
-          };
-          try {
-            let result = await this.sendAjaxWithParams(this.appUrls.saveContractor, params);      
-           this.visibility = result.exists;
-            console.log(result);
-          } catch (e) {
-           console.error( e);
-          }
->>>>>>> e727dea4003e9060021069c547f1a950ca36b637
-        }
+      let params = {
+        contractor: this.newContractor,
+      };
+      try {
+        let result = await this.sendAjaxWithParams(
+          this.appUrls.saveContractor,
+          params
+        );
+        this.visibility = result.exists;
+        console.log(result);
+      } catch (e) {
+        console.error(e);
       }
     },
   },
