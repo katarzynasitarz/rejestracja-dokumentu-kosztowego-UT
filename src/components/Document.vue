@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form">
+  <v-form ref="form" lazy-validation>
     <v-card-text class="grey lighten-4">
       <v-sheet width="1000" height="auto" class="mx-auto pa-8">
         <v-card-text align="center" class="py-10">
@@ -31,11 +31,13 @@
                       readonly
                       clearable
                       v-on="on"
+                      validate-on-blur
                     ></v-text-field>
                   </template>
                   <v-date-picker
                     v-model="currentDocument.receivedDate"
                     locale="pl"
+                    validate-on-blur
                   >
                   </v-date-picker>
                 </v-menu>
@@ -58,11 +60,13 @@
                       readonly
                       clearable
                       v-on="on"
+                      validate-on-blur
                     ></v-text-field>
                   </template>
                   <v-date-picker
                     v-model="currentDocument.issueDate"
                     locale="pl"
+                    validate-on-blur
                   >
                   </v-date-picker>
                 </v-menu>
@@ -85,11 +89,13 @@
                       readonly
                       clearable
                       v-on="on"
+                      validate-on-blur
                     ></v-text-field>
                   </template>
                   <v-date-picker
                     v-model="currentDocument.paymentDate"
                     locale="pl"
+                    validate-on-blur
                   >
                   </v-date-picker>
                 </v-menu>
@@ -101,6 +107,7 @@
                   :rules="[rules.required]"
                   label="Nr faktury"
                   v-model="currentDocument.invoiceNumber"
+                  validate-on-blur
                 >
                 </v-text-field>
               </v-col>
@@ -110,6 +117,7 @@
                   :rules="[rules.required]"
                   label="Kategoria wydatku"
                   v-model="currentDocument.expenseCategory"
+                  validate-on-blur
                 ></v-text-field>
               </v-col>
               <v-col cols="12" md="4">
@@ -118,6 +126,7 @@
                   label="Uwagi do dokumentu"
                   rows="2"
                   v-model="currentDocument.invoiceComments"
+                  validate-on-blur
                 ></v-textarea>
               </v-col> </v-row
           ></v-container>
@@ -200,6 +209,9 @@ export default {
 
   data: () => ({
     currentDocument: {
+      receivedDate: new Date().toISOString().substr(0, 10),
+      issueDate: new Date().toISOString().substr(0, 10),
+      paymentDate: new Date().toISOString().substr(0, 10),
       documentContent: {
         items: [],
       },
@@ -226,6 +238,7 @@ export default {
   beforeMount() {
     this.getCons();
   },
+
   watch: {
     value(val) {
       this.currentDocument = val;
