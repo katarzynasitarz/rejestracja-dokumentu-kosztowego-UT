@@ -45,7 +45,6 @@
                     ref="menu"
                     v-model="menu"
                     :close-on-content-click="true"
-                    :return-value.sync="comment.dateAdded"
                     transition="scale-transition"
                     offset-y
                     min-width="290px"

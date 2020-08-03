@@ -137,10 +137,10 @@
         <v-card outlined class="mx-6 mb-6">
           <v-toolbar :color="color" class="text-uppercase pl-2">
             <v-toolbar-title>
-            Kontrahent
+              Kontrahent
             </v-toolbar-title>
           </v-toolbar>
-          
+
           <Contractor v-model="currentDocument.contractor" />
         </v-card>
 
@@ -149,9 +149,13 @@
             <v-toolbar-title>
               Pozycje Kosztowe
             </v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn small tile :color="btnColor" dark @click="addPosition"
+              ><v-icon dark left small>mdi-plus</v-icon>Dodaj pozycję</v-btn
+            >
           </v-toolbar>
 
-          <Table v-model="currentDocument" />
+          <Table v-model="currentDocument" ref="addPositionRef" />
         </v-card>
 
         <v-card outlined class="mx-6 mb-6">
@@ -237,6 +241,7 @@ export default {
       comment: {
         items: [],
       },
+      contractor: {},
       mrcCaseHeader: {},
       items: [],
     },
@@ -254,6 +259,7 @@ export default {
     cons: [],
     objectTypeId: "cmis:document",
     color: "cyan lighten-3",
+    btnColor: "blue-grey darken-2",
   }),
   beforeMount() {
     this.getCons();
@@ -274,6 +280,10 @@ export default {
     this.currentDocument = this.value;
   },
   methods: {
+    addPosition() {
+      this.$refs.addPositionRef.addPosition();
+      console.log(this.currentDocument);
+    },
     async getCons() {
       try {
         let result = await this.sendAjaxWithParams(this.appUrls.getCons, {});
