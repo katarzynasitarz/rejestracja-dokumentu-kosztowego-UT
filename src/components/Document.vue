@@ -7,9 +7,11 @@
         </v-card-text>
 
         <v-card outlined class="mx-6 mb-6">
-          <v-card-title class="font-weight-bold">
-            Podstawowe dane dokumentu:
-          </v-card-title>
+          <v-toolbar :color="color" class="text-uppercase pl-2">
+            <v-toolbar-title>
+              Podstawowe dane dokumentu
+            </v-toolbar-title>
+          </v-toolbar>
 
           <v-container>
             <v-row>
@@ -133,20 +135,31 @@
         </v-card>
 
         <v-card outlined class="mx-6 mb-6">
-          <v-card-title class="font-weight-bold">
-            Dane kontrahenta:
-          </v-card-title>
+          <v-toolbar :color="color" class="text-uppercase pl-2">
+            <v-toolbar-title>
+              Dane kontrahenta
+            </v-toolbar-title>
+          </v-toolbar>
+
           <Contractor v-model="currentDocument.contractor" />
         </v-card>
 
         <v-card outlined class="mx-6 mb-6">
-          <v-card-title class="font-weight-bold">
-            Pozycje Kosztowe:
-          </v-card-title>
+          <v-toolbar :color="color" class="text-uppercase pl-2">
+            <v-toolbar-title>
+              Pozycje Kosztowe
+            </v-toolbar-title>
+          </v-toolbar>
+
           <Table v-model="currentDocument" />
         </v-card>
 
         <v-card outlined class="mx-6 mb-6">
+          <v-toolbar :color="color" class="text-uppercase pl-2">
+            <v-toolbar-title>
+              Załączniki
+            </v-toolbar-title>
+          </v-toolbar>
           <AddDocument
             v-model="currentDocument.items"
             :path="currentDocument.path"
@@ -163,7 +176,11 @@
         </v-card>
 
         <v-card outlined class="mx-6 mb-6" style="padding: 10px 20px">
-          <h3>Czy wysłać do konsultacji?</h3>
+          <v-toolbar :color="color" class="text-uppercase pl-2">
+            <v-toolbar-title>
+              Dalsze działania
+            </v-toolbar-title>
+          </v-toolbar>
           <v-checkbox
             v-model="isConsulted"
             label="Wyślij do konsultacji."
@@ -176,9 +193,11 @@
           ></v-combobox>
         </v-card>
         <v-card outlined class="mx-6 mb-6">
-          <v-card-title class="font-weight-bold">
-            Komentarze:
-          </v-card-title>
+          <v-toolbar :color="color" class="text-uppercase pl-2">
+            <v-toolbar-title>
+              Komentarze
+            </v-toolbar-title>
+          </v-toolbar>
           <CommentsSection
             v-model="currentDocument.comment.items"
             :caseId="currentDocument.mrcCaseHeader.caseId"
@@ -234,6 +253,7 @@ export default {
 
     cons: [],
     objectTypeId: "cmis:document",
+    color: "cyan lighten-3",
   }),
   beforeMount() {
     this.getCons();

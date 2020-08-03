@@ -188,7 +188,7 @@ export default {
       },
       mrcCaseHeader: {},
     },
-
+    items: [],
     sumNetto: null,
     sumVat: null,
     sumBrutto: null,
