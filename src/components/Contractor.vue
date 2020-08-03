@@ -2,10 +2,6 @@
  <v-container fluid>
     <v-toolbar
     height="100">
-      <v-toolbar-title
-      class="text-h3"
-      >{{ title }}</v-toolbar-title>
-      <v-divider class="mx-2" inset vertical></v-divider>
        <v-row justify="end">
          <v-combobox
             v-model="select"
