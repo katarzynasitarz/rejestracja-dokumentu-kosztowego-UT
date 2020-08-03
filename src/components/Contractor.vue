@@ -188,6 +188,7 @@ export default {
             let result = await this.sendAjaxWithParams(this.appUrls.saveContractor, params);      
            this.visibility = result.exists;
             console.log(result);
+            this.close();
           } catch (e) {
            console.error( e);
           }
