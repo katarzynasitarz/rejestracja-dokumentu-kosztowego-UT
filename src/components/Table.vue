@@ -1,10 +1,10 @@
 <template>
   <v-container>
     <v-row>
-      <v-form ref="form">
+      <v-form ref="form" lazy-validation>
         <v-row class="justify-end pr-6">
-          <v-btn x-small tile depressed color="cyan" dark @click="addPosition"
-            >Dodaj pozycję</v-btn
+          <v-btn small tile depressed color="cyan" dark @click="addPosition"
+            ><v-icon dark left small>mdi-plus</v-icon>Dodaj pozycję</v-btn
           >
         </v-row>
         <v-row class="px-3">
@@ -96,7 +96,7 @@
           v-if="currentDocument.documentContent.items.length"
         >
           <v-row
-            class="justify-center text-center text-uppercase grey--text caption"
+            class="justify-space-between text-uppercase grey--text caption pl-6"
             cols="9"
           >
             <v-col>nazwa</v-col>
@@ -113,6 +113,7 @@
               </v-icon>
             </v-col>
           </v-row>
+          <!-- <v-row class="justify-space-between"> -->
           <ol>
             <PositionItem
               v-for="documentContent in currentDocument.documentContent.items"
@@ -121,14 +122,17 @@
               @remove="removePosition"
             />
           </ol>
+          <!-- </v-row> -->
           <v-spacer></v-spacer>
-          <v-row class="total teal lighten-5">
+          <v-row
+            class="teal lighten-5 text-right font-weight-bold mx-0"
+            align="stretch"
+          >
             <v-col>
               <p class="text-uppercase">razem:</p>
             </v-col>
             <v-col cols="4" md="2">
               <v-text-field
-                type="number"
                 label="suma netto"
                 v-model="currentDocument.sumNetto"
                 suffix="zł"
@@ -184,7 +188,7 @@ export default {
       },
       mrcCaseHeader: {},
     },
-
+    items: [],
     sumNetto: null,
     sumVat: null,
     sumBrutto: null,
@@ -228,10 +232,11 @@ export default {
         if (documentContent.vatValue === 0) {
           documentContent.vatValue = null;
         }
-        documentContent.brutto =
+        documentContent.brutto = (
           Math.round(
             (this.documentContent.netto + this.documentContent.vatValue) * 100
-          ) / 100;
+          ) / 100
+        ).toFixed(2);
         if (documentContent.brutto === 0) {
           documentContent.brutto = null;
         }
