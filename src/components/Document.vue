@@ -175,7 +175,7 @@
           />
         </v-card>
 
-        <v-card outlined class="mx-6 mb-6" style="padding: 10px 20px">
+        <v-card outlined class="mx-6 mb-6">
           <v-toolbar :color="color" class="text-uppercase pl-2">
             <v-toolbar-title>
               Dalsze działania
