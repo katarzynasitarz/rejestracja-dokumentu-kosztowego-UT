@@ -2,11 +2,11 @@
   <v-container>
     <v-row>
       <v-form ref="form" lazy-validation>
-        <v-row class="justify-end pr-6">
-          <v-btn small tile depressed color="cyan" dark @click="addPosition"
+        <!-- <v-row class="justify-end pr-6"> -->
+        <!-- <v-btn small tile depressed color="cyan" dark @click="addPosition"
             ><v-icon dark left small>mdi-plus</v-icon>Dodaj pozycję</v-btn
           >
-        </v-row>
+        </v-row> -->
         <v-row class="px-3">
           <v-col>
             <v-text-field
@@ -133,6 +133,7 @@
             </v-col>
             <v-col cols="4" md="2">
               <v-text-field
+                type="number"
                 label="suma netto"
                 v-model="currentDocument.sumNetto"
                 suffix="zł"
@@ -141,6 +142,7 @@
             </v-col>
             <v-col cols="4" md="2">
               <v-text-field
+                type="number"
                 label="suma VAT"
                 v-model="currentDocument.sumVat"
                 suffix="zł"
@@ -149,6 +151,7 @@
             </v-col>
             <v-col cols="4" md="2">
               <v-text-field
+                type="number"
                 label="suma brutto"
                 v-model="currentDocument.sumBrutto"
                 suffix="zł"
@@ -232,11 +235,10 @@ export default {
         if (documentContent.vatValue === 0) {
           documentContent.vatValue = null;
         }
-        documentContent.brutto = (
+        documentContent.brutto =
           Math.round(
             (this.documentContent.netto + this.documentContent.vatValue) * 100
-          ) / 100
-        ).toFixed(2);
+          ) / 100;
         if (documentContent.brutto === 0) {
           documentContent.brutto = null;
         }
