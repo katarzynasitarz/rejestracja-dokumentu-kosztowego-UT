@@ -1,6 +1,6 @@
 <template>
   <li>
-    <v-row cols="9" class="body-2 justify-center">
+    <v-row align-content="stretch">
       <v-col>{{ documentContent.itemName }}</v-col>
       <v-col>{{ documentContent.department.name }}</v-col>
       <v-col>{{ documentContent.unitPrice }} zł</v-col>
