@@ -195,9 +195,7 @@ export default {
           } catch (e) {
            console.error( e);
           }
-        }
-        
+        },  
     },
-  },
 };
 </script>
