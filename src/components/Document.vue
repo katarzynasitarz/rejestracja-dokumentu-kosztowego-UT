@@ -137,10 +137,10 @@
         <v-card outlined class="mx-6 mb-6">
           <v-toolbar :color="color" class="text-uppercase pl-2">
             <v-toolbar-title>
-            Kontrahent
+              Kontrahent
             </v-toolbar-title>
           </v-toolbar>
-          
+
           <Contractor v-model="currentDocument.contractor" />
         </v-card>
 
@@ -241,6 +241,7 @@ export default {
       comment: {
         items: [],
       },
+      contractor: {},
       mrcCaseHeader: {},
       items: [],
     },
