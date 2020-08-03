@@ -27,7 +27,7 @@ export default {
             comment: {
               items: [],
             },
-            mrcCaseHeader: { caseId: "123" },
+            mrcCaseHeader: {},
             items: [],
           },
     };

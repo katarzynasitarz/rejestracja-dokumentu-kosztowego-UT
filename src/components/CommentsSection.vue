@@ -23,7 +23,7 @@
               <v-row>
                 <v-col cols="12" sm="6" md="4">
                   <v-text-field
-                    v-model="comment.commentAuthor"
+                    v-model="comment.author"
                     label="Autor"
                     :rules="[(v) => !!v || 'Pole jest wymagane.']"
                     required
@@ -34,14 +34,14 @@
                     ref="menu"
                     v-model="menu"
                     :close-on-content-click="false"
-                    :return-value.sync="comment.commentDateAdded"
+                    :return-value.sync="comment.dateAdded"
                     transition="scale-transition"
                     offset-y
                     min-width="290px"
                   >
                     <template v-slot:activator="{ on }">
                       <v-text-field
-                        v-model="comment.commentDateAdded"
+                        v-model="comment.dateAdded"
                         label="Data dodania"
                         prepend-icon="mdi-calendar-clock"
                         :rules="[(v) => !!v || 'Pole jest wymagane.']"
@@ -51,16 +51,13 @@
                         required
                       ></v-text-field>
                     </template>
-                    <v-date-picker
-                      v-model="comment.commentDateAdded"
-                      locale="pl"
-                    >
+                    <v-date-picker v-model="comment.dateAdded" locale="pl">
                     </v-date-picker>
                   </v-menu>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <v-text-field
-                    v-model="comment.commentprocessStep"
+                    v-model="comment.processStep"
                     label="Etap procesu"
                     :rules="[(v) => !!v || 'Pole jest wymagane.']"
                     required
@@ -68,7 +65,7 @@
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <v-text-field
-                    v-model="comment.commentText"
+                    v-model="comment.text"
                     label="Komentarz"
                     :rules="[(v) => !!v || 'Pole jest wymagane.']"
                     required
@@ -103,10 +100,10 @@ export default {
     modal: false,
     valid: true,
     comment: {
-      commentText: "",
-      commentAuthor: "",
-      commentDateAdded: new Date().toISOString().substr(0, 10),
-      commentprocessStep: "",
+      text: "",
+      author: "",
+      dateAdded: new Date().toISOString().substr(0, 10),
+      processStep: "",
     },
   }),
 
@@ -122,9 +119,9 @@ export default {
       }
     },
   },
-  mounted() {
-    this.getComments();
-  },
+  // mounted() {
+  //   this.getComments();
+  // },
   methods: {
     close() {
       this.dialog = false;
@@ -133,8 +130,8 @@ export default {
 
     save() {
       if (this.validate()) {
-        this.close();
         this.saveComment(this.comment);
+        this.close();
       }
     },
     validate() {
@@ -150,6 +147,7 @@ export default {
             params
           );
           this.commentList = result.comments.items;
+          console.log(this.commentList);
           this.$emit("input", this.commentList);
         } catch (e) {
           console.log("error", e);
@@ -160,10 +158,10 @@ export default {
     async saveComment(element) {
       let params = {
         comment: {
-          text: element.commentText,
-          author: element.commentAuthor,
-          dateAdded: element.commentDateAdded,
-          processStep: element.commentprocessStep,
+          text: element.text,
+          author: element.author,
+          dateAdded: element.dateAdded,
+          processStep: element.processStep,
         },
         caseId: this.caseId,
       };
