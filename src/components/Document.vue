@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form">
+  <v-form ref="form" lazy-validation>
     <v-card-text class="grey lighten-4">
       <v-sheet width="1000" height="auto" class="mx-auto pa-8">
         <v-card-text align="center" class="py-10">
@@ -7,9 +7,11 @@
         </v-card-text>
 
         <v-card outlined class="mx-6 mb-6">
-          <v-card-title class="font-weight-bold">
-            Podstawowe dane dokumentu:
-          </v-card-title>
+          <v-toolbar :color="color" class="text-uppercase pl-2">
+            <v-toolbar-title>
+              Podstawowe dane dokumentu
+            </v-toolbar-title>
+          </v-toolbar>
 
           <v-container>
             <v-row>
@@ -31,11 +33,13 @@
                       readonly
                       clearable
                       v-on="on"
+                      validate-on-blur
                     ></v-text-field>
                   </template>
                   <v-date-picker
                     v-model="currentDocument.receivedDate"
                     locale="pl"
+                    validate-on-blur
                   >
                   </v-date-picker>
                 </v-menu>
@@ -58,11 +62,13 @@
                       readonly
                       clearable
                       v-on="on"
+                      validate-on-blur
                     ></v-text-field>
                   </template>
                   <v-date-picker
                     v-model="currentDocument.issueDate"
                     locale="pl"
+                    validate-on-blur
                   >
                   </v-date-picker>
                 </v-menu>
@@ -85,11 +91,13 @@
                       readonly
                       clearable
                       v-on="on"
+                      validate-on-blur
                     ></v-text-field>
                   </template>
                   <v-date-picker
                     v-model="currentDocument.paymentDate"
                     locale="pl"
+                    validate-on-blur
                   >
                   </v-date-picker>
                 </v-menu>
@@ -101,6 +109,7 @@
                   :rules="[rules.required]"
                   label="Nr faktury"
                   v-model="currentDocument.invoiceNumber"
+                  validate-on-blur
                 >
                 </v-text-field>
               </v-col>
@@ -110,6 +119,7 @@
                   :rules="[rules.required]"
                   label="Kategoria wydatku"
                   v-model="currentDocument.expenseCategory"
+                  validate-on-blur
                 ></v-text-field>
               </v-col>
               <v-col cols="12" md="4">
@@ -118,6 +128,7 @@
                   label="Uwagi do dokumentu"
                   rows="2"
                   v-model="currentDocument.invoiceComments"
+                  validate-on-blur
                 ></v-textarea>
               </v-col> </v-row
           ></v-container>
@@ -128,13 +139,21 @@
         </v-card>
 
         <v-card outlined class="mx-6 mb-6">
-          <v-card-title class="font-weight-bold">
-            Pozycje Kosztowe:
-          </v-card-title>
+          <v-toolbar :color="color" class="text-uppercase pl-2">
+            <v-toolbar-title>
+              Pozycje Kosztowe
+            </v-toolbar-title>
+          </v-toolbar>
+
           <Table v-model="currentDocument" />
         </v-card>
 
         <v-card outlined class="mx-6 mb-6">
+          <v-toolbar :color="color" class="text-uppercase pl-2">
+            <v-toolbar-title>
+              Załączniki
+            </v-toolbar-title>
+          </v-toolbar>
           <AddDocument
             v-model="currentDocument.items"
             :path="currentDocument.path"
@@ -150,8 +169,12 @@
           />
         </v-card>
 
-        <v-card outlined class="mx-6 mb-6" style="padding: 10px 20px">
-          <h3>Czy wysłać do konsultacji?</h3>
+        <v-card outlined class="mx-6 mb-6">
+          <v-toolbar :color="color" class="text-uppercase pl-2">
+            <v-toolbar-title>
+              Dalsze działania
+            </v-toolbar-title>
+          </v-toolbar>
           <v-checkbox
             v-model="isConsulted"
             label="Wyślij do konsultacji."
@@ -164,9 +187,11 @@
           ></v-combobox>
         </v-card>
         <v-card outlined class="mx-6 mb-6">
-          <v-card-title class="font-weight-bold">
-            Komentarze:
-          </v-card-title>
+          <v-toolbar :color="color" class="text-uppercase pl-2">
+            <v-toolbar-title>
+              Komentarze
+            </v-toolbar-title>
+          </v-toolbar>
           <CommentsSection
             v-model="currentDocument.comment.items"
             :caseId="currentDocument.mrcCaseHeader.caseId"
@@ -197,6 +222,9 @@ export default {
 
   data: () => ({
     currentDocument: {
+      receivedDate: new Date().toISOString().substr(0, 10),
+      issueDate: new Date().toISOString().substr(0, 10),
+      paymentDate: new Date().toISOString().substr(0, 10),
       documentContent: {
         items: [],
       },
@@ -219,17 +247,19 @@ export default {
 
     cons: [],
     objectTypeId: "cmis:document",
+    color: "cyan lighten-3",
   }),
   beforeMount() {
     this.getCons();
   },
+
   watch: {
     value(val) {
       this.currentDocument = val;
     },
     currentDocument: {
       handler() {
-        // this.$emit("input", this.currentDocument);
+        this.$emit("input", this.currentDocument);
       },
       deep: true,
     },

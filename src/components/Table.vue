@@ -1,13 +1,19 @@
 <template>
   <v-container>
     <v-row>
-      <v-form ref="form">
-        <v-row class="table">
+      <v-form ref="form" lazy-validation>
+        <v-row class="justify-end pr-6">
+          <v-btn small tile depressed color="cyan" dark @click="addPosition"
+            ><v-icon dark left small>mdi-plus</v-icon>Dodaj pozycję</v-btn
+          >
+        </v-row>
+        <v-row class="px-3">
           <v-col>
             <v-text-field
-              label="nazwa"
               v-model="documentContent.itemName"
               :rules="nameRules"
+              hint="nazwa"
+              persistent-hint
             ></v-text-field>
           </v-col>
           <v-col>
@@ -15,14 +21,16 @@
               v-model="documentContent.department"
               :items="teams"
               item-text="name"
-              label="dział odpowiedzialny"
+              hint="dział odpowiedzialny"
+              persistent-hint
               :rules="teamsRules"
             ></v-combobox>
           </v-col>
           <v-col>
             <v-text-field
               type="number"
-              label="cena jednostkowa netto"
+              hint="cena jednostkowa netto"
+              persistent-hint
               v-model="documentContent.unitPrice"
               min="0,01"
               suffix="zł"
@@ -32,16 +40,20 @@
           <v-col>
             <v-text-field
               type="number"
-              label="ilość"
+              hint="ilość"
+              persistent-hint
               min="1"
               v-model="documentContent.itemQuantity"
               :rules="amountRules"
             ></v-text-field>
           </v-col>
+        </v-row>
+        <v-row class="px-3">
           <v-col>
             <v-text-field
               type="number"
-              label="VAT %"
+              hint="VAT %"
+              persistent-hint
               min="0,01"
               v-model="documentContent.vat"
               :rules="vatRules"
@@ -50,7 +62,8 @@
           <v-col>
             <v-text-field
               type="number"
-              label="wartość netto"
+              hint="wartość netto"
+              persistent-hint
               v-model="documentContent.netto"
               suffix="zł"
               readonly
@@ -59,7 +72,8 @@
           <v-col>
             <v-text-field
               type="number"
-              label="wartość VAT"
+              hint="wartość VAT"
+              persistent-hint
               v-model="documentContent.vatValue"
               suffix="zł"
               readonly
@@ -68,23 +82,23 @@
           <v-col>
             <v-text-field
               type="number"
-              label="wartość brutto"
+              hint="wartość brutto"
+              persistent-hint
               v-model="documentContent.brutto"
               suffix="zł"
               readonly
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-row class="button">
-          <v-btn x-small tile depressed color="cyan" dark @click="addPosition"
-            >Dodaj pozycję</v-btn
-          >
-        </v-row>
+
         <div
-          class="results"
+          class="results ma-2 "
           v-if="currentDocument.documentContent.items.length"
         >
-          <v-row class="header" :justify="justify" cols="9">
+          <v-row
+            class="justify-space-between text-uppercase grey--text caption pl-6"
+            cols="9"
+          >
             <v-col>nazwa</v-col>
             <v-col>dział odpowiedzialny</v-col>
             <v-col>cena</v-col>
@@ -99,6 +113,7 @@
               </v-icon>
             </v-col>
           </v-row>
+          <!-- <v-row class="justify-space-between"> -->
           <ol>
             <PositionItem
               v-for="documentContent in currentDocument.documentContent.items"
@@ -107,13 +122,17 @@
               @remove="removePosition"
             />
           </ol>
-          <v-row class="total">
+          <!-- </v-row> -->
+          <v-spacer></v-spacer>
+          <v-row
+            class="teal lighten-5 text-right font-weight-bold mx-0"
+            align="stretch"
+          >
             <v-col>
-              <p>razem:</p>
+              <p class="text-uppercase">razem:</p>
             </v-col>
             <v-col cols="4" md="2">
               <v-text-field
-                type="number"
                 label="suma netto"
                 v-model="currentDocument.sumNetto"
                 suffix="zł"
@@ -138,7 +157,7 @@
             </v-col>
           </v-row>
         </div>
-        <v-row class="valid" v-else>
+        <v-row class="pl-6 red--text" v-else>
           <p>Dodaj przynajmniej jedną pozycję.</p>
         </v-row>
       </v-form>
@@ -169,7 +188,7 @@ export default {
       },
       mrcCaseHeader: {},
     },
-    
+    items: [],
     sumNetto: null,
     sumVat: null,
     sumBrutto: null,
@@ -179,7 +198,6 @@ export default {
     priceRules: [(v) => !!v || "To pole jest obowiązkowe"],
     amountRules: [(v) => !!v || "To pole jest obowiązkowe"],
     vatRules: [(v) => !!v || "To pole jest obowiązkowe"],
-    justify: "center",
   }),
   beforeMount() {
     this.getTeams();
@@ -214,10 +232,11 @@ export default {
         if (documentContent.vatValue === 0) {
           documentContent.vatValue = null;
         }
-        documentContent.brutto =
+        documentContent.brutto = (
           Math.round(
             (this.documentContent.netto + this.documentContent.vatValue) * 100
-          ) / 100;
+          ) / 100
+        ).toFixed(2);
         if (documentContent.brutto === 0) {
           documentContent.brutto = null;
         }
@@ -247,9 +266,9 @@ export default {
             0
           ) * 100
         ) / 100;
-        if (this.currentDocument.mrcCaseHeader.caseId) {
-          // this.$emit("input", this.currentDocument);
-        }
+      if (this.currentDocument.mrcCaseHeader.caseId) {
+        // this.$emit("input", this.currentDocument);
+      }
     },
   },
   computed: {},
@@ -282,6 +301,7 @@ export default {
           vatValue: documentContent.vatValue,
           brutto: documentContent.brutto,
         });
+        this.$refs.form.reset();
 
         // this.$emit("input", this.currentDocument);
         console.log(this.currentDocument);
@@ -309,28 +329,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.table {
-  padding: 0 15px;
-}
-.button {
-  padding: 0 30px 15px;
-  justify-content: end;
-}
-.results {
-  padding: 0 15px;
-}
-.valid {
-  color: red;
-  padding: 0 30px;
-}
-.total p {
-  text-align: right;
-}
-.header {
-  // text-align: center;
-  font-size: smaller;
-  border-bottom: 1px solid #000;
-}
-</style>

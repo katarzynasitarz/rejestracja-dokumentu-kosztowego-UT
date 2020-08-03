@@ -1,73 +1,87 @@
 <template>
-  <v-form ref="form">
+  <v-form ref="form" v-model="valid">
     <v-expansion-panels>
       <v-expansion-panel v-for="(item, i) in commentList" :key="i">
-        <v-expansion-panel-header>Komentarz</v-expansion-panel-header>
+        <v-expansion-panel-header>
+          <v-row>
+            <v-col cols="12" md="4">
+              <p>Dodał: {{ item.author }}</p>
+            </v-col>
+            <v-col cols="12" md="4"
+              ><p>Data: {{ item.dateAdded }}</p></v-col
+            >
+            <v-col cols="12" md="4">
+              <p>Etap procesu: {{ item.processStep }}</p></v-col
+            >
+          </v-row>
+        </v-expansion-panel-header>
         <v-expansion-panel-content>
           <p>{{ item.text }}</p>
-          <p>{{ item.author }}</p>
-          <p>{{ item.dateAdded }}</p>
-          <p>{{ item.processStep }}</p>
         </v-expansion-panel-content>
       </v-expansion-panel>
 
       <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ on }">
-          <v-btn color="primary" dark class="mb-2" v-on="on"
-            >Dodaj komentarz</v-btn
+          <v-row>
+            <v-btn color="primary" dark class="ma-6" v-on="on"
+              >Dodaj komentarz</v-btn
+            ></v-row
           >
         </template>
         <v-card>
           <v-card-text>
             <v-container>
               <v-row>
-                <v-col cols="12" sm="6" md="4">
+                <v-col cols="12" sm="6" md="6">
                   <v-text-field
-                    v-model="comment.commentAuthor"
+                    v-model="comment.author"
                     label="Autor"
                     :rules="[(v) => !!v || 'Pole jest wymagane.']"
+                    required
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6" md="4">
+                <v-col cols="12" sm="6" md="6">
                   <v-menu
                     ref="menu"
                     v-model="menu"
-                    :close-on-content-click="false"
-                    :return-value.sync="comment.commentDateAdded"
+                    :close-on-content-click="true"
+                    :return-value.sync="comment.dateAdded"
                     transition="scale-transition"
                     offset-y
                     min-width="290px"
                   >
                     <template v-slot:activator="{ on }">
                       <v-text-field
-                        v-model="comment.commentDateAdded"
+                        v-model="comment.dateAdded"
                         label="Data dodania"
                         prepend-icon="mdi-calendar-clock"
                         :rules="[(v) => !!v || 'Pole jest wymagane.']"
                         readonly
                         clearable
                         v-on="on"
+                        required
                       ></v-text-field>
                     </template>
-                    <v-date-picker
-                      v-model="comment.commentDateAdded"
-                      locale="pl"
-                    >
+                    <v-date-picker v-model="comment.dateAdded" locale="pl">
                     </v-date-picker>
                   </v-menu>
                 </v-col>
-                <v-col cols="12" sm="6" md="4">
+              </v-row>
+              <v-row>
+                <v-col cols="12" sm="6" md="6">
                   <v-text-field
-                    v-model="comment.commentprocessStep"
+                    v-model="comment.processStep"
                     label="Etap procesu"
                     :rules="[(v) => !!v || 'Pole jest wymagane.']"
+                    required
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6" md="4">
+                <v-col cols="12" sm="6" md="6">
                   <v-text-field
-                    v-model="comment.commentText"
+                    v-model="comment.text"
                     label="Komentarz"
                     :rules="[(v) => !!v || 'Pole jest wymagane.']"
+                    required
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -76,8 +90,8 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-            <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+            <v-btn color="blue darken-1" text @click="close">Anuluj</v-btn>
+            <v-btn color="blue darken-1" text @click="save">Zapisz</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -97,14 +111,14 @@ export default {
     menu: false,
     dialog: false,
     modal: false,
+    valid: true,
     comment: {
-      commentText: "",
-      commentAuthor: "",
-      commentDateAdded: new Date().toISOString().substr(0, 10),
-      commentprocessStep: "",
+      text: "",
+      author: "",
+      dateAdded: new Date().toISOString().substr(0, 10),
+      processStep: "",
     },
   }),
-
 
   watch: {
     value: {
@@ -116,10 +130,10 @@ export default {
       if (this.caseId) {
         this.getComments();
       }
-    }
+    },
   },
-  mounted(){
-    this.getComments() 
+  mounted() {
+    this.getComments();
   },
   methods: {
     close() {
@@ -129,8 +143,8 @@ export default {
 
     save() {
       if (this.validate()) {
-        this.close();
         this.saveComment(this.comment);
+        this.close();
       }
     },
     validate() {
@@ -139,37 +153,33 @@ export default {
 
     async getComments() {
       if (this.caseId) {
-      let params = { caseId: this.caseId };
-      try {
-        let result = await this.sendAjaxWithParams(
-          this.appUrls.getComments,
-          params
-        );
-        this.commentList = result.comments.items;
-        this.$emit("input", this.commentList);
-        // this.comments.forEach((comment) => {
-        //   this.commentsList.push(comment);
-        // });
-        console.log(this.commentList);
-      } catch (e) {
-        console.log("error", e);
-      }
+        let params = { caseId: this.caseId };
+        try {
+          let result = await this.sendAjaxWithParams(
+            this.appUrls.getComments,
+            params
+          );
+          this.commentList = result.comments.items;
+          console.log(this.commentList);
+          this.$emit("input", this.commentList);
+        } catch (e) {
+          console.log("error", e);
+        }
       }
     },
 
     async saveComment(element) {
       let params = {
         comment: {
-          text: element.commentText,
-          author: element.commentAuthor,
-          dateAdded: element.commentDateAdded,
-          processStep: element.commentprocessStep,
+          text: element.text,
+          author: element.author,
+          dateAdded: element.dateAdded,
+          processStep: element.processStep,
         },
         caseId: this.caseId,
       };
       try {
         await this.sendAjaxWithParams(this.appUrls.saveComment, params);
-        
         this.getComments();
       } catch (e) {
         console.log(e, "error");
