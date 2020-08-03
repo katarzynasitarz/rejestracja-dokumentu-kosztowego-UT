@@ -2,26 +2,37 @@
   <v-form ref="form" v-model="valid">
     <v-expansion-panels>
       <v-expansion-panel v-for="(item, i) in commentList" :key="i">
-        <v-expansion-panel-header>Komentarz</v-expansion-panel-header>
+        <v-expansion-panel-header>
+          <v-row>
+            <v-col cols="12" md="4">
+              <p>Dodał: {{ item.author }}</p>
+            </v-col>
+            <v-col cols="12" md="4"
+              ><p>Data: {{ item.dateAdded }}</p></v-col
+            >
+            <v-col cols="12" md="4">
+              <p>Etap procesu: {{ item.processStep }}</p></v-col
+            >
+          </v-row>
+        </v-expansion-panel-header>
         <v-expansion-panel-content>
           <p>{{ item.text }}</p>
-          <p>{{ item.author }}</p>
-          <p>{{ item.dateAdded }}</p>
-          <p>{{ item.processStep }}</p>
         </v-expansion-panel-content>
       </v-expansion-panel>
 
       <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ on }">
-          <v-btn color="primary" dark class="mb-2" v-on="on"
-            >Dodaj komentarz</v-btn
+          <v-row>
+            <v-btn color="primary" dark class="ma-6" v-on="on"
+              >Dodaj komentarz</v-btn
+            ></v-row
           >
         </template>
         <v-card>
           <v-card-text>
             <v-container>
               <v-row>
-                <v-col cols="12" sm="6" md="4">
+                <v-col cols="12" sm="6" md="6">
                   <v-text-field
                     v-model="comment.author"
                     label="Autor"
@@ -29,11 +40,11 @@
                     required
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6" md="4">
+                <v-col cols="12" sm="6" md="6">
                   <v-menu
                     ref="menu"
                     v-model="menu"
-                    :close-on-content-click="false"
+                    :close-on-content-click="true"
                     :return-value.sync="comment.dateAdded"
                     transition="scale-transition"
                     offset-y
@@ -55,7 +66,9 @@
                     </v-date-picker>
                   </v-menu>
                 </v-col>
-                <v-col cols="12" sm="6" md="4">
+              </v-row>
+              <v-row>
+                <v-col cols="12" sm="6" md="6">
                   <v-text-field
                     v-model="comment.processStep"
                     label="Etap procesu"
@@ -63,7 +76,7 @@
                     required
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6" md="4">
+                <v-col cols="12" sm="6" md="6">
                   <v-text-field
                     v-model="comment.text"
                     label="Komentarz"
@@ -77,8 +90,8 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-            <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+            <v-btn color="blue darken-1" text @click="close">Anuluj</v-btn>
+            <v-btn color="blue darken-1" text @click="save">Zapisz</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -119,9 +132,9 @@ export default {
       }
     },
   },
-  // mounted() {
-  //   this.getComments();
-  // },
+  mounted() {
+    this.getComments();
+  },
   methods: {
     close() {
       this.dialog = false;
