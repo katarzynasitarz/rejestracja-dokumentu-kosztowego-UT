@@ -1,4 +1,4 @@
-n<template>
+<template>
   <v-container fluid>
     <v-toolbar>
       <v-toolbar-title>{{ title }}</v-toolbar-title>

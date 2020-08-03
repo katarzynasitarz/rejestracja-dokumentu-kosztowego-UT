@@ -124,9 +124,6 @@
         </v-card>
 
         <v-card outlined class="mx-6 mb-6">
-          <v-card-title class="font-weight-bold">
-            Dane kontrahenta:
-          </v-card-title>
           <Contractor v-model="currentDocument.contractor" />
         </v-card>
 
