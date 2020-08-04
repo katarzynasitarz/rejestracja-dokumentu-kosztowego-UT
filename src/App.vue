@@ -34,7 +34,9 @@ export default {
     };
   },
   closeForm(document) {
+    console.log("jestem w srodku");
     if (this.context) {
+      console.log("działam");
       this.context.binding.set("value", document);
       this.context.trigger();
     }

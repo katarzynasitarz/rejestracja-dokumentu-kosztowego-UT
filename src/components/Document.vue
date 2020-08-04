@@ -239,7 +239,7 @@ export default {
     Contractor,
     AddDocument,
   },
-  props: { value: Object },
+  props: { value: Object, method: { type: Function } },
 
   data: () => ({
     currentDocument: {
@@ -261,10 +261,10 @@ export default {
     menu3: false,
     modal: false,
     formHasErrors: false,
+    tableValidaiton: false,
     rules: {
       required: (val) => !!val || "Pole jest wymagane.",
     },
-
     cons: [],
     objectTypeId: "cmis:document",
     color: "cyan lighten-3",
@@ -278,6 +278,7 @@ export default {
     value(val) {
       this.currentDocument = val;
     },
+
     currentDocument: {
       handler() {
         this.$emit("input", this.currentDocument);
@@ -298,9 +299,19 @@ export default {
         console.log("error", e);
       }
     },
+    validate() {
+      if (this.currentDocument.documentContent.items.length === 0) {
+        console.log("nie pyklo");
+        return false;
+      } else {
+        console.log("pykło");
+        return true;
+      }
+    },
 
     submit() {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.form.validate() && this.validate()) {
+        this.$emit("trigger", this.currentDocument);
         console.log("NO ELO");
       }
     },
