@@ -182,31 +182,31 @@
             </v-toolbar-title>
           </v-toolbar>
           <v-row class="px-6" cols="2">
-            <v-checkbox
-              v-model="status"
-              label="Wyślij do konsultacji."
-              value="consulted"
-            ></v-checkbox>
-            <v-combobox
-              class="px-6"
-              :items="cons"
-              item-text="name"
-              label="Wybierz konsultanta"
-            ></v-combobox>
-          </v-row>
-          <v-row class="px-6">
-            <v-checkbox
-              v-model="status"
-              label="Wyślij do akceptacji."
-              value="accepted"
-            ></v-checkbox>
-          </v-row>
-          <v-row class="px-6">
-            <v-checkbox
-              v-model="status"
-              label="Zakończ procesowanie."
-              value="cancelled"
-            ></v-checkbox>
+            <v-radio-group
+              v-model="currentDocument.processStatus"
+              :mandatory="false"
+            >
+              <v-radio
+                label="Wyślij do konsultacji."
+                value="consulted"
+              ></v-radio>
+              <div>
+                <v-combobox
+                  class="px-6"
+                  :items="cons"
+                  item-text="name"
+                  label="Wybierz konsultanta"
+                ></v-combobox>
+              </div>
+
+              <v-radio label="Wyślij do akceptacji." value="accepted"></v-radio>
+
+              <v-radio
+                label="Zakończ procesowanie."
+                value="cancelled"
+              ></v-radio>
+            </v-radio-group>
+            <!-- <p>wybrano: {{ currentDocument.processStatus }}</p> -->
           </v-row>
         </v-card>
         <v-card outlined class="mx-6 mb-6">
@@ -266,8 +266,6 @@ export default {
     rules: {
       required: (val) => !!val || "Pole jest wymagane.",
     },
-
-    isConsulted: true,
 
     cons: [],
     objectTypeId: "cmis:document",

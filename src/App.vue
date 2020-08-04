@@ -30,6 +30,7 @@ export default {
             mrcCaseHeader: {},
             items: [],
           },
+      // status: window.context,
     };
   },
   closeForm(document) {
