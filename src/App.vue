@@ -1,8 +1,7 @@
 <template>
   <v-app>
     <v-content>
-      <Document v-model="document" />
-      <v-btn tile text @click="closeForm">Prześlij</v-btn>
+      <Document v-model="document"/>
     </v-content>
   </v-app>
 </template>
