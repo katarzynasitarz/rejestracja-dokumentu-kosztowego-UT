@@ -198,9 +198,7 @@
                   label="Wybierz konsultanta"
                 ></v-combobox>
               </div>
-
               <v-radio label="Wyślij do akceptacji." value="accepted"></v-radio>
-
               <v-radio
                 label="Zakończ procesowanie."
                 value="cancelled"
