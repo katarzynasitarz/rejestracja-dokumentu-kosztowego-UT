@@ -190,7 +190,7 @@
                 label="Wyślij do konsultacji."
                 value="consulted"
               ></v-radio>
-              <div>
+              <div v-if="this.currentDocument.processStatus === 'consulted'">
                 <v-combobox
                   class="px-6"
                   :items="cons"
