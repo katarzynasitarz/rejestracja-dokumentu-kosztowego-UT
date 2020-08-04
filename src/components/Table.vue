@@ -2,11 +2,6 @@
   <v-container>
     <v-row>
       <v-form ref="form" lazy-validation>
-        <!-- <v-row class="justify-end pr-6"> -->
-        <!-- <v-btn small tile depressed color="cyan" dark @click="addPosition"
-            ><v-icon dark left small>mdi-plus</v-icon>Dodaj pozycję</v-btn
-          >
-        </v-row> -->
         <v-row class="px-3">
           <v-col>
             <v-text-field
@@ -89,6 +84,11 @@
               readonly
             ></v-text-field>
           </v-col>
+        </v-row>
+        <v-row class="justify-end pr-6">
+          <v-btn small tile depressed color="cyan" dark @click="addPosition">
+            <v-icon dark left small>mdi-plus</v-icon>Dodaj pozycję</v-btn
+          >
         </v-row>
 
         <div

@@ -149,10 +149,6 @@
             <v-toolbar-title>
               Pozycje Kosztowe
             </v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn small tile :color="btnColor" dark @click="addPosition"
-              ><v-icon dark left small>mdi-plus</v-icon>Dodaj pozycję</v-btn
-            >
           </v-toolbar>
 
           <Table v-model="currentDocument" ref="addPositionRef" />
@@ -185,16 +181,33 @@
               Dalsze działania
             </v-toolbar-title>
           </v-toolbar>
-          <v-checkbox
-            v-model="isConsulted"
-            label="Wyślij do konsultacji."
-          ></v-checkbox>
-
-          <v-combobox
-            :items="cons"
-            item-text="name"
-            label="Konsultant"
-          ></v-combobox>
+          <v-row class="px-6" cols="2">
+            <v-checkbox
+              v-model="status"
+              label="Wyślij do konsultacji."
+              value="consulted"
+            ></v-checkbox>
+            <v-combobox
+              class="px-6"
+              :items="cons"
+              item-text="name"
+              label="Wybierz konsultanta"
+            ></v-combobox>
+          </v-row>
+          <v-row class="px-6">
+            <v-checkbox
+              v-model="status"
+              label="Wyślij do akceptacji."
+              value="accepted"
+            ></v-checkbox>
+          </v-row>
+          <v-row class="px-6">
+            <v-checkbox
+              v-model="status"
+              label="Zakończ procesowanie."
+              value="cancelled"
+            ></v-checkbox>
+          </v-row>
         </v-card>
         <v-card outlined class="mx-6 mb-6">
           <v-toolbar :color="color" class="text-uppercase pl-2">
@@ -280,10 +293,6 @@ export default {
     this.currentDocument = this.value;
   },
   methods: {
-    addPosition() {
-      this.$refs.addPositionRef.addPosition();
-      console.log(this.currentDocument);
-    },
     async getCons() {
       try {
         let result = await this.sendAjaxWithParams(this.appUrls.getCons, {});
