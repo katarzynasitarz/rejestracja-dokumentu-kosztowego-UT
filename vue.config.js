@@ -63,7 +63,7 @@ module.exports = {
         fileOptions: {
           mtime: new Date(),
           mode: 0o100664,
-          compress: true,
+          compress: false,
           forceZip64Format: false,
         },
 
