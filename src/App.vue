@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-content>
-      <Document v-model="document" />
+      <Document v-model="document" @trigger="closeForm" ref="document" />
     </v-content>
   </v-app>
 </template>
@@ -34,7 +34,9 @@ export default {
     };
   },
   closeForm(document) {
+    console.log("jestem w srodku");
     if (this.context) {
+      console.log("działam");
       this.context.binding.set("value", document);
       this.context.trigger();
     }
