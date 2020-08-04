@@ -1,7 +1,8 @@
 <template>
   <v-app>
     <v-content>
-      <Document v-model="document" @trigger="closeForm" ref="document" />
+      <Document v-model="document" />
+      <v-btn tile text @click="closeForm()">Prześlij</v-btn>
     </v-content>
   </v-app>
 </template>
@@ -30,7 +31,6 @@ export default {
             mrcCaseHeader: {},
             items: [],
           },
-      // status: window.context,
     };
   },
   closeForm(document) {

@@ -190,7 +190,7 @@
                 label="Wyślij do konsultacji."
                 value="consulted"
               ></v-radio>
-              <div>
+              <div v-if="this.currentDocument.processStatus === 'consulted'">
                 <v-combobox
                   class="px-6"
                   :items="cons"
@@ -198,9 +198,7 @@
                   label="Wybierz konsultanta"
                 ></v-combobox>
               </div>
-
               <v-radio label="Wyślij do akceptacji." value="accepted"></v-radio>
-
               <v-radio
                 label="Zakończ procesowanie."
                 value="cancelled"
