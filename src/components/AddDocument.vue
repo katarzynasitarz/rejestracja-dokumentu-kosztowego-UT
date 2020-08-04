@@ -249,6 +249,7 @@ export default {
     },
     async openInBrowser(item) {
       try {
+        console.log(item.documentId);
         var contentStream = await this.documentContentGet(item.documentId);
         var { mimeType } = contentStream;
         var base64 = contentStream.content;
