@@ -254,7 +254,9 @@ export default {
       },
       contractor: {},
       mrcCaseHeader: {},
-      items: [],
+      // nalezy zainicjowac liste dokumentow do AddDocument!
+      // items: [],
+      // processStatus: {},
     },
     menu1: false,
     menu2: false,

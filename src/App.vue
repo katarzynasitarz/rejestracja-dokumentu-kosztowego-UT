@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-content>
-      <Document v-model="document" />
+      <Document v-model="document" @trigger="closeForm" />
       <v-btn tile text @click="closeForm()">Prześlij</v-btn>
     </v-content>
   </v-app>
@@ -33,13 +33,15 @@ export default {
           },
     };
   },
-  closeForm(document) {
-    console.log("jestem w srodku");
-    if (this.context) {
-      console.log("działam");
-      this.context.binding.set("value", document);
-      this.context.trigger();
-    }
+  methods: {
+    closeForm(document) {
+      console.log("jestem w srodku");
+      if (this.context) {
+        console.log("działam");
+        this.context.binding.set("value", document);
+        this.context.trigger();
+      }
+    },
   },
 };
 </script>
