@@ -2,7 +2,6 @@
   <v-app>
     <v-content>
       <Document v-model="document" @trigger="closeForm" />
-      <v-btn tile text @click="closeForm()">Prześlij</v-btn>
     </v-content>
   </v-app>
 </template>
