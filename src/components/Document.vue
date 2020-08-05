@@ -204,7 +204,6 @@
                 value="cancelled"
               ></v-radio>
             </v-radio-group>
-            <!-- <p>wybrano: {{ currentDocument.processStatus }}</p> -->
           </v-row>
         </v-card>
         <v-card outlined class="mx-6 mb-6">
