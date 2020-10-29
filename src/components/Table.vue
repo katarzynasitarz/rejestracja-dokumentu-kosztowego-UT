@@ -21,6 +21,7 @@
               :rules="teamsRules"
             ></v-combobox>
           </v-col>
+
           <v-col>
             <v-text-field
               type="number"
@@ -92,7 +93,7 @@
         </v-row>
 
         <div
-          class="results ma-2 "
+          class="results ma-2"
           v-if="currentDocument.documentContent.items.length"
         >
           <v-row
@@ -108,9 +109,7 @@
             <v-col>wartość VAT</v-col>
             <v-col>wartość brutto</v-col>
             <v-col>
-              <v-icon small>
-                mdi-delete
-              </v-icon>
+              <v-icon small> mdi-delete </v-icon>
             </v-col>
           </v-row>
           <!-- <v-row class="justify-space-between"> -->
@@ -212,7 +211,7 @@ export default {
       },
     },
     documentContent: {
-      handler: function() {
+      handler: function () {
         const documentContent = this.documentContent;
         documentContent.netto =
           Math.round(
@@ -246,7 +245,7 @@ export default {
 
       deep: true,
     },
-    "currentDocument.documentContent.items": function() {
+    "currentDocument.documentContent.items": function () {
       this.currentDocument.sumNetto =
         Math.round(
           this.currentDocument.documentContent.items.reduce(
